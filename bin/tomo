@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+ // var debug = require('debug')('tomo');
+var env = process.env.NODE_ENV || 'development',
+  config = require('../config/global')[env],
+  fs = require('fs'),
+  vhost = require('vhost'),
+  express = require('express'),
+  mongoose = require('mongoose');
+
+GLOBAL.config = config;
+
+function start() {
+
+  // Connect to MongoDB
+  mongoose.connect(config.mongodb.host);
+  mongoose.connection.on('open', function() {
+    if ('production' !== config.app.env) mongoose.set('debug', true);
+    console.log("DataBase " + config.mongodb.host + " connected.");
+  });
+
+  // Load MongoDB models
+  var models_path = config.root + '/models';
+  fs.readdirSync(models_path).forEach(function(file) {
+    if (~file.indexOf('.js')) require(models_path + '/' + file);
+  });
+
+  // Start Express
+  // var server = express()
+  //   .use(vhost(config.app.userHost, require('../app-tomo/express')(config)))
+  //   .use(vhost(config.app.adminHost, require('../app-admin/express')(config)))
+  //   .listen(config.app.port || 8083, function() {
+  //     console.log('Express server listening on port ' + server.address().port);
+  //   });
+
+  var userApp = require('../app-tomo/express')(config);
+  userApp.listen(config.app.port || 8083, function() {
+    console.log('Express server for tomo-app started');
+  });
+
+  // var adminApp = require('../app-admin/express')(config);
+  // adminApp.listen(config.app.port || 8083, function() {
+  //   console.log('Express server for admin-app started');
+  // });
+
+}
+
+if (require.main === module) {
+  // application run directly; start app server
+  start();
+} else {
+  // application imported as a module via "require": export function
+  // to create server
+  module.exports = start;
+}

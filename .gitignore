@@ -1,0 +1,36 @@
+# ignore logs
+log/*
+log-admin/*
+npm-debug.log
+
+# ignore temp
+tmp
+
+# ignore node modules
+node_modules/
+
+# ignore pem file
+*.pem
+
+# ignore some other file
+.DS_Store
+.idea
+
+#############################
+
+# ignore bower components
+public/bower_components/
+
+# ignore all local avatar except default
+public/avatar/*
+!public/avatar/default.jpg
+
+# ignore all local logo except default
+public/logo/*
+!public/logo/default.jpg
+
+# ignore local build folder
+public-build/
+
+# ignore real config file
+config/global-real.js
