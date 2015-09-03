@@ -16,6 +16,12 @@ module.exports = function(config) {
   var server = http(app);
   var sio = socket(server);
 
+  // View directory
+  app.set('views', path.join(config.root, '/app-tomo/views'));
+
+  // View engine is jade
+  app.set('view engine', 'jade');
+
   // Compress all requests
   app.use(compression())
 
@@ -46,6 +52,8 @@ module.exports = function(config) {
   sio.use(function(socket, next) {
     sessionMiddleware(socket.request, socket.request.res, next);
   });
+
+  sio.set('log level', 2);
 
   // session
   app.use(sessionMiddleware);

@@ -10,16 +10,18 @@ module.exports = function(TempAccount, User, Mailer) {
       // handle error
       if (err) next(err);
       // if a existed account are found, require another ID
-      else if (user) res.status(409).end();
+      else if (user) {
+        var err = new Error('The Email Address Is Already In Use');
+        err.status = 409;
+        next(err);
+      }
       // for valid account ID
       else {
         // save temp account object
         TempAccount.create(req.body, function(err, tempAccount) {
           // handle error
-          if (err) {
-            if (err.code == 11000) res.status(409).end();
-            else next(err);
-          } else {
+          if (err) next(err);
+          else {
 
             // send account-activate mail
             Mailer.accountActive({
@@ -27,7 +29,7 @@ module.exports = function(TempAccount, User, Mailer) {
               email: req.body.email
             });
 
-            console.log("http://user.localhost:8080/activate/" + tempAccount._id);
+            console.log("http://localhost:81/activate/" + tempAccount._id);
 
             // send success singnal
             res.json({});

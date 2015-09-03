@@ -23,7 +23,8 @@ var Message = new Schema({
     },
 
     opened: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
 
     logicDelete: {

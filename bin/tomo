@@ -34,7 +34,7 @@ function start() {
 
   var userApp = require('../app-tomo/express')(config);
   userApp.listen(config.app.port || 8083, function() {
-    console.log('Express server for tomo-app started');
+    console.log('Express server for tomo-app started on port ' + userApp.address().port);
   });
 
   // var adminApp = require('../app-admin/express')(config);

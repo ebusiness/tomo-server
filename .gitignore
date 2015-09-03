@@ -12,6 +12,12 @@ node_modules/
 # ignore pem file
 *.pem
 
+# ignore crt file
+*.crt
+
+# ignore key file
+*.key
+
 # ignore some other file
 .DS_Store
 .idea

@@ -1,4 +1,5 @@
-var path = require('path'),
+var fs = require('fs'),
+  path = require('path'),
   rootPath = path.normalize(__dirname + '/..');
 
 module.exports = {
@@ -18,6 +19,20 @@ module.exports = {
     redis: {
       host: 'localhost',
       port: '6379'
+    },
+    s3: {
+        host: 'https://s3-ap-northeast-1.amazonaws.com',
+        bucket: 'tomo-test'
+    },
+    ssl: {
+        // key: fs.readFileSync(rootPath + '/resources/ssl/test/selink.pem'),
+        // cert: fs.readFileSync(rootPath + '/resources/ssl/test/selink.crt')
+    },
+    apn: {
+      key:  rootPath + '/resources/apn/production/key.pem',
+      cert: rootPath + '/resources/apn/production/cert.pem',
+      gateway: 'gateway.push.apple.com',
+      port: 2195
     },
     mail: {
       service: '',
@@ -44,6 +59,20 @@ module.exports = {
       host: 'localhost',
       port: '6379'
     },
+    s3: {
+        host: 'https://s3-ap-northeast-1.amazonaws.com',
+        bucket: 'tomo-dev'
+    },
+    ssl: {
+        // key: fs.readFileSync(rootPath + '/resources/ssl/development/selink.pem'),
+        // cert: fs.readFileSync(rootPath + '/resources/ssl/development/selink.crt')
+    },
+    apn: {
+      cert: rootPath + '/resources/apn/development/cert.pem',
+      key:  rootPath + '/resources/apn/development/key.pem',
+      gateway: 'gateway.sandbox.push.apple.com',
+      port: 2195
+    },
     mail: {
       host: '',
       auth: {
@@ -68,6 +97,20 @@ module.exports = {
     redis: {
       host: 'localhost',
       port: '6379'
+    },
+    s3: {
+        host: 'https://s3-ap-northeast-1.amazonaws.com',
+        bucket: 'tomo'
+    },
+    ssl: {
+        // key: fs.readFileSync(rootPath + '/resources/ssl/production/selink.pem'),
+        // cert: fs.readFileSync(rootPath + '/resources/ssl/production/selink.crt')
+    },
+    apn: {
+      cert: rootPath + '/resources/apn/production/cert.pem',
+      key:  rootPath + '/resources/apn/production/key.pem',
+      gateway: 'gateway.push.apple.com',
+      port: 2195
     },
     mail: {
       host: '',

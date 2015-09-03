@@ -66,7 +66,7 @@ Post.virtual('images_ref').get(function () {
 
     // if the _owner field was populated, it should be an object
     // and the owner's id will be embeded in that object, so we need extract it.
-    var userId = this._owner._id ? this._owner._id : this._owner;
+    var userId = this.owner._id ? this.owner._id : this.owner;
 
     if (this.images && this.images.length)
         return _.map(this.images, function(path) {
@@ -81,7 +81,7 @@ Post.virtual('images_mobile').get(function () {
 
     // if the _owner field was populated, it should be an object
     // and the owner's id will be embeded in that object, so we need extract it.
-    var userId = this._owner._id ? this._owner._id : this._owner;
+    var userId = this.owner._id ? this.owner._id : this.owner;
 
     if (this.imagesformobile && this.imagesformobile.length)
         return _.map(this.imagesformobile, function(image) {
@@ -90,17 +90,6 @@ Post.virtual('images_mobile').get(function () {
         });
     else
         return [];
-});
-
-// Create videp reference point to s3
-Post.virtual('video_ref').get(function () {
-
-    var userId = this._owner._id ? this._owner._id : this._owner;
-
-    if (this.video)
-        return _s.join('/', config.s3.host, config.s3.bucket, 'users', userId, 'post', this.video);
-    else
-        return '';
 });
 
 Post.set('toJSON', { virtuals: true });

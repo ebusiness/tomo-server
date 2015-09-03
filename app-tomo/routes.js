@@ -2,6 +2,10 @@ var fs = require('fs'),
   path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
+  Post = mongoose.model('Post'),
+  Message = mongoose.model('Message'),
+  Activity = mongoose.model('Activity'),
+  Invitation = mongoose.model('Invitation'),
   Notification = mongoose.model('Notification'),
   TempAccount = mongoose.model('TempAccount'),
   ResetPassword = mongoose.model('ResetPassword'),
@@ -14,55 +18,93 @@ module.exports = function(app, config) {
   // var cmnController = prepareController(config.root + '/controllers');
 
   //////////////////////////////////////////////////
-  /// Static route
+  /// User Account Relate
   //////////////////////////////////////////////////
-  // Home page
-  app.get('/', function(req, res, next) {
-    res.render('home');
-  });
 
-  // Resource download
-  app.get('/resource/:file', function(req, res, next) {
+  // Test Sign-in
+  // app.post('/signin-test', controller.test.login(User));
 
-    var options = {
-      root: GLOBAL.config.root + '/resource/',
-    };
-
-    res.sendFile(req.params.file, options, function(err) {
-      if (err) res.status(err.status).end();
-    });
-  });
-
-  //////////////////////////////////////////////////
-  /// Main route
-  //////////////////////////////////////////////////
-  // Test account availability
-  app.post('/available', controller.tempaccount.available(TempAccount, User));
-  // User sign-up
+  // User Sign-in
+  app.post('/signin', controller.me.signin(User, Invitation, Message));
+  // User Sign-up
   app.post('/signup', controller.tempaccount.create(TempAccount, User, Mailer));
   // Account activate
   app.get('/activate/:id', controller.tempaccount.activate(TempAccount, User, Mailer));
 
-  // Retrieve password request
-  app.post('/retrieve', controller.resetpassword.create(ResetPassword, User, Mailer));
-  // Retrieve password page
-  app.get('/retrieve/:id', controller.resetpassword.show(ResetPassword));
-  // Reset password
-  app.put('/retrieve/:id', controller.resetpassword.update(ResetPassword, User));
+  // User Sign-up WeChat
+  app.post('/signup-wechat', controller.me.signupWeChat(User, Activity)); // /mobile/user/regist
+  // User Sign-in WeChat
+  app.post('/signin-wechat', controller.me.signinWeChat(User, Invitation, Message));  // /mobile/user/openid
 
-  // User Login
-  app.post('/login', controller.me.login(User));
-  // User Logout
-  app.get('/logout', controller.me.logout());
-  // User Information
-  app.get('/session', controller.me.session(User));
+  // User Sign-out
+  app.get('/signout', checkLoginStatus, controller.me.signout(User));
 
-  // User entity
-  app.get('/me', checkLoginStatus, controller.me.show(User));
-  // User profile update (Should be put)
-  app.post('/me', checkLoginStatus, controller.me.update(User));
-  // User photo update (Should be put)
-  app.post('/me/photo', checkLoginStatus, controller.me.photo(User));
+  // User Decive Register
+  app.post('/device', checkLoginStatus, controller.me.device(User));  // /mobile/user/device
+
+  // User Profile
+  // app.get('/me', checkLoginStatus, controller.me.show(User));
+  // User Profile Update
+  app.patch('/me', checkLoginStatus, controller.me.update(User));  // /users/:id
+
+  //////////////////////////////////////////////////
+  /// Post Relate
+  //////////////////////////////////////////////////
+
+  // Post List
+  app.get('/posts', checkLoginStatus, controller.post.index(Post))  // /newsfeed /mapnews /posts /bookmark
+  // Post Create
+  app.post('/posts', checkLoginStatus, controller.post.create(Post, Activity, Notification))  // /mobile/posts
+  // Post Entity
+  app.get('/posts/:post', checkLoginStatus, controller.post.show());  // /posts/\(id)
+  // Post of User
+  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User))  // /users/:id/posts  ??
+  // Comment Post
+  app.post('/posts/:post/comments', checkLoginStatus, controller.post.update(Post, Activity, Notification))  // /posts/\(self.post.id)/comments
+  // Like Post
+  app.patch('/posts/:post/like', checkLoginStatus, controller.post.like(Post, Activity, Notification))  // /posts/\(self.post.id)/like
+  // Bookmark Post
+  app.patch('/posts/:post/bookmark', checkLoginStatus, controller.post.bookmark(Post, Activity, Notification))  // /posts/\(self.post.id)/bookmark
+  // Post Delete
+  app.delete('/posts/:post', checkLoginStatus, controller.post.remove(Post))  // /posts/\(self.post.id)
+
+  //////////////////////////////////////////////////
+  /// Message Relate
+  //////////////////////////////////////////////////
+
+  // Chat Message with some one
+  app.get('/messages/:user', checkLoginStatus, controller.message.index(Message))  // /chat/:userId
+  // Chat Message Create
+  app.post('/messages', checkLoginStatus, controller.message.create(User, Message, Activity))  // /messages
+
+  //////////////////////////////////////////////////
+  /// Notification Relate
+  //////////////////////////////////////////////////
+
+  // app.get('/notifications', checkLoginStatus, controller.notification.index())  // /mobile/notifications  /notifications/unconfirmed
+  //
+  // app.put('/notifications', checkLoginStatus, controller.notification.update())  // /mobile/notifications/open (patch)
+  //
+  // app.patch('/notifications/:notification', checkLoginStatus, contoller.notification.update())  // /notifications/\(invitation.id)  /notifications/\(id)
+
+  //////////////////////////////////////////////////
+  /// Connection Relate
+  //////////////////////////////////////////////////
+
+  // Invitation List
+  app.get('/invitations', checkLoginStatus, controller.invitation.index(User))  // /mobile/user/invited  ??
+  // Invitation Create
+  app.post('/invitations', checkLoginStatus, controller.invitation.create(Activity, Invitation))  // /connections/invite  ??
+  // Invitation Update
+  app.patch('/invitations/:invitation', checkLoginStatus, controller.invitation.update(User, Activity, Invitation, Notification))  // /notifications/\(invitation.id)  /notifications/\(id)
+  // Friends List
+  app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message))  // /connections/friends  ??
+  // Friend Break
+  app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Activity, Notification))  // /connections/break  ??
+  // User Search
+  app.get('/users', checkLoginStatus, controller.connection.discover(User))  // /mobile/stations/users
+  // User Profile
+  app.get('/users/:user', checkLoginStatus, controller.user.show(User))  // /users/\(id)
 
 };
 
@@ -79,7 +121,9 @@ checkLoginStatus = function(req, res, next) {
         req.user = user;
         next();
       } else {
-        next(new Error('Could not restore User from Session.'));
+        var err = new Error('Could not restore User from Session.');
+        err.status = 401
+        next(err);
       }
     });
   }

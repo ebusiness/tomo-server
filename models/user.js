@@ -1,6 +1,7 @@
 var _ = require('underscore'),
     _s = require('underscore.string'),
     mongoose = require('mongoose'),
+    validate = require('mongoose-validator').validatorjs,
     Schema = mongoose.Schema;
 
 var User = new Schema({
@@ -9,9 +10,17 @@ var User = new Schema({
         type: String,
         trim: true
     },
-    
+
     device: {
-        type: {
+        os: {
+            type: String,
+            trim: true
+        },
+        version: {
+            type: String,
+            trim: true
+        },
+        model: {
             type: String,
             trim: true
         },
@@ -48,7 +57,8 @@ var User = new Schema({
 
     nickName: {
       type: String,
-      trim: true
+      trim: true,
+      required: true
     },
 
     photo: {

@@ -1,5 +1,3 @@
-// Edit Profile
-
 module.exports = function(User) {
 
   return function(req, res, next) {
@@ -10,7 +8,6 @@ module.exports = function(User) {
       if (err) next(err);
       else res.json(user);
     });
-
+    
   };
-
 };
