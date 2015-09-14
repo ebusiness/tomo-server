@@ -39,4 +39,4 @@ public/logo/*
 public-build/
 
 # ignore real config file
-config/global-real.js
+config/global.js

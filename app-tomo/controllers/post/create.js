@@ -54,7 +54,13 @@ module.exports = function(Post, Activity, Notification) {
           var alertMessage = req.user.nickName + '：' + post.content;
           var payload = {
             type: 'post-new',
-            id: post.id
+            from: {
+              id:       req.user.id,
+              nickName: req.user.nickName,
+              photo:    req.user.photo,
+              cover:    req.user.cover
+            },
+            targetId: post._id
           };
 
           Push(req.user.id, req.user.friends, payload, alertMessage);

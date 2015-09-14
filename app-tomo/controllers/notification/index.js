@@ -1,74 +1,48 @@
-/*
-    Notification Type:
-    1. friend-invited
-    2. friend-approved
-    3. friend-declined
-    4. friend-break
-    5. post-new
-    6. post-liked
-    7. post-bookmarked
-    8. post-commented
-    9. comment-replied
-    10. comment-liked
-    11. job-new
-    12. job-bookmarked
-    13. message-new
-    14. group-new
-    15. group-invited
-    16. group-joined
-    17. group-refused
-    18. group-applied
-    19. group-approved
-    20. group-declined
-*/
+var async = require('async'),
+    moment = require('moment');
 
-// Notification index
-// ---------------------------------------------
-// Return a list of 20 notifications of current user, in descending order of create date.
-// Notifications are private, all requests are relate to current user and can't be changed
-// ---------------------------------------------
-// Parameter:
-//   1. type  : The type of notifications, "unconfirmed" or "all"  default: all
-//   2. before: A Unix time stamp used as start point of retrive   default: none
-//   3. size  : Number of result to return                         default: 20
-// ---------------------------------------------
-var _s = require('underscore.string'),
-    moment = require('moment'),
-    Notification = require('mongoose').model('Notification');
+module.exports = function(Notification) {
 
-var populateField = {
-    '_from': 'type firstName lastName title cover photo'
-};
+  return function(req, res, next) {
 
-module.exports = function(req, res, next) {
+    async.parallel({
 
-    // create query
-    var query = Notification.find(req.query);
+      openNotification: function(notifications, callback) {
+        Notification.where('to').equals(req.user.id)
+          .where('confirmed').ne(req.user.id)
+          .where('logicDelete').equals(false)
+          .setOptions({ multi: true })
+          .update({$addToSet: {confirmed: req.user.id}}, callback);
+      },
 
-    // notifications are relate with current user
-    query.where('_owner').equals(req.user.id);
+      notifications: function(callback) {
 
-    // if request specified unconfirmed notifications
-    if (_s.endsWith(req.path, "/unconfirmed"))
-        query.where('confirmed').ne(req.user.id);
+        // create query
+        var query = Notification.find();
 
-    // if request items before some time point
-    if (req.query.before)
-        query.where('createDate').lt(moment.unix(req.query.before).toDate());
+        // notifications are relate with current user
+        query.where('to').equals(req.user.id);
 
-    query.select('-logicDelete')
-        .where('logicDelete').equals(false)
-        .populate('_from', populateField['_from'])
-        .populate('targetPost')
-        .populate('targetJob')
-        .populate('targetMessage')
-        .populate('targetGroup')   // there is no targetComment, cause comment was embedded in post
-        .limit(req.query.size || 20)
-        .sort('-createDate')
-        .exec(function(err, notifications) {
-            if (err) next(err);
-            else if (notifications.length === 0) res.json(404, {});
-            else res.json(notifications);
-        });
+        // if request items before some time point
+        if (req.query.before)
+          query.where('createDate').lt(moment.unix(req.query.before).toDate());
 
+        query.select('-logicDelete')
+          .where('logicDelete').equals(false)
+          .populate('from', 'nickName photo cover')
+          .limit(req.query.size || 20)
+          .sort('-createDate')
+          .exec(callback);
+      }
+
+    }, function(err, result) {
+      if (err) next(err);
+      else if (result.notifications.length === 0) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+      } else res.json(result.notifications);
+    });
+
+  };
 };

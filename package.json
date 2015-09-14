@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/tomo"
+    "start": "DEBUG=socket.io* node ./bin/tomo"
   },
   "dependencies": {
     "apn": "^1.7.4",

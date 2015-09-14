@@ -86,10 +86,21 @@ module.exports = function(Post, Activity, Notification) {
           var alertMessage = req.user.nickName + '赞了您的帖子.';
           var payload = {
             type: 'post-liked',
-            id: post.id
+            from: {
+              id:       req.user.id,
+              nickName: req.user.nickName,
+              photo:    req.user.photo,
+              cover:    req.user.cover
+            },
+            targetId: post._id
           };
 
-          Push(req.user.id, post.owner._id, alertMessage);
+          Push(req.user.id, post.owner, payload, alertMessage, function(err, apnNotification){
+            console.log("======== apn callback ========");
+            console.log(arguments);
+            console.log("======== apn callback ========");
+            if (err) next(err);
+          });
         }
 
         // the last result is the updated post

@@ -23,8 +23,7 @@ module.exports = function(TempAccount, User, Mailer) {
           email: tempAccount.email,
           password: tempAccount.password,
           nickName: tempAccount.nickName,
-          type: 'user',
-          provider: 'local'
+          type: 'user'
         }, function(err, user) {
 
           // handle error

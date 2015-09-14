@@ -63,15 +63,33 @@ module.exports = function(User, Activity, Invitation, Notification) {
           },
 
           invitation: function(callback) {
-            // mark the invitation as accept
-            invitation.result = req.body.result;
-            invitation.save(callback);
+
+            async.parallel({
+
+              checkInterInvitation: function(callback) {
+                Invitation.findOneAndUpdate({
+                  from: req.user.id,
+                  to: invitation.from,
+                  type: 'friend',
+                  result: null
+                }, {
+                  result: 'accept'
+                }, callback);
+              },
+
+              updateOriginalInvitation: function(callback) {
+                // mark the invitation as accept
+                invitation.result = req.body.result;
+                invitation.save(callback);
+              }
+
+            }, callback);
           },
 
           activity: function(callback) {
             Activity.create({
               owner: req.user.id,
-              type: 'friend-approved',
+              type: 'friend-accepted',
               targetUser: invitation.from
             }, callback);
           },
@@ -80,7 +98,7 @@ module.exports = function(User, Activity, Invitation, Notification) {
             Notification.create({
               from: req.user.id,
               to: invitation.from,
-              type: 'friend-approved'
+              type: 'friend-accepted'
             }, callback);
           }
 
@@ -89,10 +107,15 @@ module.exports = function(User, Activity, Invitation, Notification) {
 
       function sendNotification(relateInfo, callback) {
 
-        var alertMessage = req.user.nickName + "已成为您的好友";
+        var alertMessage = req.user.nickName + "接受了您的好友请求";
         var payload = {
-          type: 'friend-approved',
-          id: req.user.id
+          type: 'friend-accepted',
+          from: {
+            id:       req.user.id,
+            nickName: req.user.nickName,
+            photo:    req.user.photo,
+            cover:    req.user.cover
+          }
         };
 
         Push(req.user.id, invitation.from, payload, alertMessage, function(err, apnNotification){
@@ -136,7 +159,7 @@ module.exports = function(User, Activity, Invitation, Notification) {
           activity: function(callback) {
             Activity.create({
               owner: req.user.id,
-              type: 'friend-declined',
+              type: 'friend-refused',
               targetUser: invitation.from
             }, callback);
           },
@@ -145,7 +168,7 @@ module.exports = function(User, Activity, Invitation, Notification) {
             Notification.create({
               from: req.user.id,
               to: invitation.from,
-              type: 'friend-declined'
+              type: 'friend-refused'
             }, callback);
           }
 
@@ -156,8 +179,13 @@ module.exports = function(User, Activity, Invitation, Notification) {
 
         var alertMessage = req.user.nickName + "拒绝了您的好友邀请";
         var payload = {
-          type: 'friend-declined',
-          id: req.user.id
+          type: 'friend-refused',
+          from: {
+            id:       req.user.id,
+            nickName: req.user.nickName,
+            photo:    req.user.photo,
+            cover:    req.user.cover
+          }
         };
 
         Push(req.user.id, invitation.from, payload, alertMessage, function(err, apnNotification){

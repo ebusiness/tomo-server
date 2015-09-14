@@ -11,11 +11,11 @@ module.exports = function(User, Activity) {
     }
 
     var userinfo = {
-      type: 'user',
       gender: req.body.sex,
       photo: req.body.headimgurl,
       nickName: req.body.nickname,
-      openIdWeChat: req.body.openid
+      openIdWeChat: req.body.openid,
+      type: 'user'
     };
 
     async.waterfall([

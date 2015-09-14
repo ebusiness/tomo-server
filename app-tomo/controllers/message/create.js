@@ -1,7 +1,7 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(User, Message, Activity) {
+module.exports = function(User, Message, Activity, sio) {
 
   return function(req, res, next) {
 
@@ -12,20 +12,40 @@ module.exports = function(User, Message, Activity) {
         Message.create(req.body, callback)
       },
 
-      function createActivity(message, callback) {
-        Activity.create({
-          owner: req.user.id,
-          type: 'message-new',
-          targetMessage: message.id
-        }, function(err, activity) {
-          if (err) callback(err);
-          else callback(null, message);
-        });
-      },
+      function sendNotification(message, callback) {
 
-      // function sendNotification(info, callback) {
-      //
-      // }
+        var room = sio.sockets.adapter.rooms[req.body.to];
+
+        var payload = {
+          from: {
+            id:       req.user.id,
+            nickName: req.user.nickName,
+            photo:    req.user.photo,
+            cover:    req.user.cover
+          },
+          createDate: message.createDate
+        }
+        if (room) {
+
+          payload.aps = {alert:message.content};
+          sio.to(req.body.to).emit('message-new', payload);
+
+        } else {
+
+          var alertMessage = message.content;
+          payload.type = 'message-new';
+
+          Push(req.user.id, req.body.to, payload, alertMessage, function(err, apnNotification){
+            console.log("======== apn callback ========");
+            console.log(arguments);
+            console.log("======== apn callback ========");
+            if (err) next(err);
+          });
+
+        }
+
+        callback(null, message);
+      }
 
     ], function(err, message) {
       if (err) next(err);

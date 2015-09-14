@@ -30,7 +30,7 @@ module.exports = function(Post, User) {
 
         // post of my bookmark
         if (req.query.category == "bookmark")
-          query.where('bookmark').equals(req.user.id)
+          query.where('_id').in(req.user.bookmarks);
 
         // post can be displayed on map
         if (req.query.category == "mapnews")

@@ -1,7 +1,7 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(Post, Activity, Notification) {
+module.exports = function(User, Post, Activity, Notification) {
 
   return function(req, res, next) {
 
@@ -11,35 +11,55 @@ module.exports = function(Post, Activity, Notification) {
         Post.findById(req.params.post, callback);
       },
 
-      function updateBookmark(post, callback) {
+      function updateRelateInfo(post, callback) {
 
-        // wether this is the first time this user bookmark this post
-        var isFirstTime = true,
-            type = 'post-bookmarked';
+        async.parallel({
 
-        // if the user exists in the "bookmarked" field
-        if (post.bookmarked.indexOf(req.user.id) >= 0)
-          // it's not the first time he/she bookmark it
-          isFirstTime = false;
-        else
-          // it is the first time, save the user's id in "bookmarked" field
-          post.bookmarked.push(req.user.id);
+          user: function(callback) {
 
-        // if the user already bookmarked this post
-        if (post.bookmark.indexOf(req.user.id) >= 0) {
-          // unbookmark it
-          post.bookmark.pull(req.user.id);
-          type = 'post-unbookmarked';
-        }
-        else
-          // bookmark it
-          post.bookmark.push(req.user.id);
+            if (req.user.bookmarks.indexOf(post.id) >= 0)
+              User.findByIdAndUpdate(req.user.id, {$pull: {bookmarks: post.id}}, callback);
+            else
+              User.findByIdAndUpdate(req.user.id, {$push: {bookmarks: post.id}}, callback);
+          },
 
-        // update the post
-        post.save(function(err, post) {
+          post: function(callback) {
+
+            // wether this is the first time this user bookmark this post
+            var isFirstTime = true,
+                type = 'post-bookmarked';
+
+            // if the user exists in the "bookmarked" field
+            if (post.bookmarked.indexOf(req.user.id) >= 0)
+              // it's not the first time he/she bookmark it
+              isFirstTime = false;
+            else
+              // it is the first time, save the user's id in "bookmarked" field
+              post.bookmarked.push(req.user.id);
+
+            // if the user already bookmarked this post
+            if (post.bookmark.indexOf(req.user.id) >= 0) {
+              // unbookmark it
+              post.bookmark.pull(req.user.id);
+              type = 'post-unbookmarked';
+            }
+            else
+              // bookmark it
+              post.bookmark.push(req.user.id);
+
+            // update the post
+            post.save(function(err, post) {
+              if (err) callback(err);
+              else callback(null, post, type, isFirstTime);
+            });
+
+          }
+
+        }, function(err, result) {
           if (err) callback(err);
-          else callback(null, post, type, isFirstTime);
+          else callback(null, result.post[0], result.post[1], result.post[2]);
         });
+
       },
 
       function createRelateInfo(post, type, isFirstTime, callback) {
@@ -86,10 +106,21 @@ module.exports = function(Post, Activity, Notification) {
           var alertMessage = req.user.nickName + '收藏了您的帖子.';
           var payload = {
             type: 'post-bookmarked',
-            id: post.id
+            from: {
+              id:       req.user.id,
+              nickName: req.user.nickName,
+              photo:    req.user.photo,
+              cover:    req.user.cover
+            },
+            targetId: post._id
           };
 
-          Push(req.user.id, post.owner._id, alertMessage);
+          Push(req.user.id, post.owner, payload, alertMessage, function(err, apnNotification){
+            console.log("======== apn callback ========");
+            console.log(arguments);
+            console.log("======== apn callback ========");
+            if (err) next(err);
+          });
         }
 
         callback(null, post);

@@ -68,10 +68,21 @@ module.exports = function(Post, Activity, Notification) {
           var alertMessage = req.user.nickName + '评论了您的帖子：' + comment.content;
           var payload = {
             type: 'post-commented',
-            id: post.id
+            from: {
+              id:       req.user.id,
+              nickName: req.user.nickName,
+              photo:    req.user.photo,
+              cover:    req.user.cover
+            },
+            targetId: post._id
           };
 
-          Push(req.user.id, notification.to, payload, alertMessage);
+          Push(req.user.id, notification.to, payload, alertMessage, function(err, apnNotification){
+            console.log("======== apn callback ========");
+            console.log(arguments);
+            console.log("======== apn callback ========");
+            if (err) next(err);
+          });
         }
 
         callback(null, comment);

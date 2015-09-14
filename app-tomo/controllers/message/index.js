@@ -10,6 +10,7 @@ module.exports = function(Message) {
         Message.where('from').equals(req.params.user)
           .where('to').equals(req.user.id)
           .where('opened').equals(false)
+          .where('logicDelete').equals(false)
           .setOptions({ multi: true })
           .update({opened: true}, callback);
       },
@@ -26,7 +27,7 @@ module.exports = function(Message) {
         query.select('from to content opened createDate')
           .where('from').in([req.user.id, req.params.user])
           .where('to').in([req.user.id, req.params.user])
-          .where('logicDelete').ne(false)
+          .where('logicDelete').equals(false)
           .limit(req.query.size || 20)
           .sort('-createDate')
           .exec(callback);

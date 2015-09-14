@@ -19,9 +19,9 @@ exports.accountActive = function(recipient) {
         if (err) console.log(err);
         else {
           transport.sendMail({
-            from: 'ラッキー・ジョブ <info@luckyjob.jp>',
+            from: '現場Tomo <info@genba-tomo.com>',
             to: recipient.email,
-            subject: 'ラッキー・ジョブへようこそ！',
+            subject: '欢迎加入現場Tomo',
             html: html,
             text: text
           }, function(err, responseStatus) {
@@ -48,9 +48,9 @@ exports.resetPassword = function(recipient) {
         if (err) console.log(err);
         else {
           transport.sendMail({
-            from: '大中华柔术联盟 <info@auto.gcjjf.com>',
+            from: '現場Tomo <info@genba-tomo.com>',
             to: recipient.email,
-            subject: '大中华柔术联盟－重置密码',
+            subject: '現場Tomo－重置密码',
             html: html,
             text: text
           }, function(err, responseStatus) {

@@ -95,6 +95,16 @@ var User = new Schema({
         trim: true
     },
 
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+
+    bookmarks: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+
     friends: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -105,9 +115,9 @@ var User = new Schema({
         ref: 'User'
     }],
 
-    posts: [{
+    groups: [{
         type: Schema.Types.ObjectId,
-        ref: 'Post'
+        ref: 'Group'
     }],
 
     logicDelete: {

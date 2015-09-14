@@ -5,7 +5,14 @@ module.exports = function(Activity, Invitation) {
 
   return function(req, res, next) {
 
-    // TODO: check friend id is already in the 'friend' or 'invited' list
+    // check friend id is already in the 'friend' or 'invited' list
+    if (req.user.invitations.indexOf(req.body.id) >= 0 ||
+        req.user.friends.indexOf(req.body.id) >= 0) {
+      var err = new Error('Already Been Friend Or Invited');
+      err.status = 400;
+      next(err);
+      return;
+    }
 
     async.waterfall([
 
@@ -42,7 +49,13 @@ module.exports = function(Activity, Invitation) {
         var alertMessage = req.user.nickName + "请求成为您的好友";
         var payload = {
           type: 'friend-invited',
-          id: req.user.id
+          from: {
+            id:       req.user.id,
+            nickName: req.user.nickName,
+            photo:    req.user.photo,
+            cover:    req.user.cover
+          },
+          targetId: relateInfo.invitation._id
         }
 
         Push(req.user.id, req.body.id, payload, alertMessage, function(err, apnNotification){

@@ -1,6 +1,7 @@
 var path = require('path'),
   socket = require('socket.io'),
-  http = require('http').Server,
+  // http = require('http').Server,
+  https = require('https').Server,
   express = require('express'),
   session = require('express-session'),
   bodyParser = require('body-parser'),
@@ -13,7 +14,8 @@ var path = require('path'),
 module.exports = function(config) {
 
   var app = express();
-  var server = http(app);
+  // var server = http(app);
+  var server = https(config.ssl, app);
   var sio = socket(server);
 
   // View directory
@@ -53,7 +55,11 @@ module.exports = function(config) {
     sessionMiddleware(socket.request, socket.request.res, next);
   });
 
-  sio.set('log level', 2);
+  sio.sockets.on('connection', function(socket) {
+    if (socket.request.session) {
+      socket.join(socket.request.session.userId);
+    }
+  });
 
   // session
   app.use(sessionMiddleware);
@@ -75,7 +81,7 @@ module.exports = function(config) {
   }
 
   // Routes
-  require('./routes')(app, config);
+  require('./routes')(app, config, sio);
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {

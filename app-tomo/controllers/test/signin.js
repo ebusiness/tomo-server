@@ -4,27 +4,16 @@ module.exports = function(User, Invitation, Message) {
 
   return function(req, res, next) {
 
-    // do nothing if login info are not enough
-    if (!req.body.email || !req.body.password) {
-      var err = new Error('Invalid Parameter');
-      err.status = 400;
-      next(err);
-      return;
-    }
-
     async.waterfall([
 
-      function(callback) {
-        User.findOne(req.body)
-          .select('firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations')
-          .where('type').equals('user')
-          .exec(callback);
+      function findUser(callback) {
+        User.findById(req.query.id, callback);
       },
 
-      function(user, callback) {
+      function findRelateInfo(user, callback) {
 
         if (user == null) {
-          var err = new Error('User Not Found');
+          var err = new Error('Not Found');
           err.status = 404;
           callback(err);
         } else {
@@ -63,6 +52,7 @@ module.exports = function(User, Invitation, Message) {
               callback(null, user);
             }
           });
+
         }
       }
 

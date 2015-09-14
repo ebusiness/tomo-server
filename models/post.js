@@ -76,22 +76,6 @@ Post.virtual('images_ref').get(function () {
         return [];
 });
 
-// Create images reference point to s3
-Post.virtual('images_mobile').get(function () {
-
-    // if the _owner field was populated, it should be an object
-    // and the owner's id will be embeded in that object, so we need extract it.
-    var userId = this.owner._id ? this.owner._id : this.owner;
-
-    if (this.imagesformobile && this.imagesformobile.length)
-        return _.map(this.imagesformobile, function(image) {
-            image.name = _s.join('/', config.s3.host, config.s3.bucket, 'users', userId, 'post', image.name);
-            return image;
-        });
-    else
-        return [];
-});
-
 Post.set('toJSON', { virtuals: true });
 Post.set('toObject', { virtuals: true });
 
