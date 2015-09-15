@@ -22,10 +22,10 @@ module.exports = function(app, config, sio) {
   //////////////////////////////////////////////////
 
   // Test Sign-in
-  app.get('/signin-test', controller.test.signin(User, Invitation, Message));
+  app.get('/signin-test', controller.test.signin(User, Invitation, Message, Notification));
 
   // User Sign-in
-  app.post('/signin', controller.me.signin(User, Invitation, Message));
+  app.post('/signin', controller.me.signin(User, Invitation, Message, Notification));
   // User Sign-up
   app.post('/signup', controller.tempaccount.create(TempAccount, User, Mailer));
   // Account activate
@@ -34,7 +34,7 @@ module.exports = function(app, config, sio) {
   // User Sign-up WeChat
   app.post('/signup-wechat', controller.me.signupWeChat(User, Activity)); // /mobile/user/regist
   // User Sign-in WeChat
-  app.post('/signin-wechat', controller.me.signinWeChat(User, Invitation, Message));  // /mobile/user/openid
+  app.post('/signin-wechat', controller.me.signinWeChat(User, Invitation, Message, Notification));  // /mobile/user/openid
 
   // User Sign-out
   app.get('/signout', checkLoginStatus, controller.me.signout(User));

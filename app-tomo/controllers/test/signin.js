@@ -1,6 +1,6 @@
 var async = require('async');
 
-module.exports = function(User, Invitation, Message) {
+module.exports = function(User, Invitation, Message, Notification) {
 
   return function(req, res, next) {
 
@@ -36,10 +36,18 @@ module.exports = function(User, Invitation, Message) {
 
             messages: function(callback) {
               Message.find()
-                .select('_from createDate')
-                .where('_recipient').equals(user.id)
+                .select('from createDate')
+                .where('to').equals(user.id)
                 .where('opened').ne(user.id)
                 .where('logicDelete').ne(user.id)
+                .exec(callback);
+            },
+
+            notifications: function(callback) {
+              Notification.count()
+                .where('to').equals(user.id)
+                .where('confirmed').ne(user.id)
+                .where('logicDelete').equals(false)
                 .exec(callback);
             }
 
@@ -49,6 +57,7 @@ module.exports = function(User, Invitation, Message) {
               user = user.toObject();
               user.friendInvitations = result.invitation;
               user.newMessages = result.messages;
+              user.notifications = result.notifications
               callback(null, user);
             }
           });
