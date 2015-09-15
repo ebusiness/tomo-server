@@ -56,7 +56,7 @@ module.exports = function(app, config, sio) {
   // Post Create
   app.post('/posts', checkLoginStatus, controller.post.create(Post, Activity, Notification));  // /mobile/posts
   // Post Entity
-  app.get('/posts/:post', checkLoginStatus, controller.post.show());  // /posts/\(id)
+  app.get('/posts/:post', checkLoginStatus, controller.post.show(Post));  // /posts/\(id)
   // Post of User
   app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User));  // /users/:id/posts  ??
   // Comment Post
