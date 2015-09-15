@@ -53,7 +53,7 @@ module.exports = function(Post, Activity, Notification) {
               Activity.create({
                 owner: req.user.id,
                 type: type,
-                targetPost: post.id
+                targetId: post.id
               }, callback);
             else
               callback(null);
@@ -67,7 +67,7 @@ module.exports = function(Post, Activity, Notification) {
                 from: req.user.id,
                 to: post.owner,
                 type: type,
-                targetPost: post.id
+                targetId: post.id
               }, callback);
             else
               callback(null);

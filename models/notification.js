@@ -20,40 +20,8 @@ var Notification = new Schema({
         required: true
     },
 
-    // notification target (post)
-    targetPost: {
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
-    },
-
-    // notification target (comment)
-    targetComment: {
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    },
-
-    // notification target (replied comment)
-    targetReplyTo: {
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    },
-
-    // notification target (job)
-    targetJob: {
-        type: Schema.Types.ObjectId,
-        ref: 'Job'
-    },
-
-    // notification target (message)
-    targetMessage: {
-        type: Schema.Types.ObjectId,
-        ref: 'Message'
-    },
-
-    // notification target (group)
-    targetGroup: {
-        type: Schema.Types.ObjectId,
-        ref: 'Group'
+    targetId: {
+        type: Schema.Types.ObjectId
     },
 
     confirmed: [{

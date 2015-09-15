@@ -25,7 +25,7 @@ module.exports = function(Post, Activity, Notification) {
             Activity.create({
               owner: req.user.id,
               type: 'post-new',
-              targetPost: post.id
+              targetId: post.id
             }, callback);
           },
 
@@ -35,7 +35,7 @@ module.exports = function(Post, Activity, Notification) {
                 from: req.user.id,
                 to: req.user.friends,
                 type: 'post-new',
-                targetPost: post.id
+                targetId: post.id
               }, callback);
             else
               callback(null);

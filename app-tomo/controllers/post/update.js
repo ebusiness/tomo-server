@@ -47,8 +47,7 @@ module.exports = function(Post, Activity, Notification) {
                 from: req.user.id,
                 to: post.owner,
                 type: 'post-commented',
-                targetPost: post.id,
-                targetComment: comment.id
+                targetId: post.id
               }, callback);
             else
               callback(null);
