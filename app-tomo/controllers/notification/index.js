@@ -7,7 +7,7 @@ module.exports = function(Notification) {
 
     async.parallel({
 
-      openNotification: function(notifications, callback) {
+      openNotification: function(callback) {
         Notification.where('to').equals(req.user.id)
           .where('confirmed').ne(req.user.id)
           .where('logicDelete').equals(false)
