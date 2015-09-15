@@ -1,5 +1,10 @@
 var apns = require('apn'),
-    User = require('mongoose').model('User');
+    async = require('async'),
+    mongoose = require('mongoose'),
+    User = mongoose.model('User'),
+    Message = mongoose.model('Message'),
+    Invitation = mongoose.model('Invitation'),
+    Notification = mongoose.model('Notification');
 /*
   payload = {
     type: String,  // post-new, message-new, post-commented, friend-invited, friend-approved, friend-declined, announcement
@@ -51,41 +56,44 @@ function send(receivers, payload, alertMessage, callback){
   note.alert = alertMessage;
   note.payload = payload;
 
-  receivers.forEach(function(receiver) {
-    var device = new apns.Device(receiver.device.token);
-    note.badge = 1;
-    note.device = device;
-    apnsConnection.sendNotification(note);
-  });
+  receivers.forEach(function(user) {
 
-  //
-	// for (var i = users.length - 1; i >= 0; i--) {
-  //   	var user = users[i];
-  //
-  //       if(sio.sockets.clients(user.id).length < 1 ){
-  //
-  //       	var devices = user.devices;
-  //           for (var j = devices.length - 1; j >= 0; j--) {
-  //           	var device = devices[j];
-  //               if(device.token){
-  //
-  //                   //push
-  //       					var apnsConnection = new apns.Connection(options);
-  //       					var device = new apns.Device(device.token);
-  //       					var note = new apns.Notification();
-  //       					note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-  //       					note.badge = 1;
-  //       					note.sound = "ping.aiff";
-  //       					note.alert = alertMessage;
-  //       					note.payload = payload;
-  //       					note.device = device;
-  //       					apnsConnection.sendNotification(note);
-  //               }
-  //           };
-  //       }else if (onlinefunc){
-  //   		//console.log("onlinefunc");
-  //       	onlinefunc(user);
-  //       }
-  //
-  //   };
-}
+    async.parallel({
+
+      invitations: function(callback) {
+        Invitation.count()
+          .where('to').equals(user.id)
+          .where('type').equals('friend')
+          .where('result').equals(null)
+          .where('logicDelete').equals(false)
+          .exec(callback);
+      },
+
+      messages: function(callback) {
+        Message.count()
+          .where('to').equals(user.id)
+          .where('opened').ne(user.id)
+          .where('logicDelete').ne(user.id)
+          .exec(callback);
+      },
+
+      notifications: function(callback) {
+        Notification.count()
+          .where('to').equals(user.id)
+          .where('confirmed').ne(user.id)
+          .where('logicDelete').equals(false)
+          .exec(callback);
+      }
+
+    }, function(err, result) {
+      if (err) callback(err);
+      else {
+        var device = new apns.Device(user.device.token);
+        note.badge = result.invitations + result.messages + result.notifications;
+        note.device = device;
+        apnsConnection.sendNotification(note);
+      }
+    });
+
+  });
+};
