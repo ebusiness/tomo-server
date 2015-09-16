@@ -29,7 +29,7 @@ module.exports = function(User, Message, Activity, sio) {
         if (room) {
 
           payload.aps = {alert:message.content};
-          sio.to(req.body.to).emit('message-new', payload);
+          sio.to(req.body.to).emit(payload.type, payload);
 
         } else {
 
