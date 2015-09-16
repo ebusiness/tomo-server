@@ -17,6 +17,7 @@ module.exports = function(User, Message, Activity, sio) {
         var room = sio.sockets.adapter.rooms[req.body.to];
 
         var payload = {
+          type: 'message-new',
           from: {
             id:       req.user.id,
             nickName: req.user.nickName,
@@ -33,7 +34,6 @@ module.exports = function(User, Message, Activity, sio) {
         } else {
 
           var alertMessage = message.content;
-          payload.type = 'message-new';
 
           Push(req.user.id, req.body.to, payload, alertMessage, function(err, apnNotification){
             console.log("======== apn callback ========");
