@@ -109,8 +109,8 @@ module.exports = function(User, Post, Activity, Notification) {
             from: {
               id:       req.user.id,
               nickName: req.user.nickName,
-              photo:    req.user.photo,
-              cover:    req.user.cover
+              photo:    req.user.photo_ref,
+              cover:    req.user.cover_ref
             },
             targetId: post._id
           };

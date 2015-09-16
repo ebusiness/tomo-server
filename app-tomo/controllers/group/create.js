@@ -40,8 +40,8 @@ module.exports = function(Group, Activity) {
         //   from: {
         //     id:       req.user.id,
         //     nickName: req.user.nickName,
-        //     photo:    req.user.photo,
-        //     cover:    req.user.cover
+        //     photo:    req.user.photo_ref,
+        //     cover:    req.user.cover_ref
         //   },
         //   targetId: relateInfo.invitation._id
         // }

@@ -113,8 +113,8 @@ module.exports = function(User, Activity, Invitation, Notification) {
           from: {
             id:       req.user.id,
             nickName: req.user.nickName,
-            photo:    req.user.photo,
-            cover:    req.user.cover
+            photo:    req.user.photo_ref,
+            cover:    req.user.cover_ref
           }
         };
 
@@ -183,8 +183,8 @@ module.exports = function(User, Activity, Invitation, Notification) {
           from: {
             id:       req.user.id,
             nickName: req.user.nickName,
-            photo:    req.user.photo,
-            cover:    req.user.cover
+            photo:    req.user.photo_ref,
+            cover:    req.user.cover_ref
           }
         };
 

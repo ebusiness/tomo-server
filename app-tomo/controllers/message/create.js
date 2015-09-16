@@ -20,8 +20,8 @@ module.exports = function(User, Message, Activity, sio) {
           from: {
             id:       req.user.id,
             nickName: req.user.nickName,
-            photo:    req.user.photo,
-            cover:    req.user.cover
+            photo:    req.user.photo_ref,
+            cover:    req.user.cover_ref
           },
           createDate: message.createDate
         }
