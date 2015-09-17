@@ -18,6 +18,7 @@ module.exports = function(Group, Activity) {
 
           group: function(callback) {
             req.body.owner = req.user.id;
+            req.body.members = [req.user.id];
             Group.create(req.body, callback);
           },
 

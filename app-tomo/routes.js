@@ -32,86 +32,87 @@ module.exports = function(app, config, sio) {
   app.get('/activate/:id', controller.tempaccount.activate(TempAccount, User, Mailer));
 
   // User Sign-up WeChat
-  app.post('/signup-wechat', controller.me.signupWeChat(User, Activity)); // /mobile/user/regist
+  app.post('/signup-wechat', controller.me.signupWeChat(User, Activity));
   // User Sign-in WeChat
-  app.post('/signin-wechat', controller.me.signinWeChat(User, Invitation, Message, Notification));  // /mobile/user/openid
+  app.post('/signin-wechat', controller.me.signinWeChat(User, Invitation, Message, Notification));
 
   // User Sign-out
   app.get('/signout', checkLoginStatus, controller.me.signout(User));
 
   // User Decive Register
-  app.post('/device', checkLoginStatus, controller.me.device(User));  // /mobile/user/device
+  app.post('/device', checkLoginStatus, controller.me.device(User));
 
   // User Profile
   // app.get('/me', checkLoginStatus, controller.me.show(User));
   // User Profile Update
-  app.patch('/me', checkLoginStatus, controller.me.update(User));  // /users/:id
+  app.patch('/me', checkLoginStatus, controller.me.update(User));
 
   //////////////////////////////////////////////////
   /// Post Relate
   //////////////////////////////////////////////////
 
   // Post List
-  app.get('/posts', checkLoginStatus, controller.post.index(Post));  // /newsfeed /mapnews /posts /bookmark
+  app.get('/posts', checkLoginStatus, controller.post.index(Post));
   // Post Create
-  app.post('/posts', checkLoginStatus, controller.post.create(Post, Activity, Notification));  // /mobile/posts
+  app.post('/posts', checkLoginStatus, controller.post.create(Post, Activity, Notification));
   // Post Entity
-  app.get('/posts/:post', checkLoginStatus, controller.post.show(Post));  // /posts/\(id)
+  app.get('/posts/:post', checkLoginStatus, controller.post.show(Post));
   // Post of User
-  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User));  // /users/:id/posts  ??
+  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User));
   // Comment Post
-  app.post('/posts/:post/comments', checkLoginStatus, controller.post.update(Post, Activity, Notification));  // /posts/\(self.post.id)/comments
+  app.post('/posts/:post/comments', checkLoginStatus, controller.post.update(Post, Activity, Notification));
   // Like Post
-  app.patch('/posts/:post/like', checkLoginStatus, controller.post.like(Post, Activity, Notification));  // /posts/\(self.post.id)/like
+  app.patch('/posts/:post/like', checkLoginStatus, controller.post.like(Post, Activity, Notification));
   // Bookmark Post
-  app.patch('/posts/:post/bookmark', checkLoginStatus, controller.post.bookmark(User, Post, Activity, Notification));  // /posts/\(self.post.id)/bookmark
+  app.patch('/posts/:post/bookmark', checkLoginStatus, controller.post.bookmark(User, Post, Activity, Notification));
   // Post Delete
-  app.delete('/posts/:post', checkLoginStatus, controller.post.remove(Post));  // /posts/\(self.post.id)
+  app.delete('/posts/:post', checkLoginStatus, controller.post.remove(Post));
 
   //////////////////////////////////////////////////
   /// Group Relate
   //////////////////////////////////////////////////
+
   // Group List
   app.get('/groups', checkLoginStatus, controller.group.index(Group));
   // Group Create
   app.post('/groups', checkLoginStatus, controller.group.create(Group, Activity));
+  // Join Group
+  app.patch('/groups/:group/join', checkLoginStatus, controller.group.join(Group, Activity));
 
   //////////////////////////////////////////////////
   /// Message Relate
   //////////////////////////////////////////////////
 
   // Chat Message with some one
-  app.get('/messages/:user', checkLoginStatus, controller.message.index(Message));  // /chat/:userId
+  app.get('/messages/:user', checkLoginStatus, controller.message.index(Message));
   // Chat Message Create
-  app.post('/messages', checkLoginStatus, controller.message.create(User, Message, Activity, sio));  // /messages
+  app.post('/messages', checkLoginStatus, controller.message.create(User, Message, Activity, sio));
 
   //////////////////////////////////////////////////
   /// Notification Relate
   //////////////////////////////////////////////////
 
   // Notification List
-  app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));  // /mobile/notifications  /notifications/unconfirmed
-  //
-  // app.put('/notifications', checkLoginStatus, controller.notification.update());  // /mobile/notifications/open (patch)
+  app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
 
   //////////////////////////////////////////////////
   /// Connection Relate
   //////////////////////////////////////////////////
 
   // Invitation List
-  app.get('/invitations', checkLoginStatus, controller.invitation.index(User));  // /mobile/user/invited  ??
+  app.get('/invitations', checkLoginStatus, controller.invitation.index(User));
   // Invitation Create
-  app.post('/invitations', checkLoginStatus, controller.invitation.create(Activity, Invitation));  // /connections/invite  ??
+  app.post('/invitations', checkLoginStatus, controller.invitation.create(Activity, Invitation));
   // Invitation Update
-  app.patch('/invitations/:invitation', checkLoginStatus, controller.invitation.update(User, Activity, Invitation, Notification));  // /notifications/\(invitation.id)  /notifications/\(id)
+  app.patch('/invitations/:invitation', checkLoginStatus, controller.invitation.update(User, Activity, Invitation, Notification));
   // Friends List
-  app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));  // /connections/friends  ??
+  app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));
   // Friend Break
-  app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Activity, Notification));  // /connections/break  ??
+  app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Activity, Notification));
   // User Search
-  app.get('/users', checkLoginStatus, controller.connection.discover(User));  // /mobile/stations/users
+  app.get('/users', checkLoginStatus, controller.connection.discover(User));
   // User Profile
-  app.get('/users/:user', checkLoginStatus, controller.user.show(User));  // /users/\(id)
+  app.get('/users/:user', checkLoginStatus, controller.user.show(User));
 
 };
 
