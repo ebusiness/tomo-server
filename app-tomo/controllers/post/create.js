@@ -1,7 +1,7 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(Post, Activity, Notification) {
+module.exports = function(Post, Group, Activity, Notification) {
 
   return function(req, res, next) {
 
@@ -19,6 +19,16 @@ module.exports = function(Post, Activity, Notification) {
           user: function(callback) {
             req.user.posts.addToSet(post.id);
             req.user.save(callback);
+          },
+
+          group: function(callback) {
+
+            if (post.group)
+              Group.findByIdAndUpdate(post.group, {
+                $addToSet: {posts: post.id}
+              }, callback);
+            else
+              callback(null, null);
           },
 
           activity: function(callback) {
@@ -43,11 +53,11 @@ module.exports = function(Post, Activity, Notification) {
 
         }, function(err, results) {
           if (err) callback(err);
-          else callback(null, post, results.notification);
+          else callback(null, post, results.group, results.notification);
         });
       },
 
-      function sendNotification(post, notification, callback) {
+      function sendNotification(post, group, notification, callback) {
 
         if (notification) {
 

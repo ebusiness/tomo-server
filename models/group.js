@@ -56,10 +56,10 @@ var Group = new Schema({
         ref: 'Post'
     }],
 
-    // station: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Station'
-    // },
+    station: {
+        type: Schema.Types.ObjectId,
+        ref: 'Station'
+    },
 
     logicDelete: {
         type: Boolean,

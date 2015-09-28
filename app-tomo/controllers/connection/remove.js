@@ -1,7 +1,7 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(User, Activity, Notification) {
+module.exports = function(User, Message, Activity, Notification) {
 
   return function(req, res, next) {
 
@@ -22,6 +22,15 @@ module.exports = function(User, Activity, Notification) {
           friend: function(callback) {
             // find that friend, remove current user from his friend list
             User.findByIdAndUpdate(req.params.friend, {'$pull': {friends: req.user.id}}, callback);
+          },
+
+          messages: function(callback) {
+            Message.where('from').equals(req.params.friend)
+              .where('to').equals(req.user.id)
+              .where('opened').equals(false)
+              .where('logicDelete').equals(false)
+              .setOptions({ multi: true })
+              .update({opened: true}, callback);
           },
 
           activity: function(callback) {

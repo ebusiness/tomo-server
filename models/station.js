@@ -1,53 +1,32 @@
-var mongoose = require('mongoose');
-// var validate = require('mongoose-validator').validate;
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
 var Station = new Schema({
+
     name: {
         type: String,
-        trim: true,
-        // validate: validate('len', 0, 20)
+        trim: true
     },
-    kana: {
-        type: String,
-        trim: true,
-    },
-    zipcode: {
+
+    line: {
         type: String,
         trim: true
     },
-    pref: {
+
+    zipCode: {
         type: String,
         trim: true
     },
-    pref_name: {
-        type: String,
-        trim: true
-    },
+
     address: {
         type: String,
         trim: true
     },
-    location:{
+
+    coordinate:{
         type: [Number],
         index: '2d'
-    },
-    weight: {
-        type: Number,
-        min: 0,
-        max: 100
-    },
-    sortIndex: {
-        type: Number
     }
 });
-Station.virtual('lon').get(function () {
-    return this.location[1];
-});
-Station.virtual('lat').get(function () {
-    return this.location[0];
-});
-Station.set('toJSON', { virtuals: true });
-Station.set('toObject', { virtuals: true });
 
 mongoose.model('Station', Station);

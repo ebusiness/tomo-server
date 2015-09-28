@@ -1,7 +1,7 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(Group, Activity) {
+module.exports = function(User, Group, Activity) {
 
   return function(req, res, next) {
 
@@ -16,12 +16,13 @@ module.exports = function(Group, Activity) {
         async.parallel({
 
           user: function (callback) {
-            req.user.groups.addToSet(req.body.id);
-            req.user.save(callback);
+            User.findByIdAndUpdate(req.user.id, {
+              $addToSet: {groups: req.params.group}
+            }, callback);
           },
 
           group: function(callback) {
-            group.members.addToSet(req.body.id);
+            group.members.addToSet(req.user.id);
             group.save(callback);
           },
 

@@ -42,7 +42,7 @@ module.exports = function(Post, Activity, Notification) {
           notification: function(callback) {
 
             // if the comment owner is not the post owner
-            if (post._owner != req.user.id)
+            if (post.owner != req.user.id)
               Notification.create({
                 from: req.user.id,
                 to: post.owner,

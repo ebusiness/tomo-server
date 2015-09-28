@@ -1,28 +1,44 @@
 var async = require('async'),
     moment = require('moment');
 
-module.exports = function(Post, User) {
+module.exports = function(Post, User, Group) {
 
   return function(req, res, next) {
 
     async.waterfall([
 
-      function findUser(callback) {
+      function findRelateObject(callback) {
 
-        if (req.params.user)
-          User.findById(req.params.user, 'posts', callback);
-        else
-          callback(null, null);
+        async.parallel({
+
+          user: function(callback) {
+            if (req.params.user)
+              User.findById(req.params.user, 'posts', callback);
+            else
+              callback(null, null);
+          },
+
+          group: function(callback) {
+            if (req.params.group)
+              Group.findById(req.params.group, 'posts', callback);
+            else
+              callback(null, null);
+          }
+
+        }, callback);
       },
 
-      function findPosts(user, callback) {
+      function findPosts(relateObj, callback) {
 
         // create query
         var query = Post.find();
 
         // post of some one
-        if (user)
-          query.where('_id').in(user.posts);
+        if (relateObj.user)
+          query.where('_id').in(relateObj.user.posts);
+
+        if (relateObj.group)
+          query.where('_id').in(relateObj.group.posts);
 
         // post of mine
         if (req.query.category == "mine")
@@ -50,11 +66,12 @@ module.exports = function(Post, User) {
         if (req.query.after)
           query.where('createDate').gt(moment.unix(req.query.after).toDate());
 
-        query.select('owner content images like bookmark comments coordinate createDate')
+        query.select('owner group content images like bookmark comments coordinate createDate')
           .populate('owner', 'nickName photo cover')
+          .populate('group', 'name')
           .populate('comments.owner', 'nickName photo cover')
           .where('logicDelete').equals(false)
-          .limit(req.query.size || 20)
+          .limit(req.query.size || 10)
           .sort('-createDate')
           .exec(callback);
       }

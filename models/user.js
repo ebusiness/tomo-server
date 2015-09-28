@@ -120,6 +120,11 @@ var User = new Schema({
         ref: 'Group'
     }],
 
+    stations: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Station'
+    }],
+
     logicDelete: {
         type: Boolean,
         default: false

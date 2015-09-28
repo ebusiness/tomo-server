@@ -38,6 +38,7 @@ module.exports = function(User, Invitation, Message, Notification) {
               Message.find()
                 .select('from createDate')
                 .where('to').equals(user.id)
+                .where('from').in(user.friends)
                 .where('opened').ne(user.id)
                 .where('logicDelete').ne(user.id)
                 .exec(callback);

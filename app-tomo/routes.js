@@ -5,6 +5,7 @@ var fs = require('fs'),
   Post = mongoose.model('Post'),
   Group = mongoose.model('Group'),
   Message = mongoose.model('Message'),
+  Station = mongoose.model('Station'),
   Activity = mongoose.model('Activity'),
   Invitation = mongoose.model('Invitation'),
   Notification = mongoose.model('Notification'),
@@ -42,8 +43,6 @@ module.exports = function(app, config, sio) {
   // User Decive Register
   app.post('/device', checkLoginStatus, controller.me.device(User));
 
-  // User Profile
-  // app.get('/me', checkLoginStatus, controller.me.show(User));
   // User Profile Update
   app.patch('/me', checkLoginStatus, controller.me.update(User));
 
@@ -54,11 +53,13 @@ module.exports = function(app, config, sio) {
   // Post List
   app.get('/posts', checkLoginStatus, controller.post.index(Post));
   // Post Create
-  app.post('/posts', checkLoginStatus, controller.post.create(Post, Activity, Notification));
+  app.post('/posts', checkLoginStatus, controller.post.create(Post, Group, Activity, Notification));
   // Post Entity
   app.get('/posts/:post', checkLoginStatus, controller.post.show(Post));
   // Post of User
-  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User));
+  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User, Group));
+  // Post of Group
+  app.get('/groups/:group/posts', checkLoginStatus, controller.post.index(Post, User, Group));
   // Comment Post
   app.post('/posts/:post/comments', checkLoginStatus, controller.post.update(Post, Activity, Notification));
   // Like Post
@@ -69,15 +70,36 @@ module.exports = function(app, config, sio) {
   app.delete('/posts/:post', checkLoginStatus, controller.post.remove(Post));
 
   //////////////////////////////////////////////////
+  /// Connection Relate
+  //////////////////////////////////////////////////
+
+  // Invitation List
+  app.get('/invitations', checkLoginStatus, controller.invitation.index(User));
+  // Invitation Create
+  app.post('/invitations', checkLoginStatus, controller.invitation.create(Activity, Invitation));
+  // Invitation Update
+  app.patch('/invitations/:invitation', checkLoginStatus, controller.invitation.update(User, Activity, Invitation, Notification));
+  // Friends List
+  app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));
+  // Friend Break
+  app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Message, Activity, Notification));
+  // User Search
+  app.get('/users', checkLoginStatus, controller.connection.discover(User));
+  // User Profile
+  app.get('/users/:user', checkLoginStatus, controller.user.show(User));
+
+  //////////////////////////////////////////////////
   /// Group Relate
   //////////////////////////////////////////////////
 
   // Group List
-  app.get('/groups', checkLoginStatus, controller.group.index(Group));
+  app.get('/groups', checkLoginStatus, controller.group.index(Group, Post));
+  // Group Entity
+  app.get('/groups/:group', checkLoginStatus, controller.group.show(Group));
   // Group Create
   app.post('/groups', checkLoginStatus, controller.group.create(Group, Activity));
   // Join Group
-  app.patch('/groups/:group/join', checkLoginStatus, controller.group.join(Group, Activity));
+  app.patch('/groups/:group/join', checkLoginStatus, controller.group.join(User, Group, Activity));
 
   //////////////////////////////////////////////////
   /// Message Relate
@@ -96,23 +118,11 @@ module.exports = function(app, config, sio) {
   app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
 
   //////////////////////////////////////////////////
-  /// Connection Relate
+  /// Station Relate
   //////////////////////////////////////////////////
 
-  // Invitation List
-  app.get('/invitations', checkLoginStatus, controller.invitation.index(User));
-  // Invitation Create
-  app.post('/invitations', checkLoginStatus, controller.invitation.create(Activity, Invitation));
-  // Invitation Update
-  app.patch('/invitations/:invitation', checkLoginStatus, controller.invitation.update(User, Activity, Invitation, Notification));
-  // Friends List
-  app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));
-  // Friend Break
-  app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Activity, Notification));
-  // User Search
-  app.get('/users', checkLoginStatus, controller.connection.discover(User));
-  // User Profile
-  app.get('/users/:user', checkLoginStatus, controller.user.show(User));
+  // Station List
+  app.get('/stations', checkLoginStatus, controller.station.index(Station));
 
 };
 
