@@ -15,7 +15,7 @@ module.exports = function(User, Message, Activity, sio) {
       function sendNotification(message, callback) {
 
         var room = sio.sockets.adapter.rooms[req.body.to];
-        var alertMessage = req.user.nickName + "：" + message.content;
+        var alertMessage = message.content;
 
         var payload = {
           type: 'message-new',
