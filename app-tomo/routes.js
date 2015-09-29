@@ -109,6 +109,8 @@ module.exports = function(app, config, sio) {
   app.get('/messages/:user', checkLoginStatus, controller.message.index(Message));
   // Chat Message Create
   app.post('/messages', checkLoginStatus, controller.message.create(User, Message, Activity, sio));
+  // Chat Message with some one
+  app.get('/messages/group/:group', checkLoginStatus, controller.message.group(Message));
 
   //////////////////////////////////////////////////
   /// Notification Relate

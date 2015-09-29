@@ -16,6 +16,11 @@ var Message = new Schema({
         required: true
     },
 
+    group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
+
     content: {
         type: String,
         trim: true,
