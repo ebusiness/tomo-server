@@ -3,7 +3,8 @@ var async = require('async');
 module.exports = function(Message) {
 
   return function(req, res, next) {
-    if ( !req.user.groups.indexOf(req.params.group) ){
+    var groups = req.user.groups.toObject()
+    if ( !groups.indexOf(req.params.group) ){
       res.status(403).end();
       return;
     }
