@@ -6,8 +6,7 @@ var Message = new Schema({
 
     to: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'User'
     },
 
     from: {
