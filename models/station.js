@@ -26,7 +26,12 @@ var Station = new Schema({
     coordinate:{
         type: [Number],
         index: '2d'
-    }
+    },
+
+    color: {
+        type: String,
+        trim: true
+    },
 });
 
 mongoose.model('Station', Station);
