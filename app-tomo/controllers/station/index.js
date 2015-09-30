@@ -15,8 +15,7 @@ module.exports = function(Station) {
         // stations near some coordinate
         if (req.query.coordinate)
           query.where('coordinate').near({
-            center: req.query.coordinate,
-            // maxDistance: 1/111.12
+            center: req.query.coordinate
           });
 
         // stations in a box

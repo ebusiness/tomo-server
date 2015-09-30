@@ -33,36 +33,45 @@ module.exports = function(Post, User, Group) {
         // create query
         var query = Post.find();
 
-        // post of some one
+        // posts of some one
         if (relateObj.user)
           query.where('_id').in(relateObj.user.posts);
 
+        // posts of some group
         if (relateObj.group)
           query.where('_id').in(relateObj.group.posts);
 
-        // post of mine
+        // posts of mine
         if (req.query.category == "mine")
           query.where('_id').in(req.user.posts);
 
-        // post of my bookmark
+        // posts of my bookmark
         if (req.query.category == "bookmark")
           query.where('_id').in(req.user.bookmarks);
 
-        // post can be displayed on map
-        if (req.query.category == "mapnews")
-          query.where('coordinate').exists(true);
+        // posts near some coordinate
+        if (req.query.coordinate)
+          query.where('coordinate').near({
+            center: req.query.coordinate
+          });
 
-        // post of some day
+        // posts in a box
+        if (req.query.box)
+          query.where('coordinate').within({
+            box: [[req.query.box[0], req.query.box[1]], [req.query.box[2], req.query.box[3]]]
+          });
+
+        // posts of some day
         if (req.query.day) {
           query.where('createDate').gte(moment.unix(req.query.day));
           query.where('createDate').lte(moment.unix(req.query.day).add(1, 'days'));
         }
 
-        // post before some time point
+        // posts before some time point
         if (req.query.before)
           query.where('createDate').lt(moment.unix(req.query.before).toDate());
 
-        // post after some time point
+        // posts after some time point
         if (req.query.after)
           query.where('createDate').gt(moment.unix(req.query.after).toDate());
 
