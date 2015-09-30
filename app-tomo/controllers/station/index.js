@@ -31,8 +31,13 @@ module.exports = function(Station) {
         if (req.query.page)
           query.skip(20 * req.query.page)
 
+        // stations of mine
+        if (req.query.category == "mine")
+          query.where('_id').in(req.user.stations);
+        else
+          query.where('_id').nin(req.user.stations);
+
         query.select('name line coordinate color')
-          .where('_id').nin(req.user.stations)
           .limit(req.query.size || 20)
           .exec(callback);
       }
