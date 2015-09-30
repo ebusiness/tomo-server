@@ -6,18 +6,14 @@ var Message = new Schema({
 
     to: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
 
     from: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
-
-    group: {
-        type: Schema.Types.ObjectId,
-        ref: 'Group'
     },
 
     content: {

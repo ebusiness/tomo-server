@@ -1,6 +1,7 @@
-var async = require('async');
+var async = require('async'),
+    moment = require('moment');
 
-module.exports = function(Message) {
+module.exports = function(GroupMessage) {
 
   return function(req, res, next) {
     var groups = req.user.groups.toObject()
@@ -12,17 +13,17 @@ module.exports = function(Message) {
     async.parallel({
 
       openMessages: function(callback) {
-        Message.where('group').equals(req.params.group)
-          .where('opened').equals(false)
+        GroupMessage.where('group').equals(req.params.group)
+          .where('opened').equals(req.user.id)
           .where('logicDelete').equals(false)
           .setOptions({ multi: true })
-          .update({opened: true}, callback);
+          .update({ $addToSet: {opened: req.user.id} }, callback);
       },
 
       messages: function(callback) {
 
         // create query
-        var query = Message.find();
+        var query = GroupMessage.find();
 
         // if request items before some time point
         if (req.query.before)
