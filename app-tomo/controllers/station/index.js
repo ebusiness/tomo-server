@@ -12,6 +12,12 @@ module.exports = function(Station) {
         // create query
         var query = Station.find();
 
+        // stations of mine
+        if (req.query.category == "mine")
+          query.where('_id').in(req.user.stations);
+        else
+          query.where('_id').nin(req.user.stations);
+
         // stations near some coordinate
         if (req.query.coordinate)
           query.where('coordinate').near({
