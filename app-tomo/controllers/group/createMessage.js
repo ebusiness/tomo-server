@@ -22,34 +22,35 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
 
       function sendNotification(message, callback) {
 
-        var alertMessage = req.user.nickName + " : " + message.content ;
-
-        var reg_content = /^(\[(voice|photo|video)\]).*$/i;
-        if (reg_content.test(message.content)){
-            var msgtype = message.content.replace(reg_content,"$1");
-            if (msgtype == "[voice]") {
-              alertMessage = req.user.nickName + "发到群组里一段语音";
-            } else if(msgtype == "[photo]") {
-              alertMessage = req.user.nickName + "发到群组里一张图片";
-            } else if(msgtype == "[video]") {
-              alertMessage = req.user.nickName + "发到群组里一段视频";
-            }
-        }
-
-        var payload = {
-          type: 'message-group',
-          from: {
-            id:       req.user.id,
-            nickName: req.user.nickName,
-            photo:    req.user.photo_ref,
-            cover:    req.user.cover_ref
-          },
-          createDate: message.createDate,
-          targetId: req.params.group
-        }
-
         var pushMembers = [];
         Group.findById(req.params.group, function(err, group) {
+
+          var alertMessage = req.user.nickName + " : " + message.content ;
+
+          var reg_content = /^(\[(voice|photo|video)\]).*$/i;
+          if (reg_content.test(message.content)){
+              var msgtype = message.content.replace(reg_content,"$1");
+              if (msgtype == "[voice]") {
+                alertMessage = req.user.nickName + "发到群组[" + group.name + "]里一段语音";
+              } else if(msgtype == "[photo]") {
+                alertMessage = req.user.nickName + "发到群组" + group.name + "里一张图片";
+              } else if(msgtype == "[video]") {
+                alertMessage = req.user.nickName + "发到群组" + group.name + "里一段视频";
+              }
+          }
+
+          var payload = {
+            type: 'message-group',
+            from: {
+              id:       req.user.id,
+              nickName: req.user.nickName,
+              photo:    req.user.photo_ref,
+              cover:    req.user.cover_ref
+            },
+            createDate: message.createDate,
+            targetId: req.params.group
+          }
+
           group.members.forEach(function(uid){
             if (uid == req.user.id) { return; }
 
