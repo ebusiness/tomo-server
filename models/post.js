@@ -50,6 +50,11 @@ var Post = new Schema({
 
     comments: [Comment],
 
+    location: {
+      type: String,
+      trim: true
+    },
+
     coordinate:{
         type: [Number],
         index: '2d'

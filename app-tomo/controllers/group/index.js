@@ -20,6 +20,15 @@ module.exports = function(Group, Post) {
         if (req.query.category == "mine")
           query.where('_id').in(req.user.groups);
 
+        // groups can display on map
+        if (req.query.category == "map")
+          query.where('_id').in(req.user.groups)
+            .where('coordinate').exists(true);
+
+        // groups name match some string
+        if (req.query.name)
+          query.where('name').regex('^.*'+req.query.name+'.*$')
+
         // groups near some coordinate
         if (req.query.coordinate)
           query.where('coordinate').near({

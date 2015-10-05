@@ -49,6 +49,10 @@ module.exports = function(Post, User, Group) {
         if (req.query.category == "bookmark")
           query.where('_id').in(req.user.bookmarks);
 
+        // groups can display on map
+        if (req.query.category == "map")
+          query.where('coordinate').exists(true);
+
         // posts near some coordinate
         if (req.query.coordinate)
           query.where('coordinate').near({
@@ -75,7 +79,7 @@ module.exports = function(Post, User, Group) {
         if (req.query.after)
           query.where('createDate').gt(moment.unix(req.query.after).toDate());
 
-        query.select('owner group content images like bookmark comments coordinate createDate')
+        query.select('owner group content images like bookmark comments location coordinate createDate')
           .populate('owner', 'nickName photo cover')
           .populate('group', 'name')
           .populate('comments.owner', 'nickName photo cover')
