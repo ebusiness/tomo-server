@@ -141,7 +141,7 @@ User.virtual('photo_ref').get(function () {
     if (this.photo && validate.isURL(this.photo))
         return this.photo;
     if (this.photo)
-        return _s.join('/', config.s3.host, config.s3.bucket, 'users', this._id, 'photo.png');
+        return _s.join('/', config.s3.host, config.s3.bucket, 'users', this._id, 'photo.png?', this.photo);
     else
         return _s.join('/', config.s3.host, config.s3.bucket, 'asset/no_photo_male.jpg');
 });
@@ -151,7 +151,7 @@ User.virtual('cover_ref').get(function () {
     if (this.cover && validate.isURL(this.cover))
         return this.cover;
     if (this.cover)
-        return _s.join('/', config.s3.host, config.s3.bucket, 'users', this._id, 'cover.png');
+        return _s.join('/', config.s3.host, config.s3.bucket, 'users', this._id, 'cover.png?', this.cover);
     else
         return _s.join('/', config.s3.host, config.s3.bucket, 'asset/default_cover.jpg');
 });
