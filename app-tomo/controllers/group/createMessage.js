@@ -22,7 +22,19 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
 
       function sendNotification(message, callback) {
 
-        var alertMessage = message.content;
+        var alertMessage = req.user.nickName + " : " + message.content ;
+
+        var reg_content = /^(\[(voice|photo|video)\]).*$/i;
+        if (reg_content.test(message.content)){
+            var msgtype = message.content.replace(reg_content,"$1");
+            if (msgtype == "[voice]") {
+              alertMessage = req.user.nickName + "发到群组里一段语音";
+            } else if(msgtype == "[photo]") {
+              alertMessage = req.user.nickName + "发到群组里一张图片";
+            } else if(msgtype == "[video]") {
+              alertMessage = req.user.nickName + "发到群组里一段视频";
+            }
+        }
 
         var payload = {
           type: 'message-group',
@@ -43,7 +55,7 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
 
             var room = sio.sockets.adapter.rooms[uid];
             if (room) {
-              payload.aps = {alert: alertMessage};
+              payload.aps = {alert: message.content};
               sio.to(uid).emit(payload.type, payload);
               // console.log("socket:"+uid);
             } else {

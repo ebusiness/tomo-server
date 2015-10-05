@@ -15,7 +15,20 @@ module.exports = function(User, Message, Activity, sio) {
       function sendNotification(message, callback) {
 
         var room = sio.sockets.adapter.rooms[req.body.to];
-        var alertMessage = message.content;
+
+        var alertMessage = req.user.nickName + " : " + message.content ;
+
+        var reg_content = /^(\[(voice|photo|video)\]).*$/i;
+        if (reg_content.test(message.content)){
+            var msgtype = message.content.replace(reg_content,"$1");
+            if (msgtype == "[voice]") {
+              alertMessage = req.user.nickName + "发给您一段语音";
+            } else if(msgtype == "[photo]") {
+              alertMessage = req.user.nickName + "发给您一张图片";
+            } else if(msgtype == "[video]") {
+              alertMessage = req.user.nickName + "发给您一段视频";
+            }
+        }
 
         var payload = {
           type: 'message-new',
@@ -29,7 +42,7 @@ module.exports = function(User, Message, Activity, sio) {
         }
 
         if (room) {
-          payload.aps = {alert: alertMessage};
+          payload.aps = {alert: message.content};
           sio.to(req.body.to).emit(payload.type, payload);
         } else {
           Push(req.user.id, req.body.to, payload, alertMessage, function(err, apnNotification){
