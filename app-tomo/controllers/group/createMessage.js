@@ -33,9 +33,9 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
               if (msgtype == "[voice]") {
                 alertMessage = req.user.nickName + "发到群组[" + group.name + "]里一段语音";
               } else if(msgtype == "[photo]") {
-                alertMessage = req.user.nickName + "发到群组" + group.name + "里一张图片";
+                alertMessage = req.user.nickName + "发到群组[" + group.name + "]里一张图片";
               } else if(msgtype == "[video]") {
-                alertMessage = req.user.nickName + "发到群组" + group.name + "里一段视频";
+                alertMessage = req.user.nickName + "发到群组[" + group.name + "]里一段视频";
               }
           }
 
