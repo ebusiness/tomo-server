@@ -43,14 +43,14 @@ module.exports = function(Group, Post) {
             box: [[req.query.box[0], req.query.box[1]], [req.query.box[2], req.query.box[3]]]
           });
 
-        if (req.query.page)
-          query.skip(20 * req.query.page)
+        // if (req.query.page)
+        //   query.skip(20 * req.query.page)
 
         query.select('owner type name cover introduction coordinate address station members posts')
           .populate('owner', 'nickName photo cover')
           .populate('station', 'name line coordinate')
           .where('logicDelete').equals(false)
-          .limit(req.query.size || 20)
+          // .limit(req.query.size || 20)
           .exec(callback);
       },
 
