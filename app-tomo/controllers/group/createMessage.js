@@ -56,7 +56,8 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
 
             var room = sio.sockets.adapter.rooms[uid];
             if (room) {
-              payload.aps = {alert: message.content};
+              payload.aps = {alert: alertMessage};
+              payload.content = {alert: message.content};
               sio.to(uid).emit(payload.type, payload);
               // console.log("socket:"+uid);
             } else {
