@@ -19,6 +19,9 @@ module.exports = function(Group, Post) {
         // groups of mine
         if (req.query.category == "mine")
           query.where('_id').in(req.user.groups);
+        else
+          query.skip(20 * req.query.page)
+            .limit(req.query.size || 20)
 
         // groups name match some string
         if (req.query.name)
