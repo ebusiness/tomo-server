@@ -24,38 +24,11 @@ module.exports = function(Group, Post) {
         if (req.query.name)
           query.where('name').regex('^.*'+req.query.name+'.*$')
 
-<<<<<<< Updated upstream
-        // groups near some coordinate
-        if (req.query.coordinate)
-          query.where('coordinate').near({
-            center: req.query.coordinate
-          });
-        else
-          query.sort('-createDate')
-
-        // groups in a box
-        if (req.query.box)
-          query.where('coordinate').within({
-            box: [[req.query.box[0], req.query.box[1]], [req.query.box[2], req.query.box[3]]]
-          });
-
-        // if (req.query.page)
-        //   query.skip(20 * req.query.page)
-=======
-        if (req.query.page)
-          query.skip(20 * req.query.page)
->>>>>>> Stashed changes
-
         query.select('owner type name cover introduction coordinate address station members posts')
           .populate('owner', 'nickName photo cover')
           .populate('station', 'name line coordinate')
           .where('logicDelete').equals(false)
-<<<<<<< Updated upstream
-          // .limit(req.query.size || 20)
-=======
-          .limit(req.query.size || 20)
           .sort('-createDate')
->>>>>>> Stashed changes
           .exec(callback);
       },
 
