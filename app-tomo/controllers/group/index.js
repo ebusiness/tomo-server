@@ -20,15 +20,11 @@ module.exports = function(Group, Post) {
         if (req.query.category == "mine")
           query.where('_id').in(req.user.groups);
 
-        // groups can display on map
-        if (req.query.category == "map")
-          query.where('_id').in(req.user.groups)
-            .where('coordinate').exists(true);
-
         // groups name match some string
         if (req.query.name)
           query.where('name').regex('^.*'+req.query.name+'.*$')
 
+<<<<<<< Updated upstream
         // groups near some coordinate
         if (req.query.coordinate)
           query.where('coordinate').near({
@@ -45,12 +41,21 @@ module.exports = function(Group, Post) {
 
         // if (req.query.page)
         //   query.skip(20 * req.query.page)
+=======
+        if (req.query.page)
+          query.skip(20 * req.query.page)
+>>>>>>> Stashed changes
 
         query.select('owner type name cover introduction coordinate address station members posts')
           .populate('owner', 'nickName photo cover')
           .populate('station', 'name line coordinate')
           .where('logicDelete').equals(false)
+<<<<<<< Updated upstream
           // .limit(req.query.size || 20)
+=======
+          .limit(req.query.size || 20)
+          .sort('-createDate')
+>>>>>>> Stashed changes
           .exec(callback);
       },
 

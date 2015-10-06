@@ -49,28 +49,6 @@ module.exports = function(Post, User, Group) {
         if (req.query.category == "bookmark")
           query.where('_id').in(req.user.bookmarks);
 
-        // groups can display on map
-        if (req.query.category == "map")
-          query.where('coordinate').exists(true);
-
-        // posts near some coordinate
-        if (req.query.coordinate)
-          query.where('coordinate').near({
-            center: req.query.coordinate
-          });
-
-        // posts in a box
-        if (req.query.box)
-          query.where('coordinate').within({
-            box: [[req.query.box[0], req.query.box[1]], [req.query.box[2], req.query.box[3]]]
-          });
-
-        // posts of some day
-        if (req.query.day) {
-          query.where('createDate').gte(moment.unix(req.query.day));
-          query.where('createDate').lte(moment.unix(req.query.day).add(1, 'days'));
-        }
-
         // posts before some time point
         if (req.query.before)
           query.where('createDate').lt(moment.unix(req.query.before).toDate());

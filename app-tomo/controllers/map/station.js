@@ -20,12 +20,17 @@ module.exports = function(Station) {
         if (req.query.category == "mine")
           query.where('_id').in(req.user.stations);
 
-        // station name match some string
-        if (req.query.name)
-          query.where('name').regex('^.*'+req.query.name+'.*$')
+        // stations near some coordinate
+        if (req.query.coordinate)
+          query.where('coordinate').near({
+            center: req.query.coordinate
+          });
 
-        if (req.query.page)
-          query.skip(20 * req.query.page)
+        // stations in a box
+        if (req.query.box)
+          query.where('coordinate').within({
+            box: [[req.query.box[0], req.query.box[1]], [req.query.box[2], req.query.box[3]]]
+          });
 
         query.select('name line coordinate color')
           .limit(req.query.size || 20)

@@ -130,6 +130,17 @@ module.exports = function(app, config, sio) {
   // Station List
   app.get('/stations', checkLoginStatus, controller.station.index(Station));
 
+  //////////////////////////////////////////////////
+  /// Map Relate
+  //////////////////////////////////////////////////
+
+  // Post Map List
+  app.get('/map/posts', checkLoginStatus, controller.map.post(Post, Group));
+  // Group Map List
+  app.get('/map/groups', checkLoginStatus, controller.map.group(Group, Post));
+  // Station Map List
+  app.get('/map/stations', checkLoginStatus, controller.map.station(Station, Post));
+
 };
 
 checkLoginStatus = function(req, res, next) {
