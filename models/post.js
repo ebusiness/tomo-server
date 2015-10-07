@@ -1,6 +1,7 @@
 var _ = require('underscore'),
     _s = require('underscore.string'),
     mongoose = require('mongoose'),
+    validate = require('mongoose-validator').validatorjs,
     Schema = mongoose.Schema;
 
 var Comment = require('./comment');
@@ -80,7 +81,10 @@ Post.virtual('images_ref').get(function () {
 
     if (this.images && this.images.length)
         return _.map(this.images, function(path) {
-            return _s.join('/', config.s3.host, config.s3.bucket, 'users', userId, 'post', path);
+            if (validate.isURL(path))
+                return path;
+            else
+                return _s.join('/', config.s3.host, config.s3.bucket, 'users', userId, 'post', path);
         });
     else
         return [];
