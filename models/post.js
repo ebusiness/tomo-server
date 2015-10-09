@@ -52,13 +52,18 @@ var Post = new Schema({
     comments: [Comment],
 
     location: {
-      type: String,
-      trim: true
+        type: String,
+        trim: true
     },
 
-    coordinate:{
+    coordinate: {
         type: [Number],
         index: '2d'
+    },
+
+    provider: {
+        type: String,
+        trim: true
     },
 
     logicDelete: {

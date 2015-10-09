@@ -129,6 +129,8 @@ module.exports = function(app, config, sio) {
 
   // Station List
   app.get('/stations', checkLoginStatus, controller.station.index(Station));
+  // Join Station
+  app.post('/stations/:station', checkLoginStatus, controller.station.join(User, Group, Station, Activity));
 
   //////////////////////////////////////////////////
   /// Map Relate

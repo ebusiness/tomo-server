@@ -32,6 +32,13 @@ module.exports = function(Station) {
             box: [[req.query.box[0], req.query.box[1]], [req.query.box[2], req.query.box[3]]]
           });
 
+        // station name match some string
+        if (req.query.name)
+          query.where('name').regex('^.*'+req.query.name+'.*$')
+
+        if (req.query.page)
+          query.skip(20 * req.query.page);
+
         query.select('name line coordinate color')
           .limit(req.query.size || 20)
           .exec(callback);
