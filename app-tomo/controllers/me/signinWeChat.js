@@ -28,7 +28,7 @@ module.exports = function(User, Invitation, Message, Notification) {
         function(callback) {
           User.findOne({
             openIdWeChat: req.body.openid
-          }, 'firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations groups stations', callback);
+          }, 'firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations groups stations pushSetting', callback);
         },
 
         function(user, callback) {

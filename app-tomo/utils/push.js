@@ -18,13 +18,8 @@ module.exports = function(sender, receiver, payload, alertMessage, callback) {
     callback(null);
     return;
   }
-
-  User.find()
-    .select('device')
+  getUserQuery(sender, payload.type)
     .where('_id').in(receiver)
-    .where('_id').ne(sender)
-    .where('device.token').exists(true)
-    .where('logicDelete').equals(false)
     .exec(function(err, recipients) {
       if (err) callback(err);
       else send(recipients, payload, alertMessage, callback);
@@ -33,15 +28,70 @@ module.exports = function(sender, receiver, payload, alertMessage, callback) {
 
 module.exports.all = function(sender, payload, alertMessage, callback){
 
-  User.find()
-    .select('device')
-    .where('_id').ne(sender)
-    .where('device.token').exists(true)
-    .where('logicDelete').equals(false)
+  getUserQuery(sender, payload.type)
     .exec(function(err, recipients) {
       if (err) callback(err);
       else send(recipients, payload, alertMessage, callback);
     });
+}
+
+function getUserQuery(sender, type){
+  var query = User.find()
+    .select('device')
+    .where('_id').ne(sender)
+    .where('device.token').exists(true)
+    .where('logicDelete').equals(false);
+
+  if (type == "new-announcement") {
+
+    query.where('pushSetting.announcement').equals(true);
+
+  } else if(type == "message-new") {
+
+    query.where('pushSetting.message').equals(true);
+
+  } else if(type == "message-group") {
+
+    query.where('pushSetting.groupMessage').equals(true);
+
+  } else if(type == "friend-accepted") {
+
+    query.where('pushSetting.friendAccepted').equals(true);
+
+  } else if(type == "friend-refused") {
+
+    query.where('pushSetting.friendRefused').equals(true);
+
+  } else if(type == "friend-invited") {
+
+    query.where('pushSetting.friendInvited').equals(true);
+
+  } else if(type == "friend-break") {
+
+    query.where('pushSetting.friendBreak').equals(true);
+
+  } else if(type == "post-new") {
+
+    query.where('pushSetting.postNew').equals(true);
+
+  } else if(type == "post-liked") {
+
+    query.where('pushSetting.postLiked').equals(true);
+
+  } else if(type == "post-commented") {
+
+    query.where('pushSetting.postCommented').equals(true);
+
+  } else if(type == "post-bookmarked") {
+
+    query.where('pushSetting.postBookmarked').equals(true);
+
+  } else if(type == "group-joined") {
+
+    query.where('pushSetting.groupJoined').equals(true);
+
+  }
+  return query;
 }
 
 function send(receivers, payload, alertMessage, callback){
