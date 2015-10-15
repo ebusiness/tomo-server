@@ -62,7 +62,6 @@ module.exports = function(User, Group, Station, Activity) {
       }
 
     ], function(err, relateInfo) {
-      console.log(relateInfo);
       if (err) next(err);
       else res.json(req.user);
     });
