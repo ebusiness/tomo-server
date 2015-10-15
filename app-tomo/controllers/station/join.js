@@ -31,16 +31,19 @@ module.exports = function(User, Group, Station, Activity) {
             station: station.id,
             coordinate: station.coordinate
           }, callback);
-        } else callback(null, group);
+        } else callback(null, station, group);
       },
 
-      function updateRelateInfo(group, callback) {
+      function updateRelateInfo(station, group, callback) {
 
         async.parallel({
 
           user: function (callback) {
             User.findByIdAndUpdate(req.user.id, {
-              $addToSet: {groups: group.id}
+              $addToSet: {
+                groups: group.id,
+                stations: station.id
+              }
             }, callback);
           },
 
