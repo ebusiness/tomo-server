@@ -47,7 +47,7 @@ module.exports = function(app, config, sio) {
   // User Profile Update
   app.patch('/me', checkLoginStatus, controller.me.update(User));
   // Leave Stations
-  app.delete('/me/leave/stations', checkLoginStatus, controller.me.removeStations(User, Group, Station, Activity));
+  app.delete('/me/stations', checkLoginStatus, controller.me.removeStations(User, Group, Station, Activity));
 
   //////////////////////////////////////////////////
   /// Post Relate
