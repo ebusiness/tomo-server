@@ -38,12 +38,12 @@ module.exports = function(User, Message, Activity, sio) {
             photo:    req.user.photo_ref,
             cover:    req.user.cover_ref
           },
+          content: message.content,
           createDate: message.createDate
         }
 
         if (room) {
           payload.aps = {alert: alertMessage};
-          payload.content = {alert: message.content};
           sio.to(req.body.to).emit(payload.type, payload);
         } else {
           Push(req.user.id, req.body.to, payload, alertMessage, function(err, apnNotification){

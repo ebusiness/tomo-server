@@ -47,6 +47,7 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
               photo:    req.user.photo_ref,
               cover:    req.user.cover_ref
             },
+            content: message.content,
             createDate: message.createDate,
             targetId: req.params.group
           }
@@ -57,7 +58,6 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
             var room = sio.sockets.adapter.rooms[uid];
             if (room) {
               payload.aps = {alert: alertMessage};
-              payload.content = {alert: message.content};
               sio.to(uid).emit(payload.type, payload);
               // console.log("socket:"+uid);
             } else {
