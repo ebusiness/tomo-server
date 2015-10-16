@@ -103,6 +103,8 @@ module.exports = function(app, config, sio) {
   app.post('/groups', checkLoginStatus, controller.group.create(Group, Activity));
   // Join Group
   app.patch('/groups/:group/join', checkLoginStatus, controller.group.join(User, Group, Activity));
+  // Leave Group
+  app.patch('/groups/:group/leave', checkLoginStatus, controller.group.leave(User, Group, Activity));
 
   //////////////////////////////////////////////////
   /// Message Relate
