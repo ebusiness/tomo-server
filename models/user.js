@@ -78,6 +78,10 @@ var User = new Schema({
         groupJoined: {
             type: Boolean,
             default: true
+        },
+        groupLeft: {
+            type: Boolean,
+            default: true
         }
     },
 
