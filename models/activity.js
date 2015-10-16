@@ -30,6 +30,11 @@ var Activity = new Schema({
         ref: 'Comment'
     },
 
+    relateGroup: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
+
     relateReplyTo: {
         type: Schema.Types.ObjectId,
         ref: 'Comment'

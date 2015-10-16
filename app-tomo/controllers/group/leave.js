@@ -30,7 +30,7 @@ module.exports = function(User, Group, Activity) {
             Activity.create({
               owner: req.user.id,
               type: 'group-left',
-              targetGroup: group.id
+              relateGroup: group.id
             }, callback);
           }
 
