@@ -1,7 +1,7 @@
 var path = require('path'),
   socket = require('socket.io'),
   // http = require('http').Server,
-  https = require('https').Server,
+  // https = require('https').Server,
   express = require('express'),
   session = require('express-session'),
   bodyParser = require('body-parser'),
@@ -11,11 +11,11 @@ var path = require('path'),
   RedisStore = require('connect-redis')(session),
   errorhandler = require('errorhandler');
 
-module.exports = function(config) {
+module.exports = function(config, server) {
 
   var app = express();
   // var server = http(app);
-  var server = https(config.ssl, app);
+  // var server = https(config.ssl, app);
   var sio = socket(server);
 
   // View directory

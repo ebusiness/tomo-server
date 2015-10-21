@@ -4,6 +4,7 @@ var env = process.env.NODE_ENV || 'development',
   config = require('../config/global')[env],
   fs = require('fs'),
   vhost = require('vhost'),
+  https = require('https').Server,
   express = require('express'),
   mongoose = require('mongoose');
 
@@ -25,12 +26,16 @@ function start() {
   });
 
   // Start Express
-  var server = express()
-    .use(vhost(config.app.userHost, require('../app-tomo/express')(config)))
-    .use(vhost(config.app.adminHost, require('../app-admin/express')(config)))
-    .listen(config.app.port || 8083, function() {
-      console.log('Express server listening on port ' + server.address().port);
-    });
+  var app = express();
+
+  var server = https(config.ssl, app);
+
+  app.use(vhost(config.app.userHost, require('../app-tomo/express')(config, server)))
+    .use(vhost(config.app.adminHost, require('../app-admin/express')(config)));
+
+  server.listen(config.app.port || 8083, function() {
+    console.log('Express server listening on port ' + server.address().port);
+  });
 
   // var userApp = require('../app-tomo/express')(config);
   // userApp.listen(config.app.port || 8083, function() {
