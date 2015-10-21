@@ -8,7 +8,7 @@ module.exports = function(app, config) {
 
   // prepare controller
   var controller = prepareController(config.root + '/app-admin/controllers');
-  var cmnController = prepareController(config.root + '/controllers');
+  // var cmnController = prepareController(config.root + '/controllers');
 
   //////////////////////////////////////////////////
   /// Static route

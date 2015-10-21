@@ -25,17 +25,17 @@ function start() {
   });
 
   // Start Express
-  // var server = express()
-  //   .use(vhost(config.app.userHost, require('../app-tomo/express')(config)))
-  //   .use(vhost(config.app.adminHost, require('../app-admin/express')(config)))
-  //   .listen(config.app.port || 8083, function() {
-  //     console.log('Express server listening on port ' + server.address().port);
-  //   });
+  var server = express()
+    .use(vhost(config.app.userHost, require('../app-tomo/express')(config)))
+    .use(vhost(config.app.adminHost, require('../app-admin/express')(config)))
+    .listen(config.app.port || 8083, function() {
+      console.log('Express server listening on port ' + server.address().port);
+    });
 
-  var userApp = require('../app-tomo/express')(config);
-  userApp.listen(config.app.port || 8083, function() {
-    console.log('Express server for tomo-app started on port ' + userApp.address().port);
-  });
+  // var userApp = require('../app-tomo/express')(config);
+  // userApp.listen(config.app.port || 8083, function() {
+  //   console.log('Express server for tomo-app started on port ' + userApp.address().port);
+  // });
 
   // var adminApp = require('../app-admin/express')(config);
   // adminApp.listen(config.app.port || 8083, function() {

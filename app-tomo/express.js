@@ -107,5 +107,5 @@ module.exports = function(config) {
     res.status(err.status || 500).end();
   });
 
-  return server;
+  return app;
 };

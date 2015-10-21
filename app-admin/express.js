@@ -7,7 +7,7 @@ var path = require('path'),
   compression = require('compression'),
   cookieParser = require('cookie-parser'),
   methodOverride = require('method-override'),
-  sassMiddleware = require('node-sass-middleware'),
+  // sassMiddleware = require('node-sass-middleware'),
   errorhandler = require('errorhandler');
 
 module.exports = function(config) {
@@ -21,7 +21,7 @@ module.exports = function(config) {
   app.set('view engine', 'jade');
 
   // Fav-icon
-  app.use(favicon(path.join(config.root, '/public/favicon.ico')));
+  // app.use(favicon(path.join(config.root, '/public/favicon.ico')));
 
   // Compress all requests
   app.use(compression())
@@ -55,13 +55,13 @@ module.exports = function(config) {
 
   /* TODO: CSRF support */
 
-  // Sass Middleware
-  if ('production' !== config.app.env)
-    app.use(sassMiddleware({
-      src: path.join(config.root, 'public'),
-      dest: path.join(config.root, 'public'),
-      debug: true
-    }));
+  // // Sass Middleware
+  // if ('production' !== config.app.env)
+  //   app.use(sassMiddleware({
+  //     src: path.join(config.root, 'public'),
+  //     dest: path.join(config.root, 'public'),
+  //     debug: true
+  //   }));
 
   // Public folder
   if ('production' !== config.app.env)

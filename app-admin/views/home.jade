@@ -1,10 +1,10 @@
 doctype html
-<!--[if IE 8]><html lang="ja" class="ie8"><![endif]-->
-<!--[if IE 9]><html lang="ja" class="ie9"><![endif]-->
-<!--[if !IE]><!--><html lang="ja"><!--<![endif]-->
+<!--[if IE 8]><html lang="zh" class="ie8"><![endif]-->
+<!--[if IE 9]><html lang="zh" class="ie9"><![endif]-->
+<!--[if !IE]><!--><html lang="zh"><!--<![endif]-->
 head
 
-  title Lucky Job
+  title 现场TOMO管理平台
 
   // Meta 
   meta(charset='utf-8')
@@ -26,7 +26,7 @@ body(layout="row", ng-controller='GlobalController as gctrl')
   
     md-toolbar.md-whiteframe-z2(ng-if="!gctrl.user.type")
       .md-toolbar-tools
-        h3 Lucky Job
+        h3 现场TOMO管理平台
         
     md-toolbar.md-tall.md-whiteframe-z2(ng-if="gctrl.user.type", style="overflow: hidden;")
       .tint(style="background-image:url(/img/job/high-rated-job-1.1.jpg);")
@@ -72,56 +72,24 @@ body(layout="row", ng-controller='GlobalController as gctrl')
   ng-view(ng-cloak, layout="column", flex)
     
   // JS main library
-  script(src='//maps.googleapis.com/maps/api/js?sensor=false')
-  script(src='bower_components/lodash/lodash.min.js')
-  script(src='bower_components/moment/min/moment-with-locales.js')
+  //- script(src='//maps.googleapis.com/maps/api/js?sensor=false')
+  //- script(src='bower_components/lodash/lodash.min.js')
+  //- script(src='bower_components/moment/min/moment-with-locales.js')
   script(src='bower_components/angular/angular.min.js')
-  script(src='bower_components/angular-route/angular-route.min.js')
+  //- script(src='bower_components/angular-route/angular-route.min.js')
   script(src='bower_components/angular-aria/angular-aria.min.js')
   script(src='bower_components/angular-animate/angular-animate.min.js')
   script(src='bower_components/angular-material/angular-material.js')
-  script(src='bower_components/angular-resource/angular-resource.min.js')
-  script(src='bower_components/angular-messages/angular-messages.min.js')
-  script(src='bower_components/angular-http-auth/src/http-auth-interceptor.js')
-  script(src='bower_components/ngImgCrop/compile/minified/ng-img-crop.js')
-  script(src='bower_components/angular-file-upload/angular-file-upload.js')
-  script(src='bower_components/angular-moment/angular-moment.min.js')
-  script(src='bower_components/angular-google-maps/dist/angular-google-maps.min.js')
-    
-  // JS custom library
-  script(src='js/tripod/tripod.js')
-  script(src='js/tripod/value/visa.js')
-  script(src='js/tripod/value/country.js')
-  script(src='js/tripod/value/language.js')
-  script(src='js/tripod/filter/age.js')
-  script(src='js/tripod/filter/gender.js')
-  script(src='js/tripod/filter/userType.js')
-  script(src='js/tripod/filter/language.js')
-  script(src='js/tripod/filter/nationality.js')
-  script(src='js/tripod/service/me.js')
-  script(src='js/tripod/service/job.js')
-  script(src='js/tripod/service/user.js')
-  script(src='js/tripod/service/session.js')
-  script(src='js/tripod/service/company.js')
-  script(src='js/tripod/service/category.js')
-  script(src='js/tripod/service/notification.js')
-  script(src='js/tripod/directive/avaliable-id.js')
-  script(src='js/tripod/directive/repass.js')
-  script(src='js/tripod/directive/date.js')
-  script(src='js/tripod/directive/map.js')
-
-  // JS
-  script(src='js/admin/controller/global.js')
-  script(src='js/admin/controller/sidenav.js')
-  script(src='js/admin/controller/home.js')
-  script(src='js/admin/controller/login.js')
-  script(src='js/admin/controller/user/list.js')
-  script(src='js/admin/controller/user/edit.js')
-  script(src='js/admin/controller/job/list.js')
-  script(src='js/admin/controller/company/list.js')
+  //- script(src='bower_components/angular-resource/angular-resource.min.js')
+  //- script(src='bower_components/angular-messages/angular-messages.min.js')
+  //- script(src='bower_components/angular-http-auth/src/http-auth-interceptor.js')
+  //- script(src='bower_components/ngImgCrop/compile/minified/ng-img-crop.js')
+  //- script(src='bower_components/angular-file-upload/angular-file-upload.js')
+  //- script(src='bower_components/angular-moment/angular-moment.min.js')
+  //- script(src='bower_components/angular-google-maps/dist/angular-google-maps.min.js')
 
   //- script(src='js/admin/template.js')
-  script(src='js/admin/main.js')
+  //- script(src='js/admin/main.js')
 
   <!--[if lt IE 9]>
   <script src="/plugins/respond.js"></script>
