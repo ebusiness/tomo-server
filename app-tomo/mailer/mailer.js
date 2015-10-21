@@ -19,7 +19,7 @@ exports.accountActive = function(recipient) {
         if (err) console.log(err);
         else {
           transport.sendMail({
-            from: '現場Tomo <info@genba-tomo.com>',
+            from: '現場Tomo <info@genbatomo.com>',
             to: recipient.email,
             subject: '欢迎加入現場Tomo',
             html: html,
@@ -48,7 +48,7 @@ exports.resetPassword = function(recipient) {
         if (err) console.log(err);
         else {
           transport.sendMail({
-            from: '現場Tomo <info@genba-tomo.com>',
+            from: '現場Tomo <info@genbatomo.com>',
             to: recipient.email,
             subject: '現場Tomo－重置密码',
             html: html,
