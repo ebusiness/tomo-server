@@ -6,7 +6,6 @@ var fs = require('fs'),
   Group = mongoose.model('Group'),
   GroupMessage = mongoose.model('GroupMessage'),
   Message = mongoose.model('Message'),
-  Station = mongoose.model('Station'),
   Activity = mongoose.model('Activity'),
   Invitation = mongoose.model('Invitation'),
   Notification = mongoose.model('Notification'),
@@ -46,8 +45,6 @@ module.exports = function(app, config, sio) {
 
   // User Profile Update
   app.patch('/me', checkLoginStatus, controller.me.update(User));
-  // Leave Stations
-  app.delete('/me/stations', checkLoginStatus, controller.me.removeStations(User, Group, Station, Activity));
 
   //////////////////////////////////////////////////
   /// Post Relate
@@ -128,15 +125,6 @@ module.exports = function(app, config, sio) {
   app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
 
   //////////////////////////////////////////////////
-  /// Station Relate
-  //////////////////////////////////////////////////
-
-  // Station List
-  app.get('/stations', checkLoginStatus, controller.station.index(Station));
-  // Join Station
-  app.post('/stations/:station', checkLoginStatus, controller.station.join(User, Group, Station, Activity));
-
-  //////////////////////////////////////////////////
   /// Map Relate
   //////////////////////////////////////////////////
 
@@ -144,8 +132,6 @@ module.exports = function(app, config, sio) {
   app.get('/map/posts', checkLoginStatus, controller.map.post(Post, Group));
   // Group Map List
   app.get('/map/groups', checkLoginStatus, controller.map.group(Group, Post));
-  // Station Map List
-  app.get('/map/stations', checkLoginStatus, controller.map.station(Station, Post));
 
 };
 

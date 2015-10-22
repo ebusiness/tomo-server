@@ -1,99 +1,82 @@
 doctype html
-<!--[if IE 8]><html lang="zh" class="ie8"><![endif]-->
-<!--[if IE 9]><html lang="zh" class="ie9"><![endif]-->
-<!--[if !IE]><!--><html lang="zh"><!--<![endif]-->
-head
+html(lang='zh')
+  head
 
-  title 现场TOMO管理平台
+    title 现场TOMO管理平台
 
-  // Meta 
-  meta(charset='utf-8')
-  meta(http-equiv="X-UA-Compatible", content="IE=edge")
-  meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
-  meta(name='description', content='')
-  meta(name='author', content='JoeHetfield')
-  base(href="/")
+    // Meta 
+    meta(charset='utf-8')
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    meta(name='description', content='')
+    meta(name='author', content='JoeHetfield')
+    base(href="/")
 
-  // Favicon 
-  link(rel='shortcut icon', href='/favicon.ico')
+    // Favicon 
+    link(rel='shortcut icon', href='/favicon.ico')
 
-  // CSS
-  link(rel="stylesheet", href="/css/admin.css")
+    // CSS
+    link(rel="stylesheet", href="/admin/css/main.css")
 
-body(layout="row", ng-controller='GlobalController as gctrl')
+  body(layout="row")
 
-  md-sidenav.md-whiteframe-z2(md-component-id="left")
-  
-    md-toolbar.md-whiteframe-z2(ng-if="!gctrl.user.type")
-      .md-toolbar-tools
-        h3 现场TOMO管理平台
-        
-    md-toolbar.md-tall.md-whiteframe-z2(ng-if="gctrl.user.type", style="overflow: hidden;")
-      .tint(style="background-image:url(/img/job/high-rated-job-1.1.jpg);")
-        .ratio
-        .content(layout='column', layout-align='end start')
-          img.md-avatar(ng-src="/avatar/{{::gctrl.user.photo ? gctrl.user.photo : 'default.jpg'}}" style="width: 40px;height: 40px; margin-bottom: 8px;margin-right: 16px;border-radius: 50%;box-sizing: content-box;")
-          span.md-subhead {{::gctrl.user.lastName}} {{::gctrl.user.firstName}}
-          span.md-caption {{::gctrl.user.email}}
-        
-    md-list(ng-controller='SideNavController as ctrl')
-      md-list-item(ng-click="gctrl.navigateTo('/')")
-        md-icon(md-svg-icon="action:ic_home_24px")
-        p ホーム
-
-      md-list-item(ng-click="gctrl.navigateTo('/login')", ng-if="!gctrl.user.type")
-        md-icon(md-svg-icon="social:ic_person_24px")
-        p ログイン
-
-      md-list-item(ng-click="gctrl.navigateTo('/profile')", ng-if="gctrl.user.type")
-        md-icon(md-svg-icon="action:ic_account_circle_24px")
-        p プロフィール
-
-      md-list-item(ng-click="gctrl.navigateTo('/users')", ng-if="gctrl.user.type")
-        md-icon(md-svg-icon="social:ic_people_24px")
-        p ユーザ管理
-
-      md-list-item(ng-click="gctrl.navigateTo('/companies')", ng-if="gctrl.user.type")
-        md-icon(md-svg-icon="action:ic_store_24px")
-        p 企業ユーザ管理
-
-      md-list-item(ng-click="gctrl.navigateTo('/jobs')", ng-if="gctrl.user.type")
-        md-icon(md-svg-icon="action:ic_assignment_24px")
-        p 仕事情報管理
-        
-      md-list-item(ng-click="gctrl.navigateTo('/jobs')", ng-if="gctrl.user.type")
-        md-icon(md-svg-icon="social:ic_notifications_24px")
-        p システム通知
-
-      md-list-item(ng-click="ctrl.signout($event)", ng-if="gctrl.user.type")
-        md-icon(md-svg-icon="action:ic_exit_to_app_24px")
-        p ログアウト
-          
-  ng-view(ng-cloak, layout="column", flex)
+    md-sidenav.md-whiteframe-z2(md-component-id="left")
     
-  // JS main library
-  //- script(src='//maps.googleapis.com/maps/api/js?sensor=false')
-  //- script(src='bower_components/lodash/lodash.min.js')
-  //- script(src='bower_components/moment/min/moment-with-locales.js')
-  script(src='bower_components/angular/angular.min.js')
-  //- script(src='bower_components/angular-route/angular-route.min.js')
-  script(src='bower_components/angular-aria/angular-aria.min.js')
-  script(src='bower_components/angular-animate/angular-animate.min.js')
-  script(src='bower_components/angular-material/angular-material.js')
-  //- script(src='bower_components/angular-resource/angular-resource.min.js')
-  //- script(src='bower_components/angular-messages/angular-messages.min.js')
-  //- script(src='bower_components/angular-http-auth/src/http-auth-interceptor.js')
-  //- script(src='bower_components/ngImgCrop/compile/minified/ng-img-crop.js')
-  //- script(src='bower_components/angular-file-upload/angular-file-upload.js')
-  //- script(src='bower_components/angular-moment/angular-moment.min.js')
-  //- script(src='bower_components/angular-google-maps/dist/angular-google-maps.min.js')
+      md-toolbar.md-whiteframe-z2
+        .md-toolbar-tools
+          h3 现场TOMO管理平台
+          
+      md-list
+        md-list-item
+          md-icon(md-svg-icon="action:ic_home_24px")
+          p ホーム
 
-  //- script(src='js/admin/template.js')
-  //- script(src='js/admin/main.js')
+        md-list-item
+          md-icon(md-svg-icon="social:ic_person_24px")
+          p ログイン
 
-  <!--[if lt IE 9]>
-  <script src="/plugins/respond.js"></script>
-  <script src="/plugins/html5shiv.js"></script>    
-  <![endif]-->
+        md-list-item
+          md-icon(md-svg-icon="action:ic_account_circle_24px")
+          p プロフィール
 
-</html>
+        md-list-item
+          md-icon(md-svg-icon="social:ic_people_24px")
+          p ユーザ管理
+
+        md-list-item
+          md-icon(md-svg-icon="action:ic_store_24px")
+          p 企業ユーザ管理
+
+        md-list-item
+          md-icon(md-svg-icon="action:ic_assignment_24px")
+          p 仕事情報管理
+          
+        md-list-item
+          md-icon(md-svg-icon="social:ic_notifications_24px")
+          p システム通知
+
+        md-list-item
+          md-icon(md-svg-icon="action:ic_exit_to_app_24px")
+          p ログアウト
+            
+    ng-view(ng-cloak, layout="column", flex)
+      
+    // JS main library
+    //- script(src='//maps.googleapis.com/maps/api/js?sensor=false')
+    //- script(src='bower_components/lodash/lodash.min.js')
+    //- script(src='bower_components/moment/min/moment-with-locales.js')
+    script(src='bower_components/angular/angular.min.js')
+    script(src='bower_components/angular-route/angular-route.min.js')
+    script(src='bower_components/angular-aria/angular-aria.min.js')
+    script(src='bower_components/angular-animate/angular-animate.min.js')
+    script(src='bower_components/angular-material/angular-material.js')
+    script(src='bower_components/angular-resource/angular-resource.min.js')
+    script(src='bower_components/angular-messages/angular-messages.min.js')
+    script(src='bower_components/angular-http-auth/src/http-auth-interceptor.js')
+    //- script(src='bower_components/ngImgCrop/compile/minified/ng-img-crop.js')
+    script(src='bower_components/angular-file-upload/dist/angular-file-upload.min.js')
+    //- script(src='bower_components/angular-moment/angular-moment.min.js')
+    //- script(src='bower_components/angular-google-maps/dist/angular-google-maps.min.js')
+
+    //- script(src='js/admin/template.js')
+    script(src='admin/js/main.js')

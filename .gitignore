@@ -40,3 +40,4 @@ public-build/
 
 # ignore real config file
 config/global.js
+config/global-real.js

@@ -56,11 +56,6 @@ var Group = new Schema({
         ref: 'Post'
     }],
 
-    station: {
-        type: Schema.Types.ObjectId,
-        ref: 'Station'
-    },
-
     logicDelete: {
         type: Boolean,
         default: false
