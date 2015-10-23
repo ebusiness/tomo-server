@@ -124,15 +124,6 @@ module.exports = function(app, config, sio) {
   // Notification List
   app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
 
-  //////////////////////////////////////////////////
-  /// Map Relate
-  //////////////////////////////////////////////////
-
-  // Post Map List
-  app.get('/map/posts', checkLoginStatus, controller.map.post(Post, Group));
-  // Group Map List
-  app.get('/map/groups', checkLoginStatus, controller.map.group(Group, Post));
-
 };
 
 checkLoginStatus = function(req, res, next) {
