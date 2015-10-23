@@ -1,4 +1,5 @@
-var async = require('async'),
+var _ = require('lodash'),
+    async = require('async'),
     moment = require('moment');
 
 module.exports = function(Group, Post) {
@@ -45,7 +46,7 @@ module.exports = function(Group, Post) {
           query.where('posts.1').exists(true);
 
         // groups that has members
-        if (req.query.hasPosts)
+        if (req.query.hasMembers)
           query.where('members.1').exists(true);
 
         if (req.query.page)
@@ -59,33 +60,32 @@ module.exports = function(Group, Post) {
           .exec(callback);
       },
 
-      // function populatePosts(groups, callback) {
-      //
-      //   if (req.query.category == "mine")
-      //     async.map(groups, function(group, callback) {
-      //       if (group.posts.length)
-      //         Post.find()
-      //           .select('owner group content images like bookmark comments coordinate createDate')
-      //           .where('_id').in(group.posts)
-      //           .where('logicDelete').equals(false)
-      //           .populate('owner', 'nickName photo cover')
-      //           .populate('group', 'name')
-      //           .populate('comments.owner', 'nickName photo cover')
-      //           .limit(3)
-      //           .sort('-createDate')
-      //           .exec(function(err, posts) {
-      //             if (err) callback(err);
-      //             else {
-      //               group = group.toObject();
-      //               group.posts = posts;
-      //               callback(null, group);
-      //             }
-      //           });
-      //         else callback(null, group);
-      //     }, callback);
-      //   else
-      //     callback(null, groups);
-      // }
+      function populatePosts(groups, callback) {
+
+        var groupIds = _.pluck(groups, '_id');
+
+        var aggregate = Post.aggregate().match({group: {$in: groupIds}});
+
+        if (req.query.after)
+          aggregate.match({createDate: {$gte: moment.unix(req.query.after).startOf('week').toDate()}});
+
+        aggregate.group({_id: '$group', posts: {$push: '$_id'}})
+          .exec(function(err, counts) {
+            if (err) callback(err);
+            else {
+
+              groups = _.map(groups, Group.toObject);
+
+              groups.forEach(function(group) {
+                var found = _.find(counts, {_id: group._id});
+                if (found) group.posts = found.posts;
+                else group.posts = [];
+              });
+
+              callback(null, groups);
+            }
+          });
+      }
 
     ], function(err, groups) {
       if (err) next(err);
