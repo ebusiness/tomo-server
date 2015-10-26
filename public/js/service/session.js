@@ -32,9 +32,9 @@ angular.module('tripod')
         return $http.post('/signup', user);
       },
 
-      login: function(user) {
+      signin: function(user) {
 
-        this.user = $http.post('/login', user, {
+        this.user = $http.post('/signin', user, {
           ignoreAuthModule: true
         }).then(transformUser);
 
@@ -47,9 +47,9 @@ angular.module('tripod')
         return this.user;
       },
 
-      logout: function() {
+      signout: function() {
         var self = this;
-        return $http.get('/logout').then(function(response) {
+        return $http.get('/signout').then(function(response) {
           self.user = $q.reject();
         });
       }

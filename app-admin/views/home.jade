@@ -50,17 +50,8 @@ html(lang='zh')
         md-list-item(ng-click="ctrl.signout($event)")
           md-icon(md-svg-icon="action:ic_exit_to_app_24px")
           p 退出
-    
-    .main-content(flex layout="column")
-    
-      md-toolbar(layout="row")
-        .md-toolbar-tools
-          md-button.md-icon-button(ng-click="gctrl.toggleLeft()")
-            md-icon(md-svg-icon="navigation:ic_menu_24px")
-          h2
-            span 现场TOMO管理平台
-          
-      ng-view(ng-cloak, layout="column", flex)
+      
+    ng-view(ng-cloak, layout="column", flex)
       
     // JS main library
     //- script(src='//maps.googleapis.com/maps/api/js?sensor=false')
@@ -74,6 +65,7 @@ html(lang='zh')
     script(src='bower_components/angular-resource/angular-resource.min.js')
     script(src='bower_components/angular-messages/angular-messages.min.js')
     script(src='bower_components/angular-http-auth/src/http-auth-interceptor.js')
+    script(src='bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js')
     //- script(src='bower_components/ngImgCrop/compile/minified/ng-img-crop.js')
     script(src='bower_components/angular-file-upload/dist/angular-file-upload.min.js')
     //- script(src='bower_components/angular-moment/angular-moment.min.js')
@@ -113,6 +105,7 @@ html(lang='zh')
     script(src='admin/js/controller/user/index.js')
     
     script(src='admin/js/controller/group/index.js')
+    script(src='admin/js/controller/group/show.js')
     
     script(src='admin/js/controller/post/index.js')
 

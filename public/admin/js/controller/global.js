@@ -53,18 +53,13 @@ angular.module('tripod')
 
       function DialogController($mdDialog) {
 
-        this.toSignUp = function() {
-          $location.path('/signup');
-          $mdDialog.cancel();
-        };
-
-        this.login = function() {
-          SessionService.login(this.user)
+        this.signin = function() {
+          SessionService.signin(this.user)
             .then(function(user) {
-              $mdToast.showSimple(user.lastName + ' ' + user.firstName + 'さん、お帰りなさい');
+              $mdToast.showSimple('已经以' + user.lastName + ' ' + user.firstName + '的身份登录');
               $mdDialog.hide(user);
             }, function() {
-              $mdToast.showSimple('パースワードをご確認ください');
+              $mdToast.showSimple('登录失败，请确认您的账号和密码');
             });
         };
       };

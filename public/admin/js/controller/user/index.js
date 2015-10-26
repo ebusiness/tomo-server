@@ -1,5 +1,5 @@
 angular.module('tripod')
-  .controller('UserController', [
+  .controller('UserListController', [
     'SessionService',
     'UserService',
     function (

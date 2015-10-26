@@ -1,4 +1,4 @@
-angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'angularFileUpload', 'tripod'])
+angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'infinite-scroll', 'angularFileUpload', 'tripod'])
   .config(['$routeProvider', '$mdIconProvider', '$mdThemingProvider', function($routeProvider, $mdIconProvider, $mdThemingProvider) {
 
     $routeProvider
@@ -39,17 +39,29 @@ angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngM
       })
       .when('/users', {
         templateUrl: '/admin/template/user/index.html',
-        controller: 'UserController',
+        controller: 'UserListController',
         controllerAs: 'ctrl'
       })
       .when('/groups', {
         templateUrl: '/admin/template/group/index.html',
-        controller: 'GroupController',
+        controller: 'GroupListController',
         controllerAs: 'ctrl'
+      })
+      .when('/groups/:id', {
+        templateUrl: '/admin/template/group/show.html',
+        controller: 'GroupController',
+        controllerAs: 'ctrl',
+        resolve: {
+          group: ['$route', 'GroupService', function($route, GroupService) {
+            return GroupService.get({
+              id: $route.current.params.id
+            }).$promise;
+          }]
+        }
       })
       .when('/posts', {
         templateUrl: '/admin/template/post/index.html',
-        controller: 'PostController',
+        controller: 'PostListController',
         controllerAs: 'ctrl'
       })
       .otherwise({

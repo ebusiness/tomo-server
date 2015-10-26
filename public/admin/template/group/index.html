@@ -1,7 +1,18 @@
+<md-toolbar layout="row">
+  <div class="md-toolbar-tools">
+    <md-button class="md-icon-button" ng-click="gctrl.toggleLeft()">
+      <md-icon md-svg-icon="navigation:ic_menu_24px">
+      </md-icon>
+    </md-button>
+    <h2>
+      <span>群组管理</span>
+    </h2>
+  </div>
+</md-toolbar>
+
 <md-content flex layout-padding>
-  <md-list>
-    <md-subheader class="md-no-sticky">群组一览</md-subheader>
-    <md-list-item class="md-3-line" ng-repeat="group in ctrl.groups | orderBy:'-createDate'">
+  <md-list infinite-scroll="ctrl.loadNextPage()">
+    <md-list-item class="md-3-line" ng-repeat="group in ctrl.groups" ng-click="gctrl.navigateTo('/groups/'+group.id)">
       <img ng-src="{{group.cover}}" class="md-avatar" alt="" />
       <div class="md-list-item-text">
         <h3>{{group.name}}</h3>

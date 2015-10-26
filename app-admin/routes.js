@@ -22,6 +22,17 @@ module.exports = function(app, config) {
   });
 
   //////////////////////////////////////////////////
+  /// User Account Relate
+  //////////////////////////////////////////////////
+
+  // User Sign-in
+  app.post('/signin', controller.me.signin(User));
+  // User Sign-out
+  app.get('/signout', checkLoginStatus, controller.me.signout(User));
+  // User Profile Update
+  app.patch('/me', checkLoginStatus, controller.me.update(User));
+
+  //////////////////////////////////////////////////
   /// User Relate
   //////////////////////////////////////////////////
   app.get('/users', checkLoginStatus, controller.user.index(User));
@@ -30,6 +41,7 @@ module.exports = function(app, config) {
   /// Group Relate
   //////////////////////////////////////////////////
   app.get('/groups', checkLoginStatus, controller.group.index(Group));
+  app.get('/groups/:group', checkLoginStatus, controller.group.show(Group));
 
   //////////////////////////////////////////////////
   /// Post Relate

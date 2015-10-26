@@ -1,6 +1,17 @@
+<md-toolbar layout="row">
+  <div class="md-toolbar-tools">
+    <md-button class="md-icon-button" ng-click="gctrl.toggleLeft()">
+      <md-icon md-svg-icon="navigation:ic_menu_24px">
+      </md-icon>
+    </md-button>
+    <h2>
+      <span>内容管理</span>
+    </h2>
+  </div>
+</md-toolbar>
+
 <md-content flex layout-padding>
   <md-list>
-    <md-subheader class="md-no-sticky">帖子一览</md-subheader>
     <md-list-item class="md-3-line" ng-repeat="post in ctrl.posts | orderBy:'-createDate'">
       <img ng-src="{{post.owner.photo}}" class="md-avatar" alt="" />
       <div class="md-list-item-text">

@@ -1,0 +1,29 @@
+<md-toolbar layout="row">
+  <div class="md-toolbar-tools">
+    <md-button class="md-icon-button" ng-click="gctrl.toggleLeft()">
+      <md-icon md-svg-icon="navigation:ic_menu_24px">
+      </md-icon>
+    </md-button>
+    <h2 flex>
+      <span>{{ctrl.group.name}}</span>
+    </h2>
+    <md-button class="md-icon-button" ng-click="ctrl.edit()">
+      <md-icon md-svg-icon="editor:ic_mode_edit_24px">
+      </md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+
+<md-content class="md-padding" layout="column">
+  <md-list>
+    <md-subheader class="md-no-sticky">内容</md-subheader>
+    <md-subheader class="md-no-sticky">成员</md-subheader>
+    <md-list-item class="md-2-line contact-item" ng-repeat="member in ctrl.group.members">
+      <img ng-src="{{member.photo}}" class="md-avatar" alt="{{member.nickName}}" />
+      <div class="md-list-item-text compact">
+        <h3>{{member.nickName}}</h3>
+        <p>{{member.lastName}} {{member.firstName}}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-content>

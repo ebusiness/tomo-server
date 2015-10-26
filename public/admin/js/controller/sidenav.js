@@ -4,7 +4,7 @@ angular.module('tripod')
     var self = this;
 
     self.signout = function($event) {
-      SessionService.logout().then(function() {
+      SessionService.signout().then(function() {
         $rootScope.$broadcast('event:auth-logoutConfirmed');
         $location.path('/');
       });
