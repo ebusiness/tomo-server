@@ -18,7 +18,7 @@ html(lang='zh')
     // CSS
     link(rel="stylesheet", href="/admin/css/main.css")
 
-  body(layout="row")
+  body(layout="row", ng-controller='GlobalController as gctrl')
 
     md-sidenav.md-whiteframe-z2(md-component-id="left")
     
@@ -26,40 +26,41 @@ html(lang='zh')
         .md-toolbar-tools
           h3 现场TOMO管理平台
           
-      md-list
-        md-list-item
+      md-list(ng-controller='SideNavController as ctrl')
+        md-list-item(ng-click="gctrl.navigateTo('/'); gctrl.toggleLeft()")
           md-icon(md-svg-icon="action:ic_home_24px")
-          p ホーム
+          p 首页
 
-        md-list-item
+        md-list-item(ng-click="gctrl.navigateTo('/users'); gctrl.toggleLeft()")
           md-icon(md-svg-icon="social:ic_person_24px")
-          p ログイン
+          p 用户管理
 
-        md-list-item
+        md-list-item(ng-click="gctrl.navigateTo('/groups'); gctrl.toggleLeft()")
           md-icon(md-svg-icon="action:ic_account_circle_24px")
-          p プロフィール
+          p 群组管理
 
-        md-list-item
+        md-list-item(ng-click="gctrl.navigateTo('/posts'); gctrl.toggleLeft()")
           md-icon(md-svg-icon="social:ic_people_24px")
-          p ユーザ管理
-
-        md-list-item
-          md-icon(md-svg-icon="action:ic_store_24px")
-          p 企業ユーザ管理
-
-        md-list-item
-          md-icon(md-svg-icon="action:ic_assignment_24px")
-          p 仕事情報管理
+          p 内容管理
           
-        md-list-item
+        md-list-item(ng-click="gctrl.navigateTo('/notifications'); gctrl.toggleLeft()")
           md-icon(md-svg-icon="social:ic_notifications_24px")
-          p システム通知
+          p 系统通知
 
-        md-list-item
+        md-list-item(ng-click="ctrl.signout($event)")
           md-icon(md-svg-icon="action:ic_exit_to_app_24px")
-          p ログアウト
-            
-    ng-view(ng-cloak, layout="column", flex)
+          p 退出
+    
+    .main-content(flex layout="column")
+    
+      md-toolbar(layout="row")
+        .md-toolbar-tools
+          md-button.md-icon-button(ng-click="gctrl.toggleLeft()")
+            md-icon(md-svg-icon="navigation:ic_menu_24px")
+          h2
+            span 现场TOMO管理平台
+          
+      ng-view(ng-cloak, layout="column", flex)
       
     // JS main library
     //- script(src='//maps.googleapis.com/maps/api/js?sensor=false')
@@ -77,6 +78,43 @@ html(lang='zh')
     script(src='bower_components/angular-file-upload/dist/angular-file-upload.min.js')
     //- script(src='bower_components/angular-moment/angular-moment.min.js')
     //- script(src='bower_components/angular-google-maps/dist/angular-google-maps.min.js')
+    
+    // JS custom library
+    script(src='js/tripod.js')
+    script(src='js/value/visa.js')
+    script(src='js/value/country.js')
+    script(src='js/value/language.js')
+    script(src='js/filter/age.js')
+    script(src='js/filter/gender.js')
+    script(src='js/filter/language.js')
+    script(src='js/filter/nationality.js')
+    script(src='js/service/me.js')
+    script(src='js/service/user.js')
+    script(src='js/service/post.js')
+    script(src='js/service/group.js')
+    script(src='js/service/session.js')
+    script(src='js/service/notification.js')
+    script(src='js/directive/avaliable-id.js')
+    script(src='js/directive/repass.js')
+    script(src='js/directive/date.js')
+    script(src='js/directive/map.js')
 
-    //- script(src='js/admin/template.js')
+    // JS
+    script(src='admin/js/controller/global.js')
+    script(src='admin/js/controller/sidenav.js')
+    script(src='admin/js/controller/home.js')
+    script(src='admin/js/controller/login.js')
+    script(src='admin/js/controller/signup.js')
+    
+    script(src='admin/js/controller/profile/show.js')
+    script(src='admin/js/controller/profile/edit.js')
+    script(src='admin/js/controller/profile/photo.js')
+    
+    script(src='admin/js/controller/user/index.js')
+    
+    script(src='admin/js/controller/group/index.js')
+    
+    script(src='admin/js/controller/post/index.js')
+
+    //- script(src='admin/js/admin/template.js')
     script(src='admin/js/main.js')

@@ -1,0 +1,40 @@
+<md-dialog flex="33" flex-sm="100">
+
+  <div class="tint" style="background-image:url(/img/people/4.jpg);">
+    <div class="ratio"></div>
+    <div class="content" layout="column" layout-align="end start">
+      <span class="md-title">请登录</span>
+    </div>
+  </div>
+
+  <form id="loginForm" name="loginForm" novalidate>
+
+    <md-dialog-content>
+
+      <md-input-container>
+        <label>邮件地址</label>
+        <input type="email" name="email" ng-model="ctrl.user.email" required>
+        <div ng-messages="loginForm.email.$error" ng-if="loginForm.email.$dirty">
+          <div ng-message="required">必填项</div>
+          <div ng-message="email">请输入有效的邮件地址</div>
+        </div>
+      </md-input-container>
+
+      <md-input-container>
+        <label>密码</label>
+        <input type="password" name="password" minlength="8" ng-model="ctrl.user.password" required>
+        <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
+          <div ng-message="required">必填项</div>
+          <div ng-message="minlength">最少8位</div>
+        </div>
+      </md-input-container>
+
+      <div class="md-actions" layout="column">
+        <md-button class="md-primary" type="submit" form="loginForm" ng-click="ctrl.login()" ng-disabled="loginForm.$invalid || loginForm.$pending">登录</md-button>
+      </div>
+
+    </md-dialog-content>
+
+  </form>
+
+</md-dialog>

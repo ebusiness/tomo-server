@@ -60,31 +60,31 @@ module.exports = function(Group, Post) {
           .exec(callback);
       },
 
-      function populatePosts(groups, callback) {
+      function countPosts(groups, callback) {
 
-        var groupIds = _.pluck(groups, '_id');
+        if (req.query.after) {
 
-        var aggregate = Post.aggregate().match({group: {$in: groupIds}});
+          var groupIds = _.pluck(groups, '_id');
 
-        if (req.query.after)
-          aggregate.match({createDate: {$gte: moment.unix(req.query.after).startOf('week').toDate()}});
+          Post.aggregate()
+            .match({group: {$in: groupIds}})
+            .match({createDate: {$gte: moment.unix(req.query.after).toDate()}})
+            .group({_id: '$group', posts: {$push: '$_id'}})
+            .exec(function(err, counts) {
+              if (err) callback(err);
+              else {
+                groups = _.map(groups, Group.toObject);
+                groups.forEach(function(group) {
+                  var found = _.find(counts, {_id: group._id});
+                  if (found) group.posts = found.posts;
+                  else group.posts = [];
+                });
+                callback(null, groups);
+              }
+            });
 
-        aggregate.group({_id: '$group', posts: {$push: '$_id'}})
-          .exec(function(err, counts) {
-            if (err) callback(err);
-            else {
+        } else callback(null, groups);
 
-              groups = _.map(groups, Group.toObject);
-
-              groups.forEach(function(group) {
-                var found = _.find(counts, {_id: group._id});
-                if (found) group.posts = found.posts;
-                else group.posts = [];
-              });
-
-              callback(null, groups);
-            }
-          });
       }
 
     ], function(err, groups) {

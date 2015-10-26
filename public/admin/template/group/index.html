@@ -1,0 +1,13 @@
+<md-content flex layout-padding>
+  <md-list>
+    <md-subheader class="md-no-sticky">群组一览</md-subheader>
+    <md-list-item class="md-3-line" ng-repeat="group in ctrl.groups | orderBy:'-createDate'">
+      <img ng-src="{{group.cover}}" class="md-avatar" alt="" />
+      <div class="md-list-item-text">
+        <h3>{{group.name}}</h3>
+        <h4>{{group.members.length}}个成员 {{group.posts.length}}个帖子</h4>
+        <p>{{group.bio}}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-content>

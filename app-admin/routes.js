@@ -2,6 +2,8 @@ var fs = require('fs'),
   path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
+  Post = mongoose.model('Post'),
+  Group = mongoose.model('Group'),
   Mailer = require('./mailer/mailer.js');
 
 module.exports = function(app, config) {
@@ -13,27 +15,26 @@ module.exports = function(app, config) {
   //////////////////////////////////////////////////
   /// Static route
   //////////////////////////////////////////////////
+
   // Home page
   app.get('/', function(req, res, next) {
     res.render('home');
   });
 
-  // Resource download
-  app.get('/resource/:file', function(req, res, next) {
-
-    var options = {
-      root: GLOBAL.config.root + '/resource/',
-    };
-
-    res.sendFile(req.params.file, options, function(err) {
-      if (err) res.status(err.status).end();
-    });
-  });
+  //////////////////////////////////////////////////
+  /// User Relate
+  //////////////////////////////////////////////////
+  app.get('/users', checkLoginStatus, controller.user.index(User));
 
   //////////////////////////////////////////////////
-  /// Main route
+  /// Group Relate
   //////////////////////////////////////////////////
+  app.get('/groups', checkLoginStatus, controller.group.index(Group));
 
+  //////////////////////////////////////////////////
+  /// Post Relate
+  //////////////////////////////////////////////////
+  app.get('/posts', checkLoginStatus, controller.post.index(Post));
 };
 
 checkLoginStatus = function(req, res, next) {

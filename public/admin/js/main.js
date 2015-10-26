@@ -1,24 +1,24 @@
-angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'angularFileUpload'])
+angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'angularFileUpload', 'tripod'])
   .config(['$routeProvider', '$mdIconProvider', '$mdThemingProvider', function($routeProvider, $mdIconProvider, $mdThemingProvider) {
 
     $routeProvider
       .when('/', {
         templateUrl: '/admin/template/home.html',
-        // controller: 'HomeController',
-        // controllerAs: 'ctrl'
+        controller: 'HomeController',
+        controllerAs: 'ctrl'
       })
       .when('/login', {
-        templateUrl: '/template/user/login.html',
+        templateUrl: '/admin/template/login.html',
         controller: 'LoginController',
         controllerAs: 'ctrl'
       })
       .when('/signup', {
-        templateUrl: '/template/user/signup.html',
+        templateUrl: '/admin/template/signup.html',
         controller: 'SignUpController',
         controllerAs: 'ctrl'
       })
       .when('/profile', {
-        templateUrl: '/template/user/profile/show.html',
+        templateUrl: '/admin/template/profile/show.html',
         controller: 'ProfileController',
         controllerAs: 'ctrl',
         resolve: {
@@ -28,7 +28,7 @@ angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngM
         }
       })
       .when('/profile-edit', {
-        templateUrl: '/template/user/profile/edit.html',
+        templateUrl: '/admin/template/profile/edit.html',
         controller: 'ProfileEditController',
         controllerAs: 'ctrl',
         resolve: {
@@ -37,41 +37,20 @@ angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngM
           }]
         }
       })
-      .when('/jobs/:id', {
-        templateUrl: '/template/user/job/show.html',
-        controller: 'JobController',
-        controllerAs: 'ctrl',
-        resolve: {
-          job: ['$route', 'JobService', function($route, JobService) {
-            return JobService.get({
-              id: $route.current.params.id
-            }).$promise;
-          }]
-        }
+      .when('/users', {
+        templateUrl: '/admin/template/user/index.html',
+        controller: 'UserController',
+        controllerAs: 'ctrl'
       })
-      .when('/jobs/:id/comments', {
-        templateUrl: '/template/user/job/comments.html',
-        controller: 'JobCommentsController',
-        controllerAs: 'ctrl',
-        resolve: {
-          comments: ['$route', 'JobService', function($route, JobService) {
-            return JobService.getComments({
-              id: $route.current.params.id
-            }).$promise;
-          }]
-        }
+      .when('/groups', {
+        templateUrl: '/admin/template/group/index.html',
+        controller: 'GroupController',
+        controllerAs: 'ctrl'
       })
-      .when('/companies/:id', {
-        templateUrl: '/template/user/comp/show.html',
-        controller: 'CompanyController',
-        controllerAs: 'ctrl',
-        resolve: {
-          company: ['$route', 'CompanyService', function($route, CompanyService) {
-            return CompanyService.get({
-              id: $route.current.params.id
-            }).$promise;
-          }]
-        }
+      .when('/posts', {
+        templateUrl: '/admin/template/post/index.html',
+        controller: 'PostController',
+        controllerAs: 'ctrl'
       })
       .otherwise({
         redirectTo: '/'
