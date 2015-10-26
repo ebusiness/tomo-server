@@ -13,7 +13,7 @@
 <md-content flex layout-padding>
   <md-list infinite-scroll="ctrl.loadNextPage()">
     <md-list-item class="md-3-line" ng-repeat="group in ctrl.groups" ng-click="gctrl.navigateTo('/groups/'+group.id)">
-      <img ng-src="{{group.cover}}" class="md-avatar" alt="" />
+      <img ng-src="{{group.cover ? group.cover : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-avatar" alt="" />
       <div class="md-list-item-text">
         <h3>{{group.name}}</h3>
         <h4>{{group.members.length}}个成员 {{group.posts.length}}个帖子</h4>

@@ -12,4 +12,9 @@ angular.module('tripod')
     var self = this;
     self.group = group;
 
+    self.uploader = new FileUploader({
+      method: 'POST',
+      url: '/me/photo',
+    });
+
   }]);
