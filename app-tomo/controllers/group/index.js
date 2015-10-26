@@ -43,11 +43,11 @@ module.exports = function(Group, Post) {
 
         // groups that has posts
         if (req.query.hasPosts)
-          query.where('posts.1').exists(true);
+          query.where('posts.0').exists(true);
 
         // groups that has members
         if (req.query.hasMembers)
-          query.where('members.1').exists(true);
+          query.where('members.0').exists(true);
 
         if (req.query.page)
           query.skip(20 * req.query.page)
