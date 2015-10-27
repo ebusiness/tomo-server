@@ -7,13 +7,34 @@
     <h2>
       <span>群组管理</span>
     </h2>
+    <span flex></span>
+    <form id="searchForm" name="searchForm" novalidate ng-submit="ctrl.search()">
+      <md-autocomplete
+          ng-disabled="ctrl.isDisabled"
+          md-no-cache="ctrl.noCache"
+          md-selected-item="ctrl.selectedItem"
+          md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+          md-search-text="ctrl.searchText"
+          md-selected-item-change="ctrl.selectedItemChange(item)"
+          md-items="item in ctrl.querySearch(ctrl.searchText)"
+          md-item-text="item.display"
+          md-min-length="0"
+          placeholder="输入车站名称检索">
+        <md-item-template>
+          <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+        </md-item-template>
+        <md-not-found>
+          没有找到符合名称 "{{ctrl.searchText}}" 的车站.
+        </md-not-found>
+      </md-autocomplete>
+    </form>
   </div>
 </md-toolbar>
 
 <md-content flex layout-padding>
   <md-list infinite-scroll="ctrl.loadNextPage()">
     <md-list-item class="md-3-line" ng-repeat="group in ctrl.groups" ng-click="gctrl.navigateTo('/groups/'+group.id)">
-      <img ng-src="{{group.cover ? group.cover : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-avatar" alt="" />
+      <img ng-src="{{group.cover ? group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-avatar" alt="" />
       <div class="md-list-item-text">
         <h3>{{group.name}}</h3>
         <h4>{{group.members.length}}个成员 {{group.posts.length}}个帖子</h4>

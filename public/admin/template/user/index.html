@@ -13,7 +13,7 @@
 <md-content flex layout-padding>
   <md-list>
     <md-list-item class="md-3-line" ng-repeat="user in ctrl.users | orderBy:'-createDate'">
-      <img ng-src="{{user.photo}}" class="md-avatar" alt="" />
+      <img ng-src="{{user.photo ? user.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{user.nickName}}" class="md-avatar" alt="" />
       <div class="md-list-item-text">
         <h3>{{user.nickName}}</h3>
         <h4>{{user.lastName}} {{user.firstName}}</h4>

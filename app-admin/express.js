@@ -8,6 +8,7 @@ var path = require('path'),
   cookieParser = require('cookie-parser'),
   methodOverride = require('method-override'),
   // sassMiddleware = require('node-sass-middleware'),
+  RedisStore = require('connect-redis')(session),
   errorhandler = require('errorhandler');
 
 module.exports = function(config) {
@@ -37,8 +38,15 @@ module.exports = function(config) {
   // Override request method
   app.use(methodOverride());
 
+  // Redis session storage
+  var redisStore = new RedisStore({
+    host:config.redis.host,
+    port:config.redis.port
+  });
+
   // session
   app.use(session({
+    store: redisStore,
     resave: true,
     saveUninitialized: true,
     secret: 'uwotm8'

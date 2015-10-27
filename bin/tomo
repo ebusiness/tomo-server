@@ -3,6 +3,7 @@
 var env = process.env.NODE_ENV || 'development',
   config = require('../config/global')[env],
   fs = require('fs'),
+  AWS = require('aws-sdk'),
   vhost = require('vhost'),
   https = require('https').Server,
   express = require('express'),
@@ -24,6 +25,9 @@ function start() {
   fs.readdirSync(models_path).forEach(function(file) {
     if (~file.indexOf('.js')) require(models_path + '/' + file);
   });
+
+  // Config AWS
+  AWS.config.update(config.awssdk);
 
   // Start Express
   var app = express();

@@ -1,17 +1,17 @@
-<md-toolbar class="md-tall" layout="row" style="background-image:url({{group.cover ? group.cover : 'admin/asset/images/group_cover_default@3x.png'}});">
+<md-toolbar class="md-tall" layout="row" style="background-image:url({{ctrl.group.cover ? ctrl.group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}});">
   <div class="md-toolbar-tools">
-    <md-button class="md-icon-button" ng-click="gctrl.toggleLeft()">
-      <md-icon md-svg-icon="navigation:ic_menu_24px">
+    <md-button class="md-icon-button" ng-click="gctrl.navigateTo('/groups')">
+      <md-icon md-svg-icon="navigation:ic_arrow_back_24px">
       </md-icon>
     </md-button>
     <h2 flex>
       <span>{{ctrl.group.name}}</span>
     </h2>
-    <md-button class="md-icon-button" ng-click="ctrl.edit()">
-      <md-icon md-svg-icon="editor:ic_mode_edit_24px">
-      </md-icon>
+    <md-button class="md-icon-button" ng-click="ctrl.triggerFileSelection()">
+      <md-tooltip>更换群组封面</md-tooltip>
+      <md-icon md-svg-icon="action:ic_perm_media_24px"></md-icon>
     </md-button>
-    <input id="fileInput" type="file" ng-controller="PhotoEditController as phctrl" nv-file-select uploader="phctrl.uploader" style="opacity: 0; position: absolute; left: -500px;" />
+    <input id="fileInput" type="file" nv-file-select uploader="ctrl.uploader" style="opacity: 0; position: absolute; left: -500px;" />
   </div>
 </md-toolbar>
 
@@ -20,7 +20,7 @@
     <md-subheader class="md-no-sticky">内容 （{{ctrl.group.posts.length}}）</md-subheader>
     <md-subheader class="md-no-sticky">成员 （{{ctrl.group.members.length}}）</md-subheader>
     <md-list-item class="md-2-line contact-item" ng-repeat="member in ctrl.group.members">
-      <img ng-src="{{member.photo}}" class="md-avatar" alt="{{member.nickName}}" />
+      <img ng-src="{{member.photo ? member.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{member.nickName}}" />
       <div class="md-list-item-text compact">
         <h3>{{member.nickName}}</h3>
         <p>{{member.lastName}} {{member.firstName}}</p>

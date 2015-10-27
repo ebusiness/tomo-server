@@ -21,4 +21,11 @@ angular.module('tripod')
       });
     }
 
+    self.search = function() {
+      GroupService.query({name: self.searchText}, function(groups) {
+        self.groups = groups;
+        self.page = 1;
+      });
+    }
+
   }]);

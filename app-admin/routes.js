@@ -42,6 +42,7 @@ module.exports = function(app, config) {
   //////////////////////////////////////////////////
   app.get('/groups', checkLoginStatus, controller.group.index(Group));
   app.get('/groups/:group', checkLoginStatus, controller.group.show(Group));
+  app.put('/groups/:group/cover', checkLoginStatus, controller.group.cover(Group));
 
   //////////////////////////////////////////////////
   /// Post Relate
