@@ -39,6 +39,8 @@ module.exports = function(Group) {
 
           function uploadCover(group, result, callback) {
 
+            console.log(arguments)
+
             var tempPath = path.join(config.root, '/tmp/cover/', coverName);
 
             s3.putObject({
