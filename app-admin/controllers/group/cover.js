@@ -37,9 +37,7 @@ module.exports = function(Group) {
             Group.findByIdAndUpdate(req.params.group, {cover: coverName}, {new: true}, callback);
           },
 
-          function uploadCover(group, result, callback) {
-
-            console.log(arguments)
+          function uploadCover(group, callback) {
 
             var tempPath = path.join(config.root, '/tmp/cover/', coverName);
 
