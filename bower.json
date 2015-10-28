@@ -19,12 +19,12 @@
     "tests"
   ],
   "dependencies": {
-    "angular-route": "~1.4.7",
-    "angular-material": "~0.11.4",
-    "angular-resource": "~1.4.7",
-    "angular-messages": "~1.4.7",
-    "angular-file-upload": "~2.1.4",
-    "angular-http-auth": "~1.2.2",
-    "material-design-icons": "~2.0.0"
+    "angular-route": null,
+    "angular-material": null,
+    "angular-resource": null,
+    "angular-messages": null,
+    "angular-file-upload": null,
+    "angular-http-auth": null,
+    "material-design-icons": null
   }
 }

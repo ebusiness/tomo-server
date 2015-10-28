@@ -8,7 +8,11 @@ module.exports = function(Post) {
       .populate('comments.owner', 'nickName photo cover')
       .exec(function(err, post) {
         if (err) next(err);
-        else res.json(post);
+        else if (!post) {
+          var err = new Error('Not Found');
+          err.status = 404;
+          next(err);
+        } else res.json(post);
       });
   };
 };

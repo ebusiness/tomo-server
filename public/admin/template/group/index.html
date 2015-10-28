@@ -31,15 +31,30 @@
   </div>
 </md-toolbar>
 
-<md-content flex layout-padding>
-  <md-list infinite-scroll="ctrl.loadNextPage()">
-    <md-list-item class="md-3-line" ng-repeat="group in ctrl.groups" ng-click="gctrl.navigateTo('/groups/'+group.id)">
-      <img ng-src="{{group.cover ? group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-avatar" alt="" />
-      <div class="md-list-item-text">
-        <h3>{{group.name}}</h3>
-        <h4>{{group.members.length}}个成员 {{group.posts.length}}个帖子</h4>
-        <p>{{group.bio}}</p>
+<md-content flex layout="column">
+  <md-virtual-repeat-container flex>
+    <!-- <div flex layout="row" layout-wrap layout-align="space-around center">
+    <md-card flex="30" md-virtual-repeat="group in ctrl.groups" md-on-demand ng-click="gctrl.navigateTo('/groups/'+group.id)">
+      <img ng-src="{{group.cover ? group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-card-image" alt="Washed Out">
+      <md-card-content>
+        <h2 class="md-title">{{group.name}}</h2>
+        <p>{{group.members.length}}个成员 {{group.posts.length}}个帖子</p>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button>Action 1</md-button>
+        <md-button>Action 2</md-button>
       </div>
-    </md-list-item>
-  </md-list>
+    </md-card>
+    </div> -->
+    <md-list>
+      <md-list-item class="md-3-line" md-virtual-repeat="group in ctrl.groups" md-on-demand flex ng-click="gctrl.navigateTo('/groups/'+group.id)">
+        <img ng-src="{{group.cover ? group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-avatar" alt="" />
+        <div class="md-list-item-text">
+          <h3>{{group.name}}</h3>
+          <h4>{{group.members.length}}个成员 {{group.posts.length}}个帖子</h4>
+          <p>{{group.bio}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-virtual-repeat-container>
 </md-content>

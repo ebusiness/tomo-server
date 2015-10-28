@@ -14,7 +14,7 @@ module.exports = function(Post) {
         Post.findByIdAndUpdate(req.params.post, {logicDelete: true}, callback);
       },
 
-      function updateUser(post, result, callback) {
+      function updateUser(post, callback) {
         req.user.posts.pull(post.id);
         req.user.save(callback);
       }

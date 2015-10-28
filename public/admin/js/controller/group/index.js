@@ -9,23 +9,34 @@ angular.module('tripod')
 
     var self = this;
 
-    GroupService.query(function(groups) {
-      self.groups = groups;
-      self.page = 1;
-    });
+    self.groups = {
 
-    self.loadNextPage = function() {
-      GroupService.query({page: self.page}, function(groups) {
-        self.groups = self.groups.concat(groups);
-        self.page++;
-      });
-    }
+      items: [],
 
-    self.search = function() {
-      GroupService.query({name: self.searchText}, function(groups) {
-        self.groups = groups;
-        self.page = 1;
-      });
-    }
+      page: 0,
+
+      getItemAtIndex: function(index) {
+        if (index > this.items.length) {
+          this.fetchMoreItems_(index);
+          return null;
+        }
+        return this.items[index];
+      },
+
+      getLength: function() {
+        return this.items.length + 3;
+      },
+
+      fetchMoreItems_: function(index) {
+
+        if (this.page*20 < index) {
+          var self = this;
+          self.page += 1;
+          GroupService.query({page: self.page}, function(groups) {
+            self.items = self.items.concat(groups);
+          });
+        }
+      }
+    };
 
   }]);

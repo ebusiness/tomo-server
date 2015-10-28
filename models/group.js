@@ -36,6 +36,11 @@ var Group = new Schema({
         index: '2d'
     },
 
+    pref: {
+        type: String,
+        trim: true
+    },
+
     address: {
         type: String,
         trim: true

@@ -72,7 +72,7 @@ function fetch(feed) {
     var post;
     while (post = this.read()) {
 
-      if (moment(post.pubDate).isAfter(moment().startOf('day'))) {
+      // if (moment(post.pubDate).isAfter(moment().startOf('day'))) {
 
           console.log("#############################");
           console.log(post);
@@ -166,7 +166,7 @@ function fetch(feed) {
           ], function(err, result) {
             console.log(result);
           });
-      }
+      // }
 
     }
   });
