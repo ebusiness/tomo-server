@@ -10,15 +10,26 @@
   </div>
 </md-toolbar>
 
-<md-content flex layout-padding>
-  <md-list>
-    <md-list-item class="md-3-line" ng-repeat="user in ctrl.users | orderBy:'-createDate'">
-      <img ng-src="{{user.photo ? user.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{user.nickName}}" class="md-avatar" alt="" />
-      <div class="md-list-item-text">
-        <h3>{{user.nickName}}</h3>
-        <h4>{{user.lastName}} {{user.firstName}}</h4>
-        <p>参加了{{user.groups.length}}个群组 发布了{{user.posts.length}}个帖子</p>
-      </div>
-    </md-list-item>
-  </md-list>
+<md-content flex layout="column">
+
+  <md-virtual-repeat-container flex>
+
+    <md-list>
+      <md-list-item
+          class="md-3-line"
+          md-on-demand
+          md-virtual-repeat="user in ctrl.users"
+          ng-click="gctrl.navigateTo('/users/'+user.id)"
+          ng-hide='!user.id'>
+        <img ng-src="{{user.photo ? user.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{user.nickName}}" class="md-avatar" alt="" />
+        <div class="md-list-item-text">
+          <h3>{{user.nickName}}</h3>
+          <h4>{{user.lastName}} {{user.firstName}}</h4>
+          <p>参加了{{user.groups.length}}个群组 发布了{{user.posts.length}}个帖子</p>
+        </div>
+      </md-list-item>
+    </md-list>
+
+  </md-virtual-repeat-container>
+
 </md-content>

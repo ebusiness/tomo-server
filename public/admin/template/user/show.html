@@ -1,0 +1,105 @@
+<md-toolbar class="md-tall" layout="row" style="background-image:url({{ctrl.user.cover ? ctrl.user.cover_ref : 'admin/asset/images/user_cover_default@3x.png'}}); background-size: cover;">
+  <div class="md-toolbar-tools">
+    <md-button class="md-icon-button" ng-click="gctrl.navigateTo('/users')">
+      <md-icon md-svg-icon="navigation:ic_arrow_back_24px">
+      </md-icon>
+    </md-button>
+    <h2 flex>
+      <span>{{ctrl.user.nickName}}</span>
+    </h2>
+  </div>
+</md-toolbar>
+
+<md-content layout="column">
+  <md-list>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>电子邮件</h3>
+        <p>{{ctrl.user.email}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>密码</h3>
+        <p>{{ctrl.user.password}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>姓名</h3>
+        <p>{{ctrl.user.lastName}} {{ctrl.user.firstName}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>生年月日</h3>
+        <p>{{ctrl.user.birthDay}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>性别</h3>
+        <p>{{ctrl.user.gender}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>电话</h3>
+        <p>{{ctrl.user.telNo}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>地址</h3>
+        <p>{{ctrl.user.address}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="content:ic_content_paste_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>介绍</h3>
+        <p>{{ctrl.user.bio}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>登录日期</h3>
+        <p>{{ctrl.user.createDate}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>设备信息</h3>
+        <p>{{ctrl.user.device.model}} {{ctrl.user.device.os}} {{ctrl.user.device.version}}</p>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h3>当前设定</h3>
+        <p></p>
+      </div>
+    </md-list-item>
+
+  </md-list>
+</md-content>

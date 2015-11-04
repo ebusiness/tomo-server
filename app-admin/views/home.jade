@@ -36,11 +36,11 @@ html(lang='zh')
           p 用户管理
 
         md-list-item(ng-click="gctrl.navigateTo('/groups'); gctrl.toggleLeft()")
-          md-icon(md-svg-icon="action:ic_account_circle_24px")
+          md-icon(md-svg-icon="social:ic_people_24px")
           p 群组管理
 
         md-list-item(ng-click="gctrl.navigateTo('/posts'); gctrl.toggleLeft()")
-          md-icon(md-svg-icon="social:ic_people_24px")
+          md-icon(md-svg-icon="content:ic_content_copy_24px")
           p 内容管理
           
         md-list-item(ng-click="gctrl.navigateTo('/notifications'); gctrl.toggleLeft()")
@@ -103,11 +103,13 @@ html(lang='zh')
     script(src='admin/js/controller/profile/photo.js')
     
     script(src='admin/js/controller/user/index.js')
+    script(src='admin/js/controller/user/show.js')
     
     script(src='admin/js/controller/group/index.js')
     script(src='admin/js/controller/group/show.js')
     
     script(src='admin/js/controller/post/index.js')
+    script(src='admin/js/controller/post/show.js')
 
     //- script(src='admin/js/admin/template.js')
     script(src='admin/js/main.js')

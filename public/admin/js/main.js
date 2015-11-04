@@ -42,6 +42,18 @@ angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngM
         controller: 'UserListController',
         controllerAs: 'ctrl'
       })
+      .when('/users/:id', {
+        templateUrl: '/admin/template/user/show.html',
+        controller: 'UserController',
+        controllerAs: 'ctrl',
+        resolve: {
+          user: ['$route', 'UserService', function($route, UserService) {
+            return UserService.get({
+              id: $route.current.params.id
+            }).$promise;
+          }]
+        }
+      })
       .when('/groups', {
         templateUrl: '/admin/template/group/index.html',
         controller: 'GroupListController',
@@ -63,6 +75,18 @@ angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngM
         templateUrl: '/admin/template/post/index.html',
         controller: 'PostListController',
         controllerAs: 'ctrl'
+      })
+      .when('/posts/:id', {
+        templateUrl: '/admin/template/post/show.html',
+        controller: 'PostController',
+        controllerAs: 'ctrl',
+        resolve: {
+          post: ['$route', 'PostService', function($route, PostService) {
+            return PostService.get({
+              id: $route.current.params.id
+            }).$promise;
+          }]
+        }
       })
       .otherwise({
         redirectTo: '/'

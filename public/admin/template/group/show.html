@@ -1,4 +1,4 @@
-<md-toolbar class="md-tall" layout="row" style="background-image:url({{ctrl.group.cover ? ctrl.group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}});">
+<md-toolbar class="md-tall" layout="row" style="background-image:url({{ctrl.group.cover ? ctrl.group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}}); background-size: cover;">
   <div class="md-toolbar-tools">
     <md-button class="md-icon-button" ng-click="gctrl.navigateTo('/groups')">
       <md-icon md-svg-icon="navigation:ic_arrow_back_24px">
@@ -15,8 +15,36 @@
   </div>
 </md-toolbar>
 
-<md-content class="md-padding" layout="column">
-  <md-list>
+<md-content layout="column">
+  <md-tabs class="md-accent" md-stretch-tabs="auto" md-center-tabs="true" md-dynamic-height="true">
+    <md-tab id="tab1">
+      <md-tab-label>内容 （{{ctrl.group.posts.length}}）</md-tab-label>
+      <md-tab-body>
+        View for Item #1 <br/>
+        data.selectedIndex = 0;
+      </md-tab-body>
+    </md-tab>
+    <md-tab id="tab2">
+      <md-tab-label>成员 （{{ctrl.group.members.length}}）</md-tab-label>
+      <md-tab-body>
+        <md-list-item class="md-2-line contact-item" ng-repeat="member in ctrl.group.members">
+          <img ng-src="{{member.photo ? member.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{member.nickName}}" />
+          <div class="md-list-item-text compact">
+            <h3>{{member.nickName}}</h3>
+            <p>{{member.lastName}} {{member.firstName}}</p>
+          </div>
+        </md-list-item>
+      </md-tab-body>
+    </md-tab>
+    <md-tab id="tab3">
+      <md-tab-label>状态</md-tab-label>
+      <md-tab-body>
+        View for Item #1 <br/>
+        data.selectedIndex = 0;
+      </md-tab-body>
+    </md-tab>
+  </md-tabs>
+  <!-- <md-list>
     <md-subheader class="md-no-sticky">内容 （{{ctrl.group.posts.length}}）</md-subheader>
     <md-subheader class="md-no-sticky">成员 （{{ctrl.group.members.length}}）</md-subheader>
     <md-list-item class="md-2-line contact-item" ng-repeat="member in ctrl.group.members">
@@ -26,5 +54,5 @@
         <p>{{member.lastName}} {{member.firstName}}</p>
       </div>
     </md-list-item>
-  </md-list>
+  </md-list> -->
 </md-content>

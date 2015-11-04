@@ -30,13 +30,23 @@ angular.module('tripod')
       fetchMoreItems_: function(index) {
 
         if (this.page*20 < index) {
+
           var self = this;
-          self.page += 1;
+
           GroupService.query({page: self.page}, function(groups) {
             self.items = self.items.concat(groups);
           });
+
+          self.page += 1;
         }
       }
     };
+
+    self.search = function() {
+      GroupService.query({name: self.searchText}, function(groups) {
+        self.groups.items = groups;
+        self.page = 1;
+      });
+    }
 
   }]);

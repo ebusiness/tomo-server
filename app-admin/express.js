@@ -75,7 +75,7 @@ module.exports = function(config) {
   if ('production' !== config.app.env)
     app.use(express.static(path.join(config.root, 'public')));
   else
-    app.use(express.static(path.join(config.root, 'public-build')));
+    app.use(express.static(path.join(config.root, 'public')));
 
   // Error handler, not linked in production
   if ('production' !== config.app.env) {

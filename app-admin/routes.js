@@ -35,7 +35,9 @@ module.exports = function(app, config) {
   //////////////////////////////////////////////////
   /// User Relate
   //////////////////////////////////////////////////
-  app.get('/users', checkLoginStatus, controller.user.index(User));
+  app.get('/users', checkLoginStatus, controller.user.index(Group, User));
+  app.get('/users/:user', checkLoginStatus, controller.user.show(User));
+  app.get('/groups/:group/members', checkLoginStatus, controller.user.index(Group, User));
 
   //////////////////////////////////////////////////
   /// Group Relate
@@ -48,6 +50,7 @@ module.exports = function(app, config) {
   /// Post Relate
   //////////////////////////////////////////////////
   app.get('/posts', checkLoginStatus, controller.post.index(Post));
+  app.get('/posts/:post', checkLoginStatus, controller.post.show(Post));
 };
 
 checkLoginStatus = function(req, res, next) {

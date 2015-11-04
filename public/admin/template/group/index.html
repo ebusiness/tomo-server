@@ -33,6 +33,7 @@
 
 <md-content flex layout="column">
   <md-virtual-repeat-container flex>
+
     <!-- <div flex layout="row" layout-wrap layout-align="space-around center">
     <md-card flex="30" md-virtual-repeat="group in ctrl.groups" md-on-demand ng-click="gctrl.navigateTo('/groups/'+group.id)">
       <img ng-src="{{group.cover ? group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-card-image" alt="Washed Out">
@@ -46,8 +47,14 @@
       </div>
     </md-card>
     </div> -->
+
     <md-list>
-      <md-list-item class="md-3-line" md-virtual-repeat="group in ctrl.groups" md-on-demand flex ng-click="gctrl.navigateTo('/groups/'+group.id)">
+      <md-list-item
+          class="md-3-line"
+          md-on-demand
+          md-virtual-repeat="group in ctrl.groups"
+          ng-click="gctrl.navigateTo('/groups/'+group.id)"
+          ng-hide='!group.id'>
         <img ng-src="{{group.cover ? group.cover_ref : 'admin/asset/images/group_cover_default@3x.png'}}" class="md-avatar" alt="" />
         <div class="md-list-item-text">
           <h3>{{group.name}}</h3>
@@ -56,5 +63,6 @@
         </div>
       </md-list-item>
     </md-list>
+
   </md-virtual-repeat-container>
 </md-content>
