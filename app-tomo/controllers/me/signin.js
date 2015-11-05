@@ -16,7 +16,7 @@ module.exports = function(User, Invitation, Message, Notification) {
 
       function(callback) {
         User.findOne(req.body)
-          .select('firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations groups pushSetting')
+          .select('firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations groups blockUsers pushSetting')
           .where('type').equals('user')
           .exec(callback);
       },

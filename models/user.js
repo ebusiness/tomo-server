@@ -175,6 +175,11 @@ var User = new Schema({
         ref: 'Group'
     }],
 
+    blockUsers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+
     logicDelete: {
         type: Boolean,
         default: false

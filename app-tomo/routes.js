@@ -11,6 +11,8 @@ var fs = require('fs'),
   Notification = mongoose.model('Notification'),
   TempAccount = mongoose.model('TempAccount'),
   ResetPassword = mongoose.model('ResetPassword'),
+  PostReport = mongoose.model('PostReport'),
+  UserReport = mongoose.model('UserReport'),
   Mailer = require('./mailer/mailer.js');
 
 module.exports = function(app, config, sio) {
@@ -83,6 +85,8 @@ module.exports = function(app, config, sio) {
   app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));
   // Friend Break
   app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Message, Activity, Notification));
+  // Toggle User Block
+  app.post('/blocks', checkLoginStatus, controller.connection.block(Activity));
   // User Search
   app.get('/users', checkLoginStatus, controller.connection.discover(User));
   // User Profile
@@ -123,6 +127,14 @@ module.exports = function(app, config, sio) {
 
   // Notification List
   app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
+
+  //////////////////////////////////////////////////
+  /// Report Relate
+  //////////////////////////////////////////////////
+  // Report User
+  app.post('/reports/users/:user', checkLoginStatus, controller.userreport.create(UserReport));
+  // Report Post
+  app.post('/reports/posts/:post', checkLoginStatus, controller.postreport.create(PostReport));
 
 };
 
