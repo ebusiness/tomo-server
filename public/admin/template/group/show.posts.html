@@ -1,0 +1,17 @@
+<md-virtual-repeat-container flex>
+  <md-list>
+    <md-list-item
+        class="md-3-line md-long-text"
+        md-on-demand
+        md-virtual-repeat="post in pctrl.posts"
+        ng-click="gctrl.navigateTo('/posts/'+post.id)"
+        ng-hide='!post.id'>
+      <img ng-src="{{post.owner.photo}}" class="md-avatar" alt="" />
+      <div class="md-list-item-text">
+        <h3>{{post.owner.nickName}}</h3>
+        <h4>{{post.createDate}}</h4>
+        <p>{{post.content | limitTo:200}}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-virtual-repeat-container>

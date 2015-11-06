@@ -1,5 +1,4 @@
-var async = require('async'),
-    moment = require('moment');
+var async = require('async');
 
 module.exports = function(Group, User) {
 
@@ -35,7 +34,7 @@ module.exports = function(Group, User) {
           query.skip(20 * req.query.page);
 
         // run query
-        query.limit(20).sort('-createDate').exec(callback);
+        query.sort('-createDate').limit(20).exec(callback);
       }
 
     ], function(err, users) {
@@ -44,9 +43,7 @@ module.exports = function(Group, User) {
         var err = new Error('All Users Loaded');
         err.status = 404;
         next(err);
-      } else {
-        res.json(users);
-      }
+      } else res.json(users);
     });
 
   };

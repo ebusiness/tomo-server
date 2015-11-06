@@ -46,4 +46,7 @@ var UserReport = new Schema({
 
 });
 
+UserReport.set('toJSON', { virtuals: true });
+UserReport.set('toObject', { virtuals: true });
+
 mongoose.model('UserReport', UserReport);

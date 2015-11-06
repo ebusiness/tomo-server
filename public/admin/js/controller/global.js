@@ -9,7 +9,8 @@ angular.module('tripod')
     'SessionService',
     'NotificationService',
     'authService',
-    function ($rootScope,
+    function (
+      $rootScope,
       $location,
       $mdDialog,
       $mdSidenav,

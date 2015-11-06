@@ -5,12 +5,8 @@
       </md-icon>
     </md-button>
     <h2 flex>
-      <span>内容管理</span>
+      <span>被举报的帖子</span>
     </h2>
-    <md-button class="md-icon-button" ng-click="ctrl.showReported()">
-      <md-tooltip>被举报的内容</md-tooltip>
-      <md-icon md-svg-icon="content:ic_report_24px"></md-icon>
-    </md-button>
   </div>
 </md-toolbar>
 
@@ -22,14 +18,14 @@
       <md-list-item
           class="md-3-line md-long-text"
           md-on-demand
-          md-virtual-repeat="post in ctrl.posts"
-          ng-click="gctrl.navigateTo('/posts/'+post.id)"
-          ng-hide='!post.id'>
-        <img ng-src="{{post.owner.photo}}" class="md-avatar" alt="" />
+          md-virtual-repeat="report in ctrl.reports"
+          ng-click="gctrl.navigateTo('/users/'+user.id)"
+          ng-hide='!report.id'>
+        <img ng-src="{{report.reporter.photo ? report.reporter.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{user.nickName}}" class="md-avatar" alt="" />
         <div class="md-list-item-text">
-          <h3>{{post.owner.nickName}}</h3>
-          <h4>{{post.createDate}}</h4>
-          <p>{{post.content | limitTo:200}}</p>
+          <h3>{{report.reporter.nickName}}</h3>
+          <h4>{{report.createDate}}</h4>
+          <p>举报了{{report.post.content | limitTo:200}}</p>
         </div>
       </md-list-item>
     </md-list>

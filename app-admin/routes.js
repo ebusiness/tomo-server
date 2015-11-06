@@ -4,6 +4,8 @@ var fs = require('fs'),
   User = mongoose.model('User'),
   Post = mongoose.model('Post'),
   Group = mongoose.model('Group'),
+  PostReport = mongoose.model('PostReport'),
+  UserReport = mongoose.model('UserReport'),
   Mailer = require('./mailer/mailer.js');
 
 module.exports = function(app, config) {
@@ -49,8 +51,18 @@ module.exports = function(app, config) {
   //////////////////////////////////////////////////
   /// Post Relate
   //////////////////////////////////////////////////
-  app.get('/posts', checkLoginStatus, controller.post.index(Post));
+  app.get('/posts', checkLoginStatus, controller.post.index(User, Group, Post));
   app.get('/posts/:post', checkLoginStatus, controller.post.show(Post));
+  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(User, Group, Post));
+  app.get('/groups/:group/posts', checkLoginStatus, controller.post.index(User, Group, Post));
+
+  //////////////////////////////////////////////////
+  /// Report Relate
+  //////////////////////////////////////////////////
+  // Reported User List
+  app.get('/reports/users', checkLoginStatus, controller.report.user(UserReport));
+  // Reported Post List
+  app.get('/reports/posts', checkLoginStatus, controller.report.post(PostReport));
 };
 
 checkLoginStatus = function(req, res, next) {

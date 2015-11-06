@@ -1,17 +1,16 @@
 angular.module('tripod')
-  .controller('UserListController', [
-    '$state',
-    'SessionService',
+  .controller('UserPostController', [
     'UserService',
+    'user',
     function (
-      $state,
-      SessionService,
-      UserService
+      UserService,
+      user
     ) {
 
     var self = this;
+    self.user = user;
 
-    self.users = {
+    self.posts = {
 
       items: [],
 
@@ -33,19 +32,19 @@ angular.module('tripod')
 
         if (this.page*20 < index) {
 
-          var self = this;
+          var posts = this;
 
-          UserService.query({page: self.page}, function(users) {
-            self.items = self.items.concat(users);
+          UserService.query({
+            id: self.user.id,
+            type: 'posts',
+            page: posts.page
+          }, function(data) {
+            posts.items = posts.items.concat(data);
           });
 
-          self.page += 1;
+          posts.page += 1;
         }
       }
-    };
-
-    self.showReported = function() {
-      $state.go('reports.users');
     };
 
   }]);

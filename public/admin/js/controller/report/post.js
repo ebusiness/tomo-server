@@ -1,17 +1,9 @@
 angular.module('tripod')
-  .controller('UserListController', [
-    '$state',
-    'SessionService',
-    'UserService',
-    function (
-      $state,
-      SessionService,
-      UserService
-    ) {
+  .controller('ReportedPostListController', ['ReportService', function (ReportService) {
 
     var self = this;
 
-    self.users = {
+    self.reports = {
 
       items: [],
 
@@ -35,17 +27,16 @@ angular.module('tripod')
 
           var self = this;
 
-          UserService.query({page: self.page}, function(users) {
-            self.items = self.items.concat(users);
+          ReportService.query({
+            page: self.page,
+            type: 'posts'
+          }, function(data) {
+            self.items = self.items.concat(data);
           });
 
           self.page += 1;
         }
       }
-    };
-
-    self.showReported = function() {
-      $state.go('reports.users');
     };
 
   }]);

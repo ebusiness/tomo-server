@@ -1,15 +1,63 @@
-module.exports = function(Post) {
+var async = require('async');
+
+module.exports = function(User, Group, Post) {
 
   return function(req, res, next) {
 
-    var query = Post.find();
+    async.waterfall([
 
-    if (req.query.page)
-      query.skip(20 * req.query.page);
+      function findRelateObject(callback) {
 
-    query.populate('owner', 'nickName photo cover').sort('-createDate').limit(20).exec(function(err, posts) {
+        async.parallel({
+
+          user: function(callback) {
+            if (req.params.user)
+              User.findById(req.params.user, 'posts', callback);
+            else
+              callback(null, null);
+          },
+
+          group: function(callback) {
+            if (req.params.group)
+              Group.findById(req.params.group, 'posts', callback);
+            else
+              callback(null, null);
+          }
+
+        }, callback);
+      },
+
+      function findPost(relateObj, callback) {
+
+        // create query
+        var query = Post.find();
+
+        // posts of some user
+        if (relateObj.user)
+          query.where('_id').in(relateObj.user.posts);
+
+        // posts of some group
+        if (relateObj.group)
+          query.where('_id').in(relateObj.group.posts);
+
+        // paging
+        if (req.query.page)
+          query.skip(20 * req.query.page);
+
+        // run query
+        query.populate('owner', 'nickName photo cover')
+          .sort('-createDate').limit(20)
+          .exec(callback);
+      }
+
+    ], function(err, posts){
       if (err) next(err);
-      else res.json(posts);
+      else if (posts.length === 0) {
+        var err = new Error('All Posts Loaded');
+        err.status = 404;
+        next(err);
+      } else res.json(posts);
     });
+
   };
 };

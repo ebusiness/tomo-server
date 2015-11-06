@@ -10,105 +10,12 @@
   </div>
 </md-toolbar>
 
-<md-content layout="column">
+<md-tabs class="md-accent" md-stretch-tabs="auto" md-center-tabs="true" md-dynamic-height="true">
+  <md-tab label="账号信息" md-on-select="ctrl.showProfile()"></md-tab>
+  <md-tab label="帖子（{{ctrl.user.posts.length}}）" md-on-select="ctrl.showPosts()"></md-tab>
+  <md-tab label="统计信息" md-on-select="ctrl.showStatistics()"></md-tab>
+</md-tabs>
 
-  <md-list>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>电子邮件</h3>
-        <p>{{ctrl.user.email}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>密码</h3>
-        <p>{{ctrl.user.password}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>姓名</h3>
-        <p>{{ctrl.user.lastName}} {{ctrl.user.firstName}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>生年月日</h3>
-        <p>{{ctrl.user.birthDay}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>性别</h3>
-        <p>{{ctrl.user.gender}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>电话</h3>
-        <p>{{ctrl.user.telNo}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>地址</h3>
-        <p>{{ctrl.user.address}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="content:ic_content_paste_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>介绍</h3>
-        <p>{{ctrl.user.bio}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>登录日期</h3>
-        <p>{{ctrl.user.createDate}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>设备信息</h3>
-        <p>{{ctrl.user.device.model}} {{ctrl.user.device.os}} {{ctrl.user.device.version}}</p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>当前设定</h3>
-        <p></p>
-      </div>
-    </md-list-item>
-
-    <md-list-item class="md-2-line">
-      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
-      <div class="md-list-item-text">
-        <h3>活动状况</h3>
-        <canvas id="myChart"></canvas>
-      </div>
-    </md-list-item>
-
-  </md-list>
+<md-content flex layout="column">
+  <div ui-view flex layout="column"></div>
 </md-content>

@@ -1,95 +1,150 @@
-angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'infinite-scroll', 'angularFileUpload', 'tripod'])
-  .config(['$routeProvider', '$mdIconProvider', '$mdThemingProvider', function($routeProvider, $mdIconProvider, $mdThemingProvider) {
+angular.module('tomo', ['ui.router', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'infinite-scroll', 'angularFileUpload', 'tripod'])
+  .config(['$stateProvider', '$urlRouterProvider', '$mdIconProvider', '$mdThemingProvider', function($stateProvider, $urlRouterProvider, $mdIconProvider, $mdThemingProvider) {
 
-    $routeProvider
-      .when('/', {
+    $urlRouterProvider.otherwise("/");
+
+    $stateProvider
+      .state('home', {
+        url: '/',
         templateUrl: '/admin/template/home.html',
-        controller: 'HomeController',
-        controllerAs: 'ctrl'
+        controller: 'HomeController as ctrl'
       })
-      .when('/login', {
+      .state('login', {
+        url: '/login',
         templateUrl: '/admin/template/login.html',
-        controller: 'LoginController',
-        controllerAs: 'ctrl'
+        controller: 'LoginController as ctrl'
       })
-      .when('/signup', {
+      .state('signup', {
+        url: '/signup',
         templateUrl: '/admin/template/signup.html',
-        controller: 'SignUpController',
-        controllerAs: 'ctrl'
+        controller: 'SignUpController as ctrl'
       })
-      .when('/profile', {
+      .state('profile', {
+        url: '/profile',
         templateUrl: '/admin/template/profile/show.html',
-        controller: 'ProfileController',
-        controllerAs: 'ctrl',
+        controller: 'ProfileController as ctrl',
         resolve: {
           user: ['SessionService', function(SessionService) {
             return SessionService.session();
           }]
         }
       })
-      .when('/profile-edit', {
+      .state('profile.edit', {
+        url: '/profile-edit',
         templateUrl: '/admin/template/profile/edit.html',
-        controller: 'ProfileEditController',
-        controllerAs: 'ctrl',
+        controller: 'ProfileEditController as ctrl',
         resolve: {
           user: ['SessionService', function(SessionService) {
             return SessionService.session();
           }]
         }
       })
-      .when('/users', {
+
+      //////////////////////////////////////////////////
+      /// Report Relate
+      //////////////////////////////////////////////////
+      .state('reports', {
+        abstract: true,
+        url: '/reports',
+        template: '<ui-view layout="column" flex />'
+      })
+      .state('reports.users', {
+        url: '/users',
+        templateUrl: '/admin/template/report/user.html',
+        controller: 'ReportedUserListController as ctrl'
+      })
+      .state('reports.posts', {
+        url: '/posts',
+        templateUrl: '/admin/template/report/post.html',
+        controller: 'ReportedPostListController as ctrl'
+      })
+
+      //////////////////////////////////////////////////
+      /// User Relate
+      //////////////////////////////////////////////////
+      .state('users', {
+        url: '/users',
         templateUrl: '/admin/template/user/index.html',
-        controller: 'UserListController',
-        controllerAs: 'ctrl'
+        controller: 'UserListController as ctrl'
       })
-      .when('/users/:id', {
+      .state('user', {
+        url: '/users/:id',
         templateUrl: '/admin/template/user/show.html',
-        controller: 'UserController',
-        controllerAs: 'ctrl',
+        controller: 'UserController as ctrl',
         resolve: {
-          user: ['$route', 'UserService', function($route, UserService) {
+          user: ['$stateParams', 'UserService', function($stateParams, UserService) {
             return UserService.get({
-              id: $route.current.params.id
+              id: $stateParams.id
             }).$promise;
           }]
         }
       })
-      .when('/groups', {
+      .state('user.profile', {
+        url: '/profile',
+        templateUrl: '/admin/template/user/show.profile.html',
+        controller: 'UserProfileController as fctrl'
+      })
+      .state('user.posts', {
+        url: '/posts',
+        templateUrl: '/admin/template/user/show.posts.html',
+        controller: 'UserPostController as pctrl'
+      })
+      .state('user.statistics', {
+        url: '/statistics',
+        templateUrl: '/admin/template/user/show.statistics.html',
+        controller: 'UserStatisticsController as spctrl'
+      })
+
+      //////////////////////////////////////////////////
+      /// Group Relate
+      //////////////////////////////////////////////////
+      .state('groups', {
+        url: '/groups',
         templateUrl: '/admin/template/group/index.html',
-        controller: 'GroupListController',
-        controllerAs: 'ctrl'
+        controller: 'GroupListController as ctrl'
       })
-      .when('/groups/:id', {
+      .state('group', {
+        url: '/groups/:id',
         templateUrl: '/admin/template/group/show.html',
-        controller: 'GroupController',
-        controllerAs: 'ctrl',
+        controller: 'GroupController as ctrl',
         resolve: {
-          group: ['$route', 'GroupService', function($route, GroupService) {
+          group: ['$stateParams', 'GroupService', function($stateParams, GroupService) {
             return GroupService.get({
-              id: $route.current.params.id
+              id: $stateParams.id
             }).$promise;
           }]
         }
       })
-      .when('/posts', {
+      .state('group.members', {
+        url: '/members',
+        templateUrl: '/admin/template/group/show.members.html',
+        controller: 'GroupMemberController as mctrl'
+      })
+      .state('group.posts', {
+        url: '/posts',
+        templateUrl: '/admin/template/group/show.posts.html',
+        controller: 'GroupPostController as pctrl'
+      })
+
+      //////////////////////////////////////////////////
+      /// Post Relate
+      //////////////////////////////////////////////////
+      .state('posts', {
+        url: '/posts',
         templateUrl: '/admin/template/post/index.html',
-        controller: 'PostListController',
-        controllerAs: 'ctrl'
+        controller: 'PostListController as ctrl'
       })
-      .when('/posts/:id', {
+      .state('post', {
+        url: '/posts/:id',
         templateUrl: '/admin/template/post/show.html',
-        controller: 'PostController',
-        controllerAs: 'ctrl',
+        controller: 'PostController as ctrl',
         resolve: {
-          post: ['$route', 'PostService', function($route, PostService) {
+          post: ['$stateParams', 'PostService', function($stateParams, PostService) {
             return PostService.get({
-              id: $route.current.params.id
+              id: $stateParams.id
             }).$promise;
           }]
         }
-      })
-      .otherwise({
-        redirectTo: '/'
       });
 
     $mdIconProvider
@@ -106,6 +161,7 @@ angular.module('tomo', ['ngRoute', 'ngResource', 'ngMessages', 'ngAnimate', 'ngM
       .accentPalette('pink');
 
   }]);
+
 // .run(['$http', '$templateCache', function($http, $templateCache) {
 //   $http.get('/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-action.svg', {
 //     cache: $templateCache

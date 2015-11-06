@@ -1,0 +1,35 @@
+<md-toolbar layout="row">
+  <div class="md-toolbar-tools">
+    <md-button class="md-icon-button" ng-click="gctrl.toggleLeft()">
+      <md-icon md-svg-icon="navigation:ic_menu_24px">
+      </md-icon>
+    </md-button>
+    <h2 flex>
+      <span>被举报的用户</span>
+    </h2>
+  </div>
+</md-toolbar>
+
+<md-content flex layout="column">
+
+  <md-virtual-repeat-container flex>
+
+    <md-list>
+      <md-list-item
+          class="md-3-line"
+          md-on-demand
+          md-virtual-repeat="report in ctrl.reports"
+          ng-click="gctrl.navigateTo('/users/'+user.id)"
+          ng-hide='!report.id'>
+        <img ng-src="{{report.reporter.photo ? report.reporter.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{user.nickName}}" class="md-avatar" alt="" />
+        <div class="md-list-item-text">
+          <h3>{{report.reporter.nickName}}</h3>
+          <h4>{{report.createDate}}</h4>
+          <p>举报了{{report.user.nickName}} {{user.firstName}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+
+  </md-virtual-repeat-container>
+
+</md-content>

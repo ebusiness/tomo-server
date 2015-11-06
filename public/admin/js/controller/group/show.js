@@ -1,14 +1,12 @@
 angular.module('tripod')
   .controller('GroupController', [
+    '$state',
     '$timeout',
-    'SessionService',
-    'GroupService',
     'FileUploader',
     'group',
     function (
+      $state,
       $timeout,
-      SessionService,
-      GroupService,
       FileUploader,
       group
     ) {
@@ -36,43 +34,12 @@ angular.module('tripod')
       }, 0);
     }
 
-    self.members = {
+    self.showMembers = function() {
+      $state.go('group.members')
+    }
 
-      items: [],
-
-      page: 0,
-
-      getItemAtIndex: function(index) {
-        if (index > this.items.length) {
-          this.fetchMoreItems_(index);
-          return null;
-        }
-        return this.items[index];
-      },
-
-      getLength: function() {
-        return this.items.length + 3;
-      },
-
-      fetchMoreItems_: function(index) {
-
-        if (this.page*20 < index) {
-
-          console.log("asdfasdf")
-
-          var members = this;
-
-          GroupService.query({
-            id: self.group.id,
-            type: 'members',
-            page: members.page
-          }, function(groups) {
-            members.items = members.items.concat(groups);
-          });
-
-          members.page += 1;
-        }
-      }
-    };
+    self.showPosts = function() {
+      $state.go('group.posts')
+    }
 
   }]);

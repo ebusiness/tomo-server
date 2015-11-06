@@ -51,14 +51,15 @@ html(lang='zh')
           md-icon(md-svg-icon="action:ic_exit_to_app_24px")
           p 退出
       
-    ng-view(ng-cloak, layout="column", flex)
+    ui-view(ng-cloak, layout="column", flex)
       
     // JS main library
     //- script(src='//maps.googleapis.com/maps/api/js?sensor=false')
     //- script(src='bower_components/lodash/lodash.min.js')
     //- script(src='bower_components/moment/min/moment-with-locales.js')
     script(src='bower_components/angular/angular.min.js')
-    script(src='bower_components/angular-route/angular-route.min.js')
+    //- script(src='bower_components/angular-route/angular-route.min.js')
+    script(src='bower_components/angular-ui-router/release/angular-ui-router.min.js')
     script(src='bower_components/angular-aria/angular-aria.min.js')
     script(src='bower_components/angular-animate/angular-animate.min.js')
     script(src='bower_components/angular-material/angular-material.js')
@@ -68,24 +69,30 @@ html(lang='zh')
     script(src='bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js')
     //- script(src='bower_components/ngImgCrop/compile/minified/ng-img-crop.js')
     script(src='bower_components/angular-file-upload/dist/angular-file-upload.min.js')
+    script(src='bower_components/chart.js/chart.js')
     //- script(src='bower_components/angular-moment/angular-moment.min.js')
     //- script(src='bower_components/angular-google-maps/dist/angular-google-maps.min.js')
     
     // JS custom library
     script(src='js/tripod.js')
+    
     script(src='js/value/visa.js')
     script(src='js/value/country.js')
     script(src='js/value/language.js')
+    
     script(src='js/filter/age.js')
     script(src='js/filter/gender.js')
     script(src='js/filter/language.js')
     script(src='js/filter/nationality.js')
+    
     script(src='js/service/me.js')
     script(src='js/service/user.js')
     script(src='js/service/post.js')
     script(src='js/service/group.js')
+    script(src='js/service/report.js')
     script(src='js/service/session.js')
     script(src='js/service/notification.js')
+    
     script(src='js/directive/avaliable-id.js')
     script(src='js/directive/repass.js')
     script(src='js/directive/date.js')
@@ -104,12 +111,20 @@ html(lang='zh')
     
     script(src='admin/js/controller/user/index.js')
     script(src='admin/js/controller/user/show.js')
+    script(src='admin/js/controller/user/show.posts.js')
+    script(src='admin/js/controller/user/show.profile.js')
+    script(src='admin/js/controller/user/show.statistics.js')
     
     script(src='admin/js/controller/group/index.js')
     script(src='admin/js/controller/group/show.js')
+    script(src='admin/js/controller/group/show.members.js')
+    script(src='admin/js/controller/group/show.posts.js')
     
     script(src='admin/js/controller/post/index.js')
     script(src='admin/js/controller/post/show.js')
+    
+    script(src='admin/js/controller/report/user.js')
+    script(src='admin/js/controller/report/post.js')
 
     //- script(src='admin/js/admin/template.js')
     script(src='admin/js/main.js')

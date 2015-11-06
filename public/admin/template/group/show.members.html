@@ -1,0 +1,15 @@
+<md-virtual-repeat-container flex>
+  <md-list>
+    <md-list-item
+        class="md-3-line contact-item"
+        md-on-demand
+        md-virtual-repeat="member in mctrl.members"
+        ng-hide='!member.id'>
+      <img ng-src="{{member.photo ? member.photo : 'admin/asset/images/avatar@2x.png'}}" class="md-avatar" alt="{{member.nickName}}" />
+      <div class="md-list-item-text compact">
+        <h3>{{member.nickName}}</h3>
+        <p>{{member.lastName}} {{member.firstName}}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-virtual-repeat-container>

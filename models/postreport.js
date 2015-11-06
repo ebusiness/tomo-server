@@ -46,4 +46,7 @@ var PostReport = new Schema({
 
 });
 
+PostReport.set('toJSON', { virtuals: true });
+PostReport.set('toObject', { virtuals: true });
+
 mongoose.model('PostReport', PostReport);

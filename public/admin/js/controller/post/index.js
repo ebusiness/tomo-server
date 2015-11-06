@@ -1,9 +1,9 @@
 angular.module('tripod')
   .controller('PostListController', [
-    'SessionService',
+    '$state',
     'PostService',
     function (
-      SessionService,
+      $state,
       PostService
     ) {
 
@@ -40,6 +40,10 @@ angular.module('tripod')
           self.page += 1;
         }
       }
+    };
+
+    self.showReported = function() {
+      $state.go('reports.posts');
     };
 
   }]);
