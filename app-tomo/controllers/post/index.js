@@ -59,7 +59,7 @@ module.exports = function(Post, User, Group) {
 
         query.select('owner group content images like bookmark comments location coordinate createDate')
           .populate('owner', 'nickName photo cover')
-          .populate('group', 'name')
+          .populate('group', 'owner type name cover introduction coordinate address members posts')
           .populate('comments.owner', 'nickName photo cover')
           .where('logicDelete').equals(false)
           .limit(req.query.size || 10)
