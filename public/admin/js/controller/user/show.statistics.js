@@ -1,41 +1,45 @@
 angular.module('tripod')
-  .controller('UserStatisticsController', [
-    'UserService',
-    'user',
-    function (
-      UserService,
-      user
-    ) {
+  .controller('UserStatisticsController', ['StatisticService', 'user', function (StatisticService, user) {
 
-    Chart.defaults.global.responsive = true;
+    var self = this;
 
-    var data = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [
-            {
-                label: "My First dataset",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [65, 59, 80, 81, 56, 55, 40]
-            },
-            {
-                label: "My Second dataset",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
-                data: [28, 48, 40, 19, 86, 27, 90]
-            }
-        ]
-    };
+    StatisticService.query({user: user.id}, function(data){
 
-    var ctx = document.getElementById("myChart").getContext("2d");
-    var myNewChart = new Chart(ctx).Line(data);
+      // prepare chart labels
+      var iteDate = moment(data[0].date);
+
+      self.labels = [];
+      while (!iteDate.isSame(new Date(), 'day')) {
+        self.labels.push(iteDate.format("YYYY/MM/DD"));
+        iteDate.add(1, 'days');
+      }
+
+      // prepare chart series
+      var groupedData = _.groupBy(data, 'type');
+      self.series = _.keys(groupedData);
+
+      // prepare chart data
+      self.data = [];
+      _.forEach(self.series, function(serie) {
+
+        var subset = [];
+        var serieData = groupedData[serie];
+        var tempDate = moment(data[0].date);
+
+        while (!tempDate.isSame(new Date(), 'day')) {
+
+          var realData = _.find(serieData, {date: tempDate.format("YYYY-MM-DD")});
+
+          if (realData)
+            subset.push(realData.count);
+          else
+            subset.push(0);
+
+          tempDate.add(1, 'days');
+        }
+
+        self.data.push(subset);
+      });
+    });
 
   }]);

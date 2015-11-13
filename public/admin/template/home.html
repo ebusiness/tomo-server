@@ -4,8 +4,181 @@
       <md-icon md-svg-icon="navigation:ic_menu_24px">
       </md-icon>
     </md-button>
-    <h2>
+    <h2 flex>
       <span>HOME</span>
     </h2>
+    <md-button class="md-icon-button" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+      <md-icon md-svg-icon="navigation:ic_chevron_left_24px"></md-icon>
+    </md-button>
+    <md-menu md-position-mode="target-right target">
+      <md-button ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+        title
+      </md-button>
+      <md-menu-content width="2">
+        <md-menu-item>
+          <md-button ng-click="ctrl.redial($event)">
+            <md-icon md-svg-icon="action:ic_today_24px"></md-icon>
+            周
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="ctrl.checkVoicemail()">
+            <md-icon md-svg-icon="action:ic_today_24px"></md-icon>
+            月
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="ctrl.toggleNotifications()">
+            <md-icon md-svg-icon="action:ic_today_24px"></md-icon>
+            年
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <md-button class="md-icon-button" ng-click="ctrl.openMenu($mdOpenMenu, $event)">
+      <md-icon md-svg-icon="navigation:ic_chevron_right_24px"></md-icon>
+    </md-button>
   </div>
 </md-toolbar>
+
+<md-content flex layout-wrap layout-padding layout="row" layout-align="space-around center">
+
+  <md-whiteframe class="md-whiteframe-3dp" layout-margin flex-gt-md="45">
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <h2 flex>
+          <span>用户</span>
+        </h2>
+        <md-button class="md-icon-button">
+          <md-icon md-svg-icon="navigation:ic_more_vert_24px"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout-padding>
+      <canvas
+        class="chart chart-line"
+        chart-data="ctrl.accounts.data"
+        chart-labels="ctrl.accounts.labels"
+        chart-series="ctrl.accounts.series"
+        chart-colours="ctrl.accounts.colours"
+        chart-legend="true">
+      </canvas>
+    </md-content>
+  </md-whiteframe>
+
+  <md-whiteframe class="md-whiteframe-3dp" layout-margin flex-gt-md="45">
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <h2 flex>
+          <span>社交</span>
+        </h2>
+        <md-button class="md-icon-button">
+          <md-icon md-svg-icon="navigation:ic_more_vert_24px"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout-padding>
+      <canvas
+        class="chart chart-line"
+        chart-data="ctrl.users.data"
+        chart-labels="ctrl.users.labels"
+        chart-series="ctrl.users.series"
+        chart-colours="ctrl.users.colours"
+        chart-legend="true">
+      </canvas>
+    </md-content>
+  </md-whiteframe>
+
+  <md-whiteframe class="md-whiteframe-3dp" layout-margin flex-gt-md="45">
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <h2 flex>
+          <span>帖子</span>
+        </h2>
+        <md-button class="md-icon-button">
+          <md-icon md-svg-icon="navigation:ic_more_vert_24px"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout-padding>
+      <canvas
+        class="chart chart-line"
+        chart-data="ctrl.posts.data"
+        chart-labels="ctrl.posts.labels"
+        chart-series="ctrl.posts.series"
+        chart-colours="ctrl.posts.colours"
+        chart-legend="true">
+      </canvas>
+    </md-content>
+  </md-whiteframe>
+
+  <md-whiteframe class="md-whiteframe-3dp" layout-margin flex-gt-md="45">
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <h2 flex>
+          <span>群组</span>
+        </h2>
+        <md-button class="md-icon-button">
+          <md-icon md-svg-icon="navigation:ic_more_vert_24px"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout-padding>
+      <canvas
+        class="chart chart-line"
+        chart-data="ctrl.groups.data"
+        chart-labels="ctrl.groups.labels"
+        chart-series="ctrl.groups.series"
+        chart-colours="ctrl.groups.colours"
+        chart-legend="true">
+      </canvas>
+    </md-content>
+  </md-whiteframe>
+
+  <md-whiteframe class="md-whiteframe-3dp" layout-margin flex-gt-md="45">
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <h2 flex>
+          <span>即时消息</span>
+        </h2>
+        <md-button class="md-icon-button">
+          <md-icon md-svg-icon="navigation:ic_more_vert_24px"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout-padding>
+      <canvas
+        class="chart chart-line"
+        chart-data="ctrl.messages.data"
+        chart-labels="ctrl.messages.labels"
+        chart-series="ctrl.messages.series"
+        chart-colours="ctrl.messages.colours"
+        chart-legend="true">
+      </canvas>
+    </md-content>
+  </md-whiteframe>
+
+  <md-whiteframe class="md-whiteframe-3dp" layout-margin flex-gt-md="45">
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <h2 flex>
+          <span>举报和投诉</span>
+        </h2>
+        <md-button class="md-icon-button">
+          <md-icon md-svg-icon="navigation:ic_more_vert_24px"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout-padding>
+      <canvas
+        class="chart chart-line"
+        chart-data="ctrl.reports.data"
+        chart-labels="ctrl.reports.labels"
+        chart-series="ctrl.reports.series"
+        chart-colours="ctrl.reports.colours"
+        chart-legend="true">
+      </canvas>
+    </md-content>
+  </md-whiteframe>
+
+</md-content>

@@ -1,7 +1,9 @@
-<md-list>
-
-  <md-list-item>
-    <canvas id="myChart"></canvas>
-  </md-list-item>
-
-</md-list>
+<md-content flex layout="column">
+  <canvas id="line"
+    class="chart chart-line"
+    chart-data="sctrl.data"
+    chart-labels="sctrl.labels"
+    chart-legend="true"
+    chart-series="sctrl.series">
+  </canvas>
+</md-content>

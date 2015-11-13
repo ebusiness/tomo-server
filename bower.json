@@ -26,6 +26,10 @@
     "angular-file-upload": null,
     "angular-http-auth": null,
     "material-design-icons": null,
-    "Chart.js": "~1.0.2"
+    "angular-chart.js": "~0.8.5",
+    "Chart.js": "~1.0.2",
+    "lodash": "~3.10.1",
+    "moment": "~2.10.6",
+    "angular-ui-router": "~0.2.15"
   }
 }

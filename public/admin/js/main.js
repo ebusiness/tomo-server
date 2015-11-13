@@ -1,4 +1,4 @@
-angular.module('tomo', ['ui.router', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'infinite-scroll', 'angularFileUpload', 'tripod'])
+angular.module('tomo', ['ui.router', 'ngResource', 'ngMessages', 'ngAnimate', 'ngMaterial', 'http-auth-interceptor', 'infinite-scroll', 'angularFileUpload', 'chart.js', 'tripod'])
   .config(['$stateProvider', '$urlRouterProvider', '$mdIconProvider', '$mdThemingProvider', function($stateProvider, $urlRouterProvider, $mdIconProvider, $mdThemingProvider) {
 
     $urlRouterProvider.otherwise("/");
@@ -92,7 +92,7 @@ angular.module('tomo', ['ui.router', 'ngResource', 'ngMessages', 'ngAnimate', 'n
       .state('user.statistics', {
         url: '/statistics',
         templateUrl: '/admin/template/user/show.statistics.html',
-        controller: 'UserStatisticsController as spctrl'
+        controller: 'UserStatisticsController as sctrl'
       })
 
       //////////////////////////////////////////////////

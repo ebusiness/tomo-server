@@ -1,0 +1,52 @@
+<md-dialog>
+
+  <form id="optionForm" name="optionForm" novalidate>
+
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button">
+          <md-icon md-svg-icon="action:ic_trending_up_24px"></md-icon>
+        </md-button>
+        <h2 flex>统计信息选项</h2>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+
+      <div class="md-dialog-content" layout="row">
+
+        <div layout="row" layout-wrap flex="66">
+          <div flex="33" ng-repeat="type in ctrl.activityTypes">
+            <md-checkbox ng-checked="ctrl.exists(type.code)" ng-click="ctrl.toggle(type.code)">
+              {{type.name}}
+            </md-checkbox>
+          </div>
+        </div>
+
+        <div layout="column" layout-wrap flex="33">
+          <md-datepicker
+              ng-model="ctrl.after"
+              md-placeholder="统计起始日"
+              md-min-date="minDate"
+              md-max-date="ctrl.before || ctrl.today">
+          </md-datepicker>
+          <md-datepicker
+              ng-model="ctrl.before"
+              md-placeholder="统计结束日"
+              md-min-date="ctrl.after"
+              md-max-date="ctrl.today">
+          </md-datepicker>
+        </div>
+
+      </div>
+
+      <div class="md-actions" layout="row">
+        <md-button class="md-primary" type="submit" form="optionForm" ng-click="ctrl.setOption()" ng-disabled="optionForm.$invalid || optionForm.$pending">查询</md-button>
+        <md-button class="md-primary" form="optionForm" ng-click="ctrl.cancel()">取消</md-button>
+      </div>
+
+    </md-dialog-content>
+
+  </form>
+
+</md-dialog>

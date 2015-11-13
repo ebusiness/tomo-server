@@ -22,6 +22,14 @@
     </md-list-item>
 
     <md-list-item class="md-2-line">
+      <md-icon class="md-avatar-icon" md-svg-icon="action:ic_alarm_24px"></md-icon>
+      <div class="md-list-item-text">
+        <h4>图片信息</h4>
+        <img ng-repeat="img in ctrl.post.images_ref" src="{{img}}" style="max-height:300px; width: auto;"/>
+      </div>
+    </md-list-item>
+
+    <md-list-item class="md-2-line">
       <md-icon class="md-avatar-icon" md-svg-icon="content:ic_content_paste_24px"></md-icon>
       <div class="md-list-item-text">
         <h4>内容正文</h4>
