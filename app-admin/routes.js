@@ -41,6 +41,7 @@ module.exports = function(app, config) {
   app.get('/users', checkLoginStatus, controller.user.index(Group, User));
   app.get('/users/:user', checkLoginStatus, controller.user.show(User));
   app.get('/groups/:group/members', checkLoginStatus, controller.user.index(Group, User));
+  app.post('/users/:user/notification', controller.user.notification(User));
 
   //////////////////////////////////////////////////
   /// Group Relate
