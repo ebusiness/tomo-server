@@ -48,7 +48,10 @@ module.exports = function(config, server) {
     store: redisStore,
     resave: true,
     saveUninitialized: true,
-    secret: 'uwotm8'
+    secret: 'uwotm8',
+    cookie: {
+      maxAge: 60 * 60 * 24 * 3 * 1000 // 3 days
+    }
   });
 
   sio.use(function(socket, next) {

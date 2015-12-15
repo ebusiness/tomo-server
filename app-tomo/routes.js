@@ -45,6 +45,9 @@ module.exports = function(app, config, sio) {
   // User Decive Register
   app.post('/device', checkLoginStatus, controller.me.device(User));
 
+  // User Session
+  app.get('/session', checkLoginStatus, controller.me.show(User));
+
   // User Profile Update
   app.patch('/me', checkLoginStatus, controller.me.update(User));
 
@@ -144,7 +147,7 @@ checkLoginStatus = function(req, res, next) {
   else {
 
     // find user by his id
-    User.findById(req.session.userId, function(err, user) {
+    User.findById(req.session.userId,'-password -logicDelete', function(err, user) {
 
       if (!err && user) {
         // associate user with request

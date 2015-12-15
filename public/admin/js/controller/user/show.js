@@ -42,9 +42,5 @@ angular.module('tripod')
             $log.log(response);
         });
     };
-
-    self.voidFunction = function() {
-        
-    };
-
+    
   }]);

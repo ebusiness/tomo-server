@@ -88,68 +88,66 @@
         </div>
     </md-list-item>
 
-    <md-list-item ng-show="ctrl.user.device.token" ng-click="ctrl.voidFunction()">
-        <fieldset class="standard">
-            <legend>推送</legend>
-            <md-input-container>
-                <label>消息内容</label>
-                <textarea ng-model="ctrl.notification.alert.body"></textarea>
-            </md-input-container>
-            <md-input-container ng-show="ctrl.notification.complex">
-                <label>标题</label>
-                <textarea ng-model="ctrl.notification.alert.title"></textarea>
-            </md-input-container>
-            <md-input-container ng-show="ctrl.notification.complex">
-                <label>title-loc-key</label>
-                <textarea ng-model="ctrl.notification.alert.titleLocKey"></textarea>
-            </md-input-container>
-            <md-input-container ng-show="ctrl.notification.complex">
-                <label>title-loc-args</label>
-                <textarea ng-model="ctrl.notification.alert.titleLocArgs"></textarea>
-            </md-input-container>
-            <md-input-container ng-show="ctrl.notification.complex">
-                <label>action-loc-key</label>
-                <textarea ng-model="ctrl.notification.alert.actionLocKey"></textarea>
-            </md-input-container>
-            <md-input-container ng-show="ctrl.notification.complex">
-                <label>loc-key</label>
-                <textarea ng-model="ctrl.notification.alert.locKey"></textarea>
-            </md-input-container>
-            <md-input-container ng-show="ctrl.notification.complex">
-                <label>loc-args</label>
-                <textarea ng-model="ctrl.notification.alert.locArgs"></textarea>
-            </md-input-container>
-            <md-input-container ng-show="ctrl.notification.complex">
-                <label>launch-image</label>
-                <md-select ng-model="ctrl.notification.launchImage">
-                    <md-option value="default">Default.png</md-option>
-                </md-select>
-            </md-input-container>
-            <md-switch ng-model="ctrl.notification.complex" ng-disabled="true">
-                详细设置
-            </md-switch>
-            <md-input-container>
-                <label>数字角标</label>
-                <textarea ng-model="ctrl.notification.badge" ng-pattern="/^\d+$/"></textarea>
-            </md-input-container>
-            <md-input-container>
-                <label>声音</label>
-                <md-select ng-model="ctrl.notification.sound">
-                    <md-option value="default">default</md-option>
-                </md-select>
-            </md-input-container>
-            <md-switch ng-model="ctrl.notification.contentAvailable">
-                content－available
-            </md-switch>
-            <md-input-container>
-                <label>类型</label>
-                <md-select ng-model="ctrl.notification.category">
-                    <md-option value="default">默认消息</md-option>
-                </md-select>
-            </md-input-container>
-            <md-button class="md-raised md-primary" ng-click="ctrl.pushNotification()">推送通知</md-button>
-        </fieldset>
-    </md-list-item>
+    <fieldset class="standard" ng-show="ctrl.user.device.token">
+        <legend>推送</legend>
+        <md-input-container>
+            <label>消息内容</label>
+            <textarea ng-model="ctrl.notification.alert.body"></textarea>
+        </md-input-container>
+        <md-input-container ng-show="ctrl.notification.complex">
+            <label>标题</label>
+            <textarea ng-model="ctrl.notification.alert.title"></textarea>
+        </md-input-container>
+        <md-input-container ng-show="ctrl.notification.complex">
+            <label>title-loc-key</label>
+            <textarea ng-model="ctrl.notification.alert.titleLocKey"></textarea>
+        </md-input-container>
+        <md-input-container ng-show="ctrl.notification.complex">
+            <label>title-loc-args</label>
+            <textarea ng-model="ctrl.notification.alert.titleLocArgs"></textarea>
+        </md-input-container>
+        <md-input-container ng-show="ctrl.notification.complex">
+            <label>action-loc-key</label>
+            <textarea ng-model="ctrl.notification.alert.actionLocKey"></textarea>
+        </md-input-container>
+        <md-input-container ng-show="ctrl.notification.complex">
+            <label>loc-key</label>
+            <textarea ng-model="ctrl.notification.alert.locKey"></textarea>
+        </md-input-container>
+        <md-input-container ng-show="ctrl.notification.complex">
+            <label>loc-args</label>
+            <textarea ng-model="ctrl.notification.alert.locArgs"></textarea>
+        </md-input-container>
+        <md-input-container ng-show="ctrl.notification.complex">
+            <label>launch-image</label>
+            <md-select ng-model="ctrl.notification.launchImage">
+                <md-option value="default">Default.png</md-option>
+            </md-select>
+        </md-input-container>
+        <md-switch ng-model="ctrl.notification.complex" ng-disabled="true">
+            详细设置
+        </md-switch>
+        <md-input-container>
+            <label>数字角标</label>
+            <textarea ng-model="ctrl.notification.badge" ng-pattern="/^\d+$/"></textarea>
+        </md-input-container>
+        <md-input-container>
+            <label>声音</label>
+            <md-select ng-model="ctrl.notification.sound">
+                <md-option value="default">default</md-option>
+            </md-select>
+        </md-input-container>
+        <md-switch ng-model="ctrl.notification.contentAvailable">
+            content－available
+        </md-switch>
+        <md-input-container>
+            <label>类型</label>
+            <md-select ng-model="ctrl.notification.category">
+                <md-option value="default">默认消息</md-option>
+            </md-select>
+        </md-input-container>
+        <md-button class="md-raised md-primary" ng-click="ctrl.pushNotification()">推送通知</md-button>
+    </fieldset>
 
     <md-list-item>
         <canvas id="myChart"></canvas>
