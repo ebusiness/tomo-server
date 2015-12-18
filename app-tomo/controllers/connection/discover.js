@@ -7,7 +7,7 @@ module.exports = function(User) {
 
 		User.find({
 			_id: {$nin: exclude},
-			nickName: new RegExp('^'+req.query.nickName+'$', "i")
+			nickName: new RegExp('^.*?'+req.query.nickName+'.*$', "i")
 		}, 'nickName firstName lastName photo cover birthDay gender telNo address bio', function(err, users) {
 	    	if (err) next(err);
 				else if (users.length === 0) {
