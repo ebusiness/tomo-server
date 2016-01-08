@@ -11,80 +11,6 @@ var User = new Schema({
         trim: true
     },
 
-    device: {
-        os: {
-            type: String,
-            trim: true
-        },
-        version: {
-            type: String,
-            trim: true
-        },
-        model: {
-            type: String,
-            trim: true
-        },
-        token: {
-            type: String,
-            trim: true
-        }
-    },
-
-    pushSetting: {
-        announcement: {
-            type: Boolean,
-            default: true
-        },
-        message: {
-            type: Boolean,
-            default: true
-        },
-        groupMessage: {
-            type: Boolean,
-            default: true
-        },
-        friendInvited: {
-            type: Boolean,
-            default: true
-        },
-        friendAccepted: {
-            type: Boolean,
-            default: true
-        },
-        friendRefused: {
-            type: Boolean,
-            default: true
-        },
-        friendBreak: {
-            type: Boolean,
-            default: true
-        },
-        postNew: {
-            type: Boolean,
-            default: true
-        },
-        postCommented: {
-            type: Boolean,
-            default: true
-        },
-        postLiked: {
-            type: Boolean,
-            default: true
-        },
-        postBookmarked: {
-            type: Boolean,
-            default: true
-        },
-        groupJoined: {
-            type: Boolean,
-            default: true
-        },
-        groupLeft: {
-            type: Boolean,
-            default: true
-        }
-    },
-
     openIdWeChat: {
         type: String,
         trim: true
@@ -179,6 +105,85 @@ var User = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+
+    primaryStation: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
+
+    device: {
+        os: {
+            type: String,
+            trim: true
+        },
+        version: {
+            type: String,
+            trim: true
+        },
+        model: {
+            type: String,
+            trim: true
+        },
+        token: {
+            type: String,
+            trim: true
+        }
+    },
+
+    pushSetting: {
+        announcement: {
+            type: Boolean,
+            default: true
+        },
+        message: {
+            type: Boolean,
+            default: true
+        },
+        groupMessage: {
+            type: Boolean,
+            default: true
+        },
+        friendInvited: {
+            type: Boolean,
+            default: true
+        },
+        friendAccepted: {
+            type: Boolean,
+            default: true
+        },
+        friendRefused: {
+            type: Boolean,
+            default: true
+        },
+        friendBreak: {
+            type: Boolean,
+            default: true
+        },
+        postNew: {
+            type: Boolean,
+            default: true
+        },
+        postCommented: {
+            type: Boolean,
+            default: true
+        },
+        postLiked: {
+            type: Boolean,
+            default: true
+        },
+        postBookmarked: {
+            type: Boolean,
+            default: true
+        },
+        groupJoined: {
+            type: Boolean,
+            default: true
+        },
+        groupLeft: {
+            type: Boolean,
+            default: true
+        }
+    },
 
     logicDelete: {
         type: Boolean,

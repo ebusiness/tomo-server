@@ -10,7 +10,14 @@ var Group = new Schema({
         ref: 'User'
     },
 
+    // possible value: 'station', 'site', 'normal'
     type: {
+        type: String,
+        trim: true
+    },
+
+    // possible value: 'public', 'semi-private', 'private'
+    privacy: {
         type: String,
         trim: true
     },
@@ -45,6 +52,11 @@ var Group = new Schema({
         type: String,
         trim: true
     },
+
+    watchers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 
     members: [{
         type: Schema.Types.ObjectId,
