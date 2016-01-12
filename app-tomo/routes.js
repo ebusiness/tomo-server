@@ -46,7 +46,7 @@ module.exports = function(app, config, sio) {
   app.post('/device', checkLoginStatus, controller.me.device(User));
 
   // User Session
-  app.get('/session', checkLoginStatus, controller.me.show(User, Invitation, Message, Notification));
+  app.get('/session', checkLoginStatus, controller.me.show(Invitation, Message, Notification));
 
   // User Profile Update
   app.patch('/me', checkLoginStatus, controller.me.update(User));
