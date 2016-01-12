@@ -30,6 +30,7 @@ module.exports = function(GroupMessage) {
           query.where('createDate').lt(moment.unix(req.query.before).toDate());
 
         query.select('from to content opened createDate')
+          .populate('from', 'nickName photo')
           .where('group').equals(req.params.group)
           .where('logicDelete').equals(false)
           .limit(req.query.size || 20)
