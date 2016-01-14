@@ -26,7 +26,7 @@ module.exports = function(User, Message) {
 
           async.map(friends, function(friend, callback) {
             Message.findOne()
-              .select('content createDate')
+              .select('type content createDate')
               .where('from').in([req.user.id, friend.id])
               .where('to').in([req.user.id, friend.id])
               .where('logicDelete').ne(req.user.id)
