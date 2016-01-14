@@ -36,6 +36,7 @@ module.exports = function(User, Message, Activity, sio) {
             photo:    req.user.photo_ref,
             cover:    req.user.cover_ref
           },
+          messagetype: message.type,
           content: message.content,
           createDate: message.createDate
         }

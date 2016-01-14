@@ -24,7 +24,7 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
 
         var pushMembers = [];
         Group.findById(req.params.group, function(err, group) {
-          
+
           var alertMessage = req.user.nickName ;
 
           if (message.type == "voice") {
@@ -45,6 +45,7 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
               photo:    req.user.photo_ref,
               cover:    req.user.cover_ref
             },
+            messagetype: message.type,
             content: message.content,
             createDate: message.createDate,
             targetId: req.params.group
