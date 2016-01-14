@@ -16,6 +16,12 @@ var Message = new Schema({
         required: true
     },
 
+    type: {
+        type: String,
+        trim: true,
+        required: true
+    },
+
     content: {
         type: String,
         trim: true,

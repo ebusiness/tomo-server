@@ -16,18 +16,16 @@ module.exports = function(User, Message, Activity, sio) {
 
         var room = sio.sockets.adapter.rooms[req.body.to];
 
-        var alertMessage = req.user.nickName + " : " + message.content ;
+        var alertMessage = req.user.nickName ;
 
-        var reg_content = /^(\[(voice|photo|video)\]).*$/i;
-        if (reg_content.test(message.content)){
-            var msgtype = message.content.replace(reg_content,"$1");
-            if (msgtype == "[voice]") {
-              alertMessage = req.user.nickName + "发给您一段语音";
-            } else if(msgtype == "[photo]") {
-              alertMessage = req.user.nickName + "发给您一张图片";
-            } else if(msgtype == "[video]") {
-              alertMessage = req.user.nickName + "发给您一段视频";
-            }
+        if (message.type == "voice") {
+          alertMessage += "发给您一段语音";
+        } else if(message.type == "photo") {
+          alertMessage += "发给您一张图片";
+        } else if(message.type == "video") {
+          alertMessage += "发给您一段视频";
+        } else { //if(message.type == "text") {
+          alertMessage += " : " + message.content;
         }
 
         var payload = {

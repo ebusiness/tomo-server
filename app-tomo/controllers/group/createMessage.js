@@ -24,19 +24,17 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
 
         var pushMembers = [];
         Group.findById(req.params.group, function(err, group) {
+          
+          var alertMessage = req.user.nickName ;
 
-          var alertMessage = req.user.nickName + " : " + message.content ;
-
-          var reg_content = /^(\[(voice|photo|video)\]).*$/i;
-          if (reg_content.test(message.content)){
-              var msgtype = message.content.replace(reg_content,"$1");
-              if (msgtype == "[voice]") {
-                alertMessage = req.user.nickName + "发到群组[" + group.name + "]里一段语音";
-              } else if(msgtype == "[photo]") {
-                alertMessage = req.user.nickName + "发到群组[" + group.name + "]里一张图片";
-              } else if(msgtype == "[video]") {
-                alertMessage = req.user.nickName + "发到群组[" + group.name + "]里一段视频";
-              }
+          if (message.type == "voice") {
+            alertMessage += "发到群组[" + group.name + "]里一段语音";
+          } else if(message.type == "photo") {
+            alertMessage += "发到群组[" + group.name + "]里一张图片";
+          } else if(message.type == "video") {
+            alertMessage += "发到群组[" + group.name + "]里一段视频";
+          } else { //if(message.type == "text") {
+            alertMessage += " : " + message.content;
           }
 
           var payload = {
