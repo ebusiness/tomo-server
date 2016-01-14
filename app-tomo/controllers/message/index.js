@@ -25,7 +25,7 @@ module.exports = function(Message) {
         if (req.query.before)
           query.where('createDate').lt(moment.unix(req.query.before).toDate());
 
-        query.select('from to content opened createDate')
+        query.select('from to type content opened createDate')
           .where('from').in([req.user.id, req.params.user])
           .where('to').in([req.user.id, req.params.user])
           .where('logicDelete').equals(false)
