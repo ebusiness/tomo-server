@@ -6,8 +6,7 @@ var Message = new Schema({
 
     to: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'User'
     },
 
     from: {
@@ -22,16 +21,21 @@ var Message = new Schema({
         required: true
     },
 
+    group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
+
     content: {
         type: String,
         trim: true,
         required: true
     },
 
-    opened: {
-        type: Boolean,
-        default: false
-    },
+    opened: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 
     logicDelete: {
         type: Boolean,

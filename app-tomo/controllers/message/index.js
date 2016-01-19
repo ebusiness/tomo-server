@@ -10,10 +10,10 @@ module.exports = function(Message) {
       openMessages: function(callback) {
         Message.where('from').equals(req.params.user)
           .where('to').equals(req.user.id)
-          .where('opened').equals(false)
+          .where('opened').equals(req.user.id)
           .where('logicDelete').equals(false)
           .setOptions({ multi: true })
-          .update({opened: true}, callback);
+          .update({ $addToSet: {opened: req.user.id} }, callback);
       },
 
       messages: function(callback) {

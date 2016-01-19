@@ -1,7 +1,7 @@
 var async = require('async'),
     moment = require('moment');
 
-module.exports = function(GroupMessage) {
+module.exports = function(Message) {
 
   return function(req, res, next) {
     var groups = req.user.groups.toObject()
@@ -13,7 +13,7 @@ module.exports = function(GroupMessage) {
     async.parallel({
 
       openMessages: function(callback) {
-        GroupMessage.where('group').equals(req.params.group)
+        Message.where('group').equals(req.params.group)
           .where('opened').equals(req.user.id)
           .where('logicDelete').equals(false)
           .setOptions({ multi: true })
@@ -23,7 +23,7 @@ module.exports = function(GroupMessage) {
       messages: function(callback) {
 
         // create query
-        var query = GroupMessage.find();
+        var query = Message.find();
 
         // if request items before some time point
         if (req.query.before)

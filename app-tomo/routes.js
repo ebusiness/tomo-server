@@ -4,7 +4,6 @@ var fs = require('fs'),
   User = mongoose.model('User'),
   Post = mongoose.model('Post'),
   Group = mongoose.model('Group'),
-  GroupMessage = mongoose.model('GroupMessage'),
   Message = mongoose.model('Message'),
   Activity = mongoose.model('Activity'),
   Invitation = mongoose.model('Invitation'),
@@ -115,9 +114,9 @@ module.exports = function(app, config, sio) {
   //////////////////////////////////////////////////
 
   // Create Message for group
-  app.post('/groups/:group/messages', checkLoginStatus, controller.group.createMessage(User, Group, GroupMessage, Activity, sio));
+  app.post('/groups/:group/messages', checkLoginStatus, controller.group.createMessage(User, Group, Message, Activity, sio));
   // Chat Message of group
-  app.get('/groups/:group/messages', checkLoginStatus, controller.group.messages(GroupMessage));
+  app.get('/groups/:group/messages', checkLoginStatus, controller.group.messages(Message));
 
   // Chat Message with some one
   app.get('/messages/:user', checkLoginStatus, controller.message.index(Message));

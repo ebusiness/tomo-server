@@ -1,9 +1,14 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(User, Group, GroupMessage, Activity, sio) {
+module.exports = function(User, Group, Message, Activity, sio) {
 
   return function(req, res, next) {
+
+    if ( !req.params.group ){
+      res.status(412).end();
+      return;
+    }
 
     var groups = req.user.groups.toObject()
     if ( !groups.indexOf(req.params.group) ){
@@ -17,7 +22,7 @@ module.exports = function(User, Group, GroupMessage, Activity, sio) {
         req.body.from = req.user.id;
         req.body.group = req.params.group;
         req.body.opened = [req.user.id];
-        GroupMessage.create(req.body, callback)
+        Message.create(req.body, callback)
       },
 
       function sendNotification(message, callback) {
