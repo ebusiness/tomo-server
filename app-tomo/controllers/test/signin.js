@@ -8,7 +8,7 @@ module.exports = function(User, Invitation, Message, Notification) {
 
       function findUser(callback) {
         User.findById(req.query.id)
-        .populate('primaryStation')
+        .populate('primaryStation', 'name coordinate introduction')
         .exec(callback);
       },
 

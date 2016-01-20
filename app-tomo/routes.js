@@ -148,7 +148,7 @@ checkLoginStatus = function(req, res, next) {
     // find user by his id
     User.findById(req.session.userId)
       .select('-password -logicDelete')
-      .populate('primaryStation')
+      .populate('primaryStation', 'name coordinate introduction')
       .exec(function(err, user) {
 
       if (!err && user) {
