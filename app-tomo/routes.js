@@ -146,7 +146,10 @@ checkLoginStatus = function(req, res, next) {
   else {
 
     // find user by his id
-    User.findById(req.session.userId,'-password -logicDelete', function(err, user) {
+    User.findById(req.session.userId)
+      .select('-password -logicDelete')
+      .populate('primaryStation')
+      .exec(function(err, user) {
 
       if (!err && user) {
         // associate user with request
