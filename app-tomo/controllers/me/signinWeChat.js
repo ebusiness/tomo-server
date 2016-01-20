@@ -26,9 +26,10 @@ module.exports = function(User, Invitation, Message, Notification) {
       async.waterfall([
 
         function(callback) {
-          User.findOne({
-            openIdWeChat: req.body.openid
-          }, 'firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations groups blockUsers primaryStation pushSetting', callback);
+          User.findOne({ openIdWeChat: req.body.openid })
+          .select('firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations groups blockUsers primaryStation pushSetting')
+          .populate('primaryStation')
+          .exec(callback);
         },
 
         function(user, callback) {

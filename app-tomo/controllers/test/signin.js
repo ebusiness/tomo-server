@@ -7,7 +7,9 @@ module.exports = function(User, Invitation, Message, Notification) {
     async.waterfall([
 
       function findUser(callback) {
-        User.findById(req.query.id, callback);
+        User.findById(req.query.id)
+        .populate('primaryStation')
+        .exec(callback);
       },
 
       function findRelateInfo(user, callback) {
