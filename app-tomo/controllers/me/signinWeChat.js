@@ -28,7 +28,7 @@ module.exports = function(User, Invitation, Message, Notification) {
         function(callback) {
           User.findOne({ openIdWeChat: req.body.openid })
           .select('firstName lastName nickName photo cover birthDay gender telNo address bio friends invitations groups blockUsers primaryStation pushSetting')
-          .populate('primaryStation', 'name coordinate introduction')
+          .populate('primaryStation', 'name coordinate introduction cover')
           .exec(callback);
         },
 
