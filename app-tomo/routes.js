@@ -112,6 +112,9 @@ module.exports = function(app, config, sio) {
   //////////////////////////////////////////////////
   /// Message Relate
   //////////////////////////////////////////////////
+  
+  // Message List
+  app.get('/contacts', checkLoginStatus, controller.connection.contacts(User, Group, Message));
 
   // Create Message for group
   app.post('/groups/:group/messages', checkLoginStatus, controller.group.createMessage(User, Group, Message, Activity, sio));
@@ -137,7 +140,6 @@ module.exports = function(app, config, sio) {
   app.post('/reports/users/:user', checkLoginStatus, controller.userreport.create(UserReport));
   // Report Post
   app.post('/reports/posts/:post', checkLoginStatus, controller.postreport.create(PostReport));
-
 };
 
 checkLoginStatus = function(req, res, next) {
