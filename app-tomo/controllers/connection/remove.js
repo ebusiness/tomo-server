@@ -27,10 +27,10 @@ module.exports = function(User, Message, Activity, Notification) {
           messages: function(callback) {
             Message.where('from').equals(req.params.friend)
               .where('to').equals(req.user.id)
-              .where('opened').equals(false)
+              .where('opened').ne(req.user.id)
               .where('logicDelete').equals(false)
               .setOptions({ multi: true })
-              .update({opened: true}, callback);
+              .update({ $addToSet: {opened: req.user.id} }, callback);
           },
 
           activity: function(callback) {
