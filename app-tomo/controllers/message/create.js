@@ -4,7 +4,7 @@ var async = require('async'),
 module.exports = function(User, Message, Activity, sio) {
 
   return function(req, res, next) {
-    if ( !req.body.to ){
+    if (!req.body.to) {
       res.status(412).end();
       return;
     }
@@ -14,7 +14,7 @@ module.exports = function(User, Message, Activity, sio) {
       function createMessage(callback) {
         req.body.from = req.user.id;
         req.body.opened = [req.user.id];
-        Message.create(req.body, callback)
+        Message.create(req.body, callback);
       },
 
       function sendNotification(message, callback) {

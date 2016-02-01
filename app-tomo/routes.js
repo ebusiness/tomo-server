@@ -112,7 +112,7 @@ module.exports = function(app, config, sio) {
   //////////////////////////////////////////////////
   /// Message Relate
   //////////////////////////////////////////////////
-  
+
   // Message List
   app.get('/contacts', checkLoginStatus, controller.connection.contacts(User, Group, Message));
 
@@ -121,6 +121,8 @@ module.exports = function(app, config, sio) {
   // Chat Message of group
   app.get('/groups/:group/messages', checkLoginStatus, controller.group.messages(Message));
 
+  // Latest messages list
+  app.get('/messages', checkLoginStatus, controller.message.latest(User, Message))
   // Chat Message with some one
   app.get('/messages/:user', checkLoginStatus, controller.message.index(Message));
   // Chat Message Create
