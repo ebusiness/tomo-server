@@ -48,9 +48,16 @@ module.exports = function(User, Invitation, Message, Notification) {
 
             messages: function(callback) {
               Message.find()
-                .select('from createDate')
-                .where('to').equals(user.id)
-                .where('from').in(user.friends)
+                .select('from group createDate')
+                .or([
+                  {'group': {$in: user.groups}},
+                  {$and: [
+                    {'to': user.id},
+                    {'from': {$in: user.friends}}
+                  ]}
+                ])
+                // .where('to').equals(user.id)
+                // .where('from').in(user.friends)
                 .where('opened').ne(user.id)
                 .where('logicDelete').ne(user.id)
                 .exec(callback);

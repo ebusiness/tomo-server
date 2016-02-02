@@ -52,8 +52,12 @@ module.exports = function(User, Group, Message, Activity, sio) {
             },
             messagetype: message.type,
             content: message.content,
-            createDate: message.createDate,
-            targetId: req.params.group
+            group: {
+              id: req.params.group,
+              name: group.name,
+              cover: group.cover_ref
+            },
+            createDate: message.createDate
           }
 
           group.members.forEach(function(uid){
