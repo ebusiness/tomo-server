@@ -113,9 +113,6 @@ module.exports = function(app, config, sio) {
   /// Message Relate
   //////////////////////////////////////////////////
 
-  // Message List
-  app.get('/contacts', checkLoginStatus, controller.connection.contacts(User, Group, Message));
-
   // Create Message for group
   app.post('/groups/:group/messages', checkLoginStatus, controller.group.createMessage(User, Group, Message, Activity, sio));
   // Chat Message of group
@@ -134,6 +131,13 @@ module.exports = function(app, config, sio) {
 
   // Notification List
   app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
+
+  //////////////////////////////////////////////////
+  /// Map Relate
+  //////////////////////////////////////////////////
+
+  // User Search
+  app.get('/map/users', checkLoginStatus, controller.map.users(User));
 
   //////////////////////////////////////////////////
   /// Report Relate
