@@ -14,7 +14,7 @@ module.exports = function(Message) {
 
       openMessages: function(callback) {
         Message.where('group').equals(req.params.group)
-          .where('opened').equals(req.user.id)
+          .where('opened').ne(req.user.id)
           .where('logicDelete').equals(false)
           .setOptions({ multi: true })
           .update({ $addToSet: {opened: req.user.id} }, callback);
