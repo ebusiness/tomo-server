@@ -76,7 +76,7 @@ module.exports = function(User, Group, Message, Activity, sio) {
           // console.log("pushlist:");
           // console.log(pushMembers);
 
-          Push(req.user.id, pushMembers, payload, alertMessage, function(err, apnNotification){
+          Push(req.user.id, pushMembers, payload, alertMessage, function(err, apnNotification) {
             console.log("======== apn callback ========");
             console.log(arguments);
             console.log("======== apn callback ========");

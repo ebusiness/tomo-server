@@ -139,6 +139,9 @@ module.exports = function(app, config, sio) {
   // User Search
   app.get('/map/users', checkLoginStatus, controller.map.users(User));
 
+  // Group Search
+  app.get('/map/groups', checkLoginStatus, controller.map.groups(Group));
+
   //////////////////////////////////////////////////
   /// Report Relate
   //////////////////////////////////////////////////
