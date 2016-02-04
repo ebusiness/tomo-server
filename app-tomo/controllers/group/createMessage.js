@@ -33,11 +33,11 @@ module.exports = function(User, Group, Message, Activity, sio) {
           var alertMessage = req.user.nickName ;
 
           if (message.type == "voice") {
-            alertMessage += "发到群组[" + group.name + "]里一段语音";
+            alertMessage += "在" + group.name + "中发送了一段语音";
           } else if(message.type == "photo") {
-            alertMessage += "发到群组[" + group.name + "]里一张图片";
+            alertMessage += "在" + group.name + "中发送了一张图片";
           } else if(message.type == "video") {
-            alertMessage += "发到群组[" + group.name + "]里一段视频";
+            alertMessage += "在" + group.name + "中发送了一段视频";
           } else { //if(message.type == "text") {
             alertMessage += " : " + message.content;
           }

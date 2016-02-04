@@ -24,11 +24,11 @@ module.exports = function(User, Message, Activity, sio) {
         var alertMessage = req.user.nickName ;
 
         if (message.type == "voice") {
-          alertMessage += "发给您一段语音";
+          alertMessage += "给您发送了一段语音";
         } else if(message.type == "photo") {
-          alertMessage += "发给您一张图片";
+          alertMessage += "给您发送了一张图片";
         } else if(message.type == "video") {
-          alertMessage += "发给您一段视频";
+          alertMessage += "给您发送了一段视频";
         } else { //if(message.type == "text") {
           alertMessage += " : " + message.content;
         }
