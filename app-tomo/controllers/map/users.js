@@ -5,9 +5,10 @@ module.exports = function(User) {
 		var query = User.find();
 
 		query.select('nickName firstName lastName photo cover birthDay gender telNo address bio primaryStation')
-			.populate('primaryStation')
+			.where('primaryStation').exists(true)
       .where('_id').ne(req.user.id)
 			.where('logicDelete').equals(false)
+			.populate('primaryStation')
 			.exec(function(err, users) {
 	    	if (err) next(err);
 				else if (users.length === 0) {
