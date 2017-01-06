@@ -59,6 +59,7 @@ angular.module('tripod')
             .then(function(user) {
               $mdToast.showSimple('已经以' + user.lastName + ' ' + user.firstName + '的身份登录');
               $mdDialog.hide(user);
+              $location.path('/');
             }, function() {
               $mdToast.showSimple('登录失败，请确认您的账号和密码');
             });
