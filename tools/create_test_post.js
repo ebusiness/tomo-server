@@ -9,6 +9,8 @@ var env = process.env.NODE_ENV || 'development',
   sanitizeHtml = require('sanitize-html'),
   mongoose = require('mongoose');
 
+GLOBAL.config = config;
+
   // Connect to MongoDB
   mongoose.connect(config.mongodb.host);
   mongoose.connection.on('open', function() {
@@ -25,7 +27,6 @@ var env = process.env.NODE_ENV || 'development',
 var User = mongoose.model('User'),
   Post = mongoose.model('Post'),
   Group = mongoose.model('Group'),
-  GroupMessage = mongoose.model('GroupMessage'),
   Message = mongoose.model('Message'),
   Activity = mongoose.model('Activity'),
   Invitation = mongoose.model('Invitation'),
