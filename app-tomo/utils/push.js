@@ -99,12 +99,13 @@ function send(receivers, payload, alertMessage, callback){
   var options = config.apn;
     options.errorCallback = callback;
 
-  var apnsConnection = new apns.Connection(options);
+  var apnsConnection = new apns.Provider(options);
   var note = new apns.Notification();
   note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
   note.sound = "ping.aiff";
   note.alert = alertMessage;
   note.payload = payload;
+  note.tapic = "jp.co.e-business.tomo"
 
   receivers.forEach(function(user) {
 
