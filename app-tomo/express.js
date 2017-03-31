@@ -88,25 +88,19 @@ module.exports = function(config, server) {
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {
-    var err = new Error('Not Found');
+    var err = new Error('Page Not Found');
     err.status = 404;
     next(err);
   });
 
   // error handlers
-
-  // development error handler
-  // will print stacktrace
-  if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-      console.log(err);
-      res.status(err.status || 500).end();
-    });
-  }
-
-  // production error handler
-  // no stacktraces leaked to user
   app.use(function(err, req, res, next) {
+    // development error handler
+    // will print stacktrace
+    if (err && app.get('env') === 'development') {
+      console.log("" + err);
+    }
+    // development/production error handler
     res.status(err.status || 500).end();
   });
 

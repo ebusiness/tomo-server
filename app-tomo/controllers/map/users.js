@@ -4,11 +4,11 @@ module.exports = function(User) {
 
 		var query = User.find();
 
-		query.select('nickName firstName lastName photo cover birthDay gender telNo address bio primaryStation')
-			.where('primaryStation').exists(true)
+		query.select('nickName firstName lastName photo cover birthDay gender telNo address bio primaryGroup')
+			.where('primaryGroup').exists(true)
       .where('_id').ne(req.user.id)
 			.where('logicDelete').equals(false)
-			.populate('primaryStation')
+			.populate('primaryGroup')
 			.exec(function(err, users) {
 	    	if (err) next(err);
 				else if (users.length === 0) {

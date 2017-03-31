@@ -42,7 +42,7 @@ function start() {
           center: [139.753611, 35.693889]
         })
         .skip(random).limit(1).exec(function(err, groups) {
-          user.primaryStation = groups[0];
+          user.primaryGroup = groups[0];
           user.save();
         })
     });

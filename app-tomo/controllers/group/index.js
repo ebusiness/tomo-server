@@ -22,8 +22,8 @@ module.exports = function(Group, Post) {
           query.where('_id').in(req.user.groups);
 
         // groups of some type
-        if (req.query.type)
-          query.where('type').equals(req.query.type);
+        // if (req.query.type)
+        //   query.where('type').equals(req.query.type);
 
         // groups near some coordinate
         if (req.query.coordinate)
