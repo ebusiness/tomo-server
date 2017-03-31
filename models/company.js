@@ -40,11 +40,6 @@ var Company = new Schema({
         required: true
     },
 
-    relation: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Company'
-    }],
-
     logicDelete: {
         type: Boolean,
         default: false
