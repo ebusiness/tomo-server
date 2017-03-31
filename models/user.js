@@ -106,7 +106,7 @@ var User = new Schema({
         ref: 'User'
     }],
 
-    primaryStation: {
+    primaryGroup: {
         type: Schema.Types.ObjectId,
         ref: 'Group'
     },
