@@ -3,6 +3,7 @@ var fs = require('fs'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Post = mongoose.model('Post'),
+  Company = mongoose.model('Company'),
   Group = mongoose.model('Group'),
   Message = mongoose.model('Message'),
   Activity = mongoose.model('Activity'),
@@ -95,6 +96,18 @@ module.exports = function(app, config, sio) {
   app.get('/users/:user', checkLoginStatus, controller.user.show(User));
 
   //////////////////////////////////////////////////
+  /// Company Relate
+  //////////////////////////////////////////////////
+
+  // Company List
+  app.get('/companies', checkLoginStatus, controller.company.index(Company, Group));
+  // // Company Entity
+  app.get('/companies/:company', checkLoginStatus, controller.company.show(Company));
+  // // Company Create
+  // app.post('/companies', checkLoginStatus, controller.company.create(Company, Activity));
+  app.get('/createcompany', checkLoginStatus, controller.company.create(Company, Activity));
+
+  //////////////////////////////////////////////////
   /// Group Relate
   //////////////////////////////////////////////////
 
@@ -159,7 +172,7 @@ checkLoginStatus = function(req, res, next) {
     // find user by his id
     User.findById(req.session.userId)
       .select('-password -logicDelete')
-      .populate('primaryStation', 'name coordinate introduction cover')
+      .populate('primaryGroup', 'name coordinate introduction cover')
       .exec(function(err, user) {
 
       if (!err && user) {
