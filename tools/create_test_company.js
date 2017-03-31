@@ -123,7 +123,7 @@ function fixGroupIfNeeded(a) {
     a.project.longitude = a.end.longitude;
     a.project.address = a.end.address;
   }
-  if (!a.project.latitude && !a.project.longitude) {
+  if (a.project.latitude && a.project.longitude) {
     a.project.coordinate = [a.project.latitude, a.project.longitude];
   }
   delete a.project.latitude;
