@@ -131,6 +131,7 @@ function addIfNeeded(list, company, type, project) {
 }
 
 function fixGroupIfNeeded(a) {
+  if(!a.project.name){return;}
   if (a.project.latitude == "" && a.project.longitude == "") {
     a.project.latitude = a.si.latitude;
     a.project.longitude = a.si.longitude;
