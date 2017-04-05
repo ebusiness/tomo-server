@@ -86,9 +86,7 @@ function makeData() {
         relationCompanies.forEach(function(company){
           if(!company.groups) {company.groups = [];}
           company.groups.addToSet(result._id);
-          company.save(function(err, result) {
-            console.log("groups saved");
-          });
+          company.save();
         });
         console.log("over");
       });
