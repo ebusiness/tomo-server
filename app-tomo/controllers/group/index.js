@@ -54,7 +54,10 @@ module.exports = function(Group, Post) {
             .limit(req.query.size || 20);
 
         query.select('owner type name cover introduction coordinate pref address members posts companies')
-          .populate('owner', 'nickName photo')
+          .populate('owner', 'nickName photo cover')
+          .populate('members', 'nickName photo cover')
+          .populate('companies.si')
+          .populate('companies.end')
           .where('logicDelete').equals(false)
           // .sort('-createDate')
           .exec(callback);
