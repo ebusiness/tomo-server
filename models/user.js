@@ -97,19 +97,28 @@ var User = new Schema({
     }],
 
     groups: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Group'
+        isPrimary: {
+            type: Boolean,
+            default: false
+        },
+        joinDate: {
+            type: Date,
+            default: Date.now
+        },
+        leaveDate: {
+            type: Date,
+            default: Date.now
+        },
+        group: {
+          type: Schema.Types.ObjectId,
+          ref: 'Group'
+        }
     }],
 
     blockUsers: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-
-    primaryGroup: {
-        type: Schema.Types.ObjectId,
-        ref: 'Group'
-    },
 
     device: {
         os: {

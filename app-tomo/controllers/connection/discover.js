@@ -10,8 +10,8 @@ module.exports = function(User) {
 		if (req.query.nickName)
 			query.where('nickName').regex(new RegExp('^.*?'+req.query.nickName+'.*$', "i"));
 
-		query.select('nickName firstName lastName photo cover birthDay gender telNo address bio primaryGroup')
-			.populate('primaryGroup')
+		query.select('nickName firstName lastName photo cover birthDay gender telNo address bio groups')
+			.populate('groups.group')
 			.where('_id').nin(exclude)
 			.where('logicDelete').equals(false)
 			.exec(function(err, users) {
