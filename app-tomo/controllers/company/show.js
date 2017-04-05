@@ -1,13 +1,13 @@
-module.exports = function(Group) {
+module.exports = function(Company) {
 
   return function(req, res, next) {
-
-    Group.findById(req.params.group, 'owner type name cover introduction coordinate address members')
-      .populate('members', 'nickName photo cover')
+    Company.findById(req.params.company)
+      .populate('owner', 'nickName photo cover')
+      .populate('groups')
       .where('logicDelete').equals(false)
-      .exec(function(err, user) {
+      .exec(function(err, company) {
         if (err) next(err);
-        else res.json(user);
-	    });
+        res.json(company);
+      });
   };
 };

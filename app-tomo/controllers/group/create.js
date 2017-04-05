@@ -1,65 +1,67 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(Group, Activity) {
+module.exports = function(Group, Company, Activity) {
 
   return function(req, res, next) {
+    // req.body = req.query;
+
+    if ( !req.body.name || !req.body.coordinate){
+      res.status(412).end();
+      return;
+    }
+
+    var ids = []
+    if (req.body.companies.si) {
+      ids = ids.concat(req.body.companies.si);
+    }
+    if (req.body.companies.end) {
+      ids = ids.concat(req.body.companies.end);
+    }
+    if (ids.length == 0) {
+      res.status(412).end();
+      return;
+    }
 
     async.waterfall([
+      function createGroup(callback) {
+        req.body.owner = req.user.id;
+        req.body.members = [req.user.id];
+        Group.create(req.body, callback);
+      },
 
-      function createRelateInfo(callback) {
-
+      function createRelateInfo(group, callback) {
+        callback(null, group);
         async.parallel({
 
           user: function (callback) {
-            req.user.groups.addToSet(req.body.id);
+            req.user.groups.addToSet(group._id);
             req.user.save(callback);
           },
 
-          group: function(callback) {
-            req.body.owner = req.user.id;
-            req.body.members = [req.user.id];
-            Group.create(req.body, callback);
+          cmpanies: function(callback) {
+            Company
+              .where({'_id': {'$in': ids}})
+              .setOptions({ multi: true })
+              .update({ '$addToSet': { 'groups': group._id } }, function(err, companies) {
+                console.log(companies);
+              });
           },
 
           activity: function (callback) {
             Activity.create({
               owner: req.user.id,
               type: 'group-new',
-              targetGroup: req.body.id
+              targetGroup: group._id
             }, callback);
           }
 
-        }, callback);
-      },
-
-      function sendNotification(relateInfo, callback) {
-
-        // var alertMessage = req.user.nickName + "请求成为您的好友";
-        // var payload = {
-        //   type: 'friend-invited',
-        //   from: {
-        //     id:       req.user.id,
-        //     nickName: req.user.nickName,
-        //     photo:    req.user.photo_ref,
-        //     cover:    req.user.cover_ref
-        //   },
-        //   targetId: relateInfo.invitation._id
-        // }
-        //
-        // Push(req.user.id, req.body.id, payload, alertMessage, function(err, apnNotification){
-        //   console.log("======== apn callback ========");
-        //   console.log(arguments);
-        //   console.log("======== apn callback ========");
-        //   if (err) next(err);
-        // });
-
-        callback(null, relateInfo);
+        });
       }
 
-    ], function(err, result) {
+    ], function(err, group) {
       if (err) next(err);
-      else res.json(result.group);
+      else res.json(group);
     });
 
   };

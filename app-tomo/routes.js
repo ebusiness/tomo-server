@@ -102,7 +102,7 @@ module.exports = function(app, config, sio) {
   // Company List
   app.get('/companies', checkLoginStatus, controller.company.index(Company, Group));
   // // Company Entity
-  app.get('/companies/:company', checkLoginStatus, controller.company.show(Company, Group));
+  app.get('/companies/:company', checkLoginStatus, controller.company.show(Company));
   // // Company Create
   // app.post('/companies', checkLoginStatus, controller.company.create(Company, Activity));
   app.get('/createcompany', checkLoginStatus, controller.company.create(Company, Activity));
@@ -116,7 +116,7 @@ module.exports = function(app, config, sio) {
   // Group Entity
   app.get('/groups/:group', checkLoginStatus, controller.group.show(Group));
   // Group Create
-  app.post('/groups', checkLoginStatus, controller.group.create(Group, Activity));
+  app.post('/groups', checkLoginStatus, controller.group.create(Group, Company, Activity));
   // Join Group
   app.patch('/groups/:group/join', checkLoginStatus, controller.group.join(User, Group, Activity));
   // Leave Group

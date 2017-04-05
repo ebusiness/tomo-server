@@ -31,7 +31,7 @@ var Company = new Schema({
     homepage: {
         type: String,
         trim: true,
-        required: true
+        // required: true
     },
 
     groups: [{

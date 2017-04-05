@@ -33,47 +33,23 @@ module.exports = function(Company, Group) {
         if (req.query.name)
           query.where('name').regex('^.*'+req.query.name+'.*$');
 
+        if (req.query.hasGroups)
+          query.where('groups.0').exists(true);
+
         // Companies that has members
-        if (req.query.hasMembers)
-          query.where('members.0').exists(true);
+        // if (req.query.hasMembers)
+        //   query.where('members.0').exists(true);
 
         if (req.query.page)
           query.skip(20 * req.query.page)
             .limit(req.query.size || 20);
 
         query.select()
-          .populate('owner', 'nickName photo')
+          .populate('owner', 'nickName photo cover')
+          .populate('groups')
           .where('logicDelete').equals(false)
           // .sort('-createDate')
           .exec(callback);
-      },
-
-      function countPosts(companies, callback) {
-
-        // if (req.query.after) {
-        //
-        //   var groupIds = _.pluck(groups, '_id');
-        //
-        //   Post.aggregate()
-        //     .match({group: {$in: groupIds}})
-        //     .match({createDate: {$gte: moment.unix(req.query.after).toDate()}})
-        //     .group({_id: '$group', posts: {$push: '$_id'}})
-        //     .exec(function(err, counts) {
-        //       if (err) callback(err);
-        //       else {
-        //         groups = _.map(groups, Group.toObject);
-        //         groups.forEach(function(group) {
-        //           var found = _.find(counts, {_id: group._id});
-        //           if (found) group.posts = found.posts;
-        //           else group.posts = [];
-        //         });
-        //         callback(null, groups);
-        //       }
-        //     });
-        //
-        // } else callback(null, groups);
-
-        callback(null, companies);
       }
 
     ], function(err, groups) {
