@@ -47,34 +47,54 @@ console.log(siList.length);
 console.log(endList.length);
 console.log(groupList.length);
 
-async.parallel({
-  si: function (callback) {
-    Company.create(siList, callback);
-  },
-  end: function (callback) {
-    Company.create(endList, callback);
-  }
 
-}, function(err, result) {
-  console.log(err);
-  console.log(result);
-  groupList.forEach(function(group){
-    result.si.forEach(function(si){
-      if (si.name == group.siname) {
-        group.companies.push(si._id);
-      }
-    });
-    result.end.forEach(function(end){
-      if (end.name == group.endname) {
-        group.companies.push(end._id);
-      }
-    });
-    console.log(group.companies);
-    Group.create(group, function(err, result) {
-      console.log("over");
+makeData();
+function makeData() {
+  async.parallel({
+    si: function (callback) {
+      Company.create(siList, callback);
+    },
+    end: function (callback) {
+      Company.create(endList, callback);
+    }
+
+  }, function(err, result) {
+    // console.log(err);
+    // console.log(result);
+    groupList.forEach(function(group){
+      var relationCompanies = [];
+      result.si.forEach(function(si){
+        if (si.name == group.siname) {
+          group.companies.si.push(si._id);
+          relationCompanies.push(si);
+        }
+      });
+      result.end.forEach(function(end){
+        if (end.name == group.endname) {
+          group.companies.end.push(end._id);
+          relationCompanies.push(end);
+        }
+      });
+      console.log("si" + group.companies.si.length);
+      console.log("end" + group.companies.end.length);
+
+      // var groups = [];
+      // for(var i = 0; i < 1000; i++ ) {
+      //   groups.push(group);
+      // }
+      Group.create(group, function(err, result) {
+        relationCompanies.forEach(function(company){
+          if(!company.groups) {company.groups = [];}
+          company.groups.addToSet(result._id);
+          company.save(function(err, result) {
+            console.log("groups saved");
+          });
+        });
+        console.log("over");
+      });
     });
   });
-});
+}
 
 function addIfNeeded(list, company, type, project) {
   if (company.name == "") {
@@ -131,7 +151,7 @@ function fixGroupIfNeeded(a) {
   a.project.owner = owner;
   a.project.createDate = createDate;
 
-  a.project.companies = [];
+  a.project.companies = {si:[], end:[]};
   a.project.siname = a.si.name;
   a.project.endname = a.end.name;
   groupList.push(a.project);

@@ -102,7 +102,7 @@ module.exports = function(app, config, sio) {
   // Company List
   app.get('/companies', checkLoginStatus, controller.company.index(Company, Group));
   // // Company Entity
-  app.get('/companies/:company', checkLoginStatus, controller.company.show(Company));
+  app.get('/companies/:company', checkLoginStatus, controller.company.show(Company, Group));
   // // Company Create
   // app.post('/companies', checkLoginStatus, controller.company.create(Company, Activity));
   app.get('/createcompany', checkLoginStatus, controller.company.create(Company, Activity));

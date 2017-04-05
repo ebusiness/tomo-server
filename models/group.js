@@ -73,10 +73,17 @@ var Group = new Schema({
         ref: 'Post'
     }],
 
-    companies: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Company'
-    }],
+
+    companies: {
+      si: [{
+          type: Schema.Types.ObjectId,
+          ref: 'Company'
+      }],
+      end: [{
+          type: Schema.Types.ObjectId,
+          ref: 'Company'
+      }],
+    },
 
     logicDelete: {
         type: Boolean,

@@ -34,6 +34,11 @@ var Company = new Schema({
         required: true
     },
 
+    groups: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    }],
+
     type: {
         type: String, // si ,enduser, bp...
         trim: true,
