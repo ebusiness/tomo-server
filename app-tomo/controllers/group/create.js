@@ -35,7 +35,7 @@ module.exports = function(Group, Company, Activity) {
         async.parallel({
 
           user: function (callback) {
-            req.user.groups.addToSet(group._id);
+            req.user.groups.addToSet({group:group._id});
             req.user.save(callback);
           },
 

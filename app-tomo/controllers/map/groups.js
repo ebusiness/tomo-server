@@ -5,17 +5,23 @@ var _ = require('lodash'),
 module.exports = function(Group) {
 
   return function(req, res, next) {
+    var groupIds = [];
+    if(req.user.groups && req.user.groups.length > 0){
+      req.user.groups.forEach(function(group){
+        groupIds.push(group.group._id)
+      });
+    }
 
     // create query
     var query = Group.find();
 
     // discover groups
     if (req.query.category == "discover")
-      query.where('_id').nin(req.user.groups);
+      query.where('_id').nin(groupIds);
 
     // groups of mine
     if (req.query.category == "mine")
-      query.where('_id').in(req.user.groups);
+      query.where('_id').in(groupIds);
 
     // groups of some type
     if (req.query.type)

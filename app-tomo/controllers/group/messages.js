@@ -4,8 +4,13 @@ var async = require('async'),
 module.exports = function(Message) {
 
   return function(req, res, next) {
-    var groups = req.user.groups.toObject()
-    if ( !groups.indexOf(req.params.group) ){
+    var groupIds = [];
+    if(req.user.groups && req.user.groups.length > 0){
+      req.user.groups.forEach(function(group){
+        groupIds.push(group.group._id)
+      });
+    }
+    if ( !groupIds.indexOf(req.params.group) ){
       res.status(403).end();
       return;
     }

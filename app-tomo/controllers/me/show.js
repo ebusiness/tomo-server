@@ -18,10 +18,16 @@ module.exports = function(Invitation, Message, Notification) {
       },
 
       messages: function(callback) {
+        var groupIds = [];
+        if(req.user.groups && req.user.groups.length > 0){
+          req.user.groups.forEach(function(group){
+            groupIds.push(group.group._id)
+          });
+        }
         Message.find()
           .select('from group createDate')
           .or([
-            {'group': {$in: req.user.groups}},
+            {'group': {$in: groupIds}},
             {$and: [
               {'to': req.user.id},
               {'from': {$in: req.user.friends}}

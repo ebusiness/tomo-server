@@ -46,10 +46,15 @@ module.exports = function(User, Group, Message) {
       },
 
       groupChatMessages: function(callback) {
-
+        var groupIds = [];
+        if(req.user.groups && req.user.groups.length > 0){
+          req.user.groups.forEach(function(group){
+            groupIds.push(group.group._id)
+          });
+        }
         Message.aggregate()
           .match({ group: {$ne: null} })
-          .match({ group: {$in: req.user.groups} })
+          .match({ group: {$in: groupIds} })
           .sort({ createDate: -1 })
           .group({
             _id: "$group",
