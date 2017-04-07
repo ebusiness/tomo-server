@@ -137,7 +137,7 @@ var httpRequest = function(url, callback) {
 
 var signup = function(data, User, Activity, callback) {
   var userinfo = {
-    gender: data.sex,
+    gender: data.sex == 2 ? "女" : "男",
     photo: data.headimgurl,
     nickName: data.nickname,
     openIdWeChat: data.openid,
