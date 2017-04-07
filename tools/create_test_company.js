@@ -76,6 +76,12 @@ function makeData() {
           relationCompanies.push(end);
         }
       });
+      if(!project.endUser) {
+        project.endUser = project.relCompanies[0];
+      }
+      if(!project.endUser) {
+        return;
+      }
       console.log("relCompanies");
       project.relCompanies = project.relCompanies.filter((value)=>value!=project.endUser);
 
