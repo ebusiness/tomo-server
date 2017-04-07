@@ -4,12 +4,14 @@ module.exports = function(Post) {
 
   return function(req, res, next) {
 
-    // TODO: check post's ownership
     // TODO: if this post was removed, what to do with the activites
     // and notifications relate on it? and comments, bookmarks?
+    if (req.user.posts.indexOf(req.params.post) == -1) {
+      res.status(403).end();
+      return;
+    }
 
     async.waterfall([
-
       function deletePost(callback) {
         Post.findByIdAndUpdate(req.params.post, {logicDelete: true}, callback);
       },

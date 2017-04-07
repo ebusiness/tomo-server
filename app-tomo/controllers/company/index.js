@@ -32,7 +32,7 @@ module.exports = function(Company) {
 
         // Companies name match some string
         if (req.query.name)
-          query.where('name').regex('^.*'+req.query.name+'.*$');
+          query.where('name').regex(new RegExp('^.*'+req.query.name+'.*$', "i"));
 
         if (req.query.hasProjects)
           query.where('projects.0').exists(true);
@@ -40,15 +40,13 @@ module.exports = function(Company) {
         if (req.query.hasPosts)
           query.where('posts.0').exists(true);
 
-        if (req.query.page)
-          query.skip(20 * req.query.page)
-            .limit(req.query.size || 20);
-
         query.select()
           .populate('owner', 'nickName photo cover')
           .populate('projects')
           .populate('posts')
           .where('logicDelete').equals(false)
+          .skip(20 * req.query.page || 0)
+          .limit(req.query.size || 20)
           // .sort('-createDate')
           .exec(callback);
       }

@@ -4,7 +4,7 @@ var https = require('https'),
 module.exports = function(User, Invitation, Message, Notification, Activity) {
 
   return function(req, res, next) {
-    req.body = req.query;
+    // req.body = req.query;
 
     if (!req.body.openid || !req.body.access_token) {
       var err = new Error('Invalid Parameter');
@@ -31,9 +31,9 @@ module.exports = function(User, Invitation, Message, Notification, Activity) {
         function(callback) {
           User.findOne({ openIdWeChat: req.body.openid })
             .select('-password -logicDelete')
-            .populate('followers', 'nickName photo')
-            .populate('following', 'nickName photo')
-            .populate('experience.project')
+            // .populate('followers', 'nickName photo')
+            // .populate('following', 'nickName photo')
+            .populate('experiences.project')
             // .where('logicDelete').equals(false)
           .exec(callback);
         },

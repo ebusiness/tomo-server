@@ -40,14 +40,38 @@ module.exports = function(app, config, sio) {
   // User Sign-out
   app.get('/signout', checkLoginStatus, controller.me.signout(User));
 
-  // User Decive Register
-  app.post('/device', checkLoginStatus, controller.me.device(User));
+  // User Decive Register/Update
+  app.put('/device', checkLoginStatus, controller.me.device(User));
 
   // User Session
   app.get('/session', checkLoginStatus, controller.me.show(Invitation, Message, Notification));
 
   // User Profile Update
   app.patch('/me', checkLoginStatus, controller.me.update(User));
+
+  //////////////////////////////////////////////////
+  /// Experience Relate
+  //////////////////////////////////////////////////
+
+  // 	Create/Update a Experience
+  app.put('/experiences', checkLoginStatus, controller.me.experiences(User));
+
+  //////////////////////////////////////////////////
+  /// Following Relate
+  //////////////////////////////////////////////////
+
+  // Add a user into Following
+  app.post('/following/:user', checkLoginStatus, controller.connection.addFollowing(User));
+  // Delete a user From Following
+  app.delete('/following/:user', checkLoginStatus, controller.connection.delFollowing(User));
+  // Following
+  app.get('/following', checkLoginStatus, controller.connection.getFollowing(User));
+  // Following
+  app.get('/users/:user/following', checkLoginStatus, controller.connection.getFollowing(User));
+  // followers
+  app.get('/followers', checkLoginStatus, controller.connection.followers(User));
+  // followers
+  app.get('/users/:user/followers', checkLoginStatus, controller.connection.followers(User));
 
   //////////////////////////////////////////////////
   /// Company Relate
@@ -65,11 +89,29 @@ module.exports = function(app, config, sio) {
   //////////////////////////////////////////////////
 
   // Project List
-  app.get('/projects', checkLoginStatus, controller.project.index(Project));
+  app.get('/projects', checkLoginStatus, controller.project.index(Project, Company, User));
   // Project Entity
   app.get('/projects/:project', checkLoginStatus, controller.project.show(Project));
   // Project Create
   app.post('/projects', checkLoginStatus, controller.project.create(Project, Activity));
+
+  // Projects of some company
+  app.get('/companies/:company/projects', checkLoginStatus, controller.project.index(Project, Company, User));
+  // Projects of some user
+  app.get('/users/:user/projects', checkLoginStatus, controller.project.index(Project, Company, User));
+
+  //////////////////////////////////////////////////
+  /// Connection Relate
+  //////////////////////////////////////////////////
+  // User Search
+  app.get('/users/discover', checkLoginStatus, controller.connection.discover(User));
+  // User Search
+  app.get('/users', checkLoginStatus, controller.connection.index(User, Project));
+  // users of project
+  app.get('/projects/:project/users', checkLoginStatus, controller.connection.index(User, Project));
+
+  // User Profile
+  app.get('/users/:user', checkLoginStatus, controller.user.show(User, Project));
 
   //////////////////////////////////////////////////
   /// Post Relate
@@ -78,21 +120,22 @@ module.exports = function(app, config, sio) {
   // Post List
   app.get('/posts', checkLoginStatus, controller.post.index(Post));
   // Post Create
-  app.post('/posts', checkLoginStatus, controller.post.create(Post, Group, Activity, Notification));
+  app.post('/posts', checkLoginStatus, controller.post.create(Post, Project, Activity, Notification));
   // Post Entity
   app.get('/posts/:post', checkLoginStatus, controller.post.show(Post));
-  // Post of User
-  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User, Group));
-  // Post of Group
-  app.get('/groups/:group/posts', checkLoginStatus, controller.post.index(Post, User, Group));
   // Comment Post
   app.post('/posts/:post/comments', checkLoginStatus, controller.post.update(Post, Activity, Notification));
   // Like Post
   app.patch('/posts/:post/like', checkLoginStatus, controller.post.like(Post, Activity, Notification));
-  // Bookmark Post
-  app.patch('/posts/:post/bookmark', checkLoginStatus, controller.post.bookmark(User, Post, Activity, Notification));
   // Post Delete
   app.delete('/posts/:post', checkLoginStatus, controller.post.remove(Post));
+
+  // Post of User
+  app.get('/users/:user/posts', checkLoginStatus, controller.post.index(Post, User, Project, Company));
+  // Post of Project
+  app.get('/projects/:project/posts', checkLoginStatus, controller.post.index(Post, User, Project, Company));
+  // Post of Company
+  app.get('/companies/:company/posts', checkLoginStatus, controller.post.index(Post, User, Project, Company));
 
   //////////////////////////////////////////////////
   /// Connection Relate
@@ -110,10 +153,6 @@ module.exports = function(app, config, sio) {
   app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Message, Activity, Notification));
   // Toggle User Block
   app.post('/blocks', checkLoginStatus, controller.connection.block(Activity));
-  // User Search
-  app.get('/users', checkLoginStatus, controller.connection.discover(User));
-  // User Profile
-  app.get('/users/:user', checkLoginStatus, controller.user.show(User));
 
   //////////////////////////////////////////////////
   /// Group Relate
@@ -180,9 +219,9 @@ checkLoginStatus = function(req, res, next) {
     // find user by his id
     User.findById(req.session.userId)
       .select('-password -logicDelete')
-      .populate('followers', 'nickName photo')
-      .populate('following', 'nickName photo')
-      .populate('experience.project')
+      // .populate('followers', 'nickName photo')
+      // .populate('following', 'nickName photo')
+      .populate('experiences.project')
       .exec(function(err, user) {
 
       if (!err && user) {

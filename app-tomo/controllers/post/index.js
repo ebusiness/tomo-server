@@ -1,7 +1,7 @@
 var async = require('async'),
     moment = require('moment');
 
-module.exports = function(Post, User, Group) {
+module.exports = function(Post, User, Project, Company) {
 
   return function(req, res, next) {
 
@@ -18,9 +18,16 @@ module.exports = function(Post, User, Group) {
               callback(null, null);
           },
 
-          group: function(callback) {
-            if (req.params.group)
-              Group.findById(req.params.group, 'posts', callback);
+          project: function(callback) {
+            if (req.params.project)
+              Project.findById(req.params.project, 'posts', callback);
+            else
+              callback(null, null);
+          },
+
+          company: function(callback) {
+            if (req.params.company)
+              Company.findById(req.params.company, 'posts', callback);
             else
               callback(null, null);
           }
@@ -29,7 +36,6 @@ module.exports = function(Post, User, Group) {
       },
 
       function findPosts(relateObj, callback) {
-
         // create query
         var query = Post.find();
 
@@ -37,17 +43,17 @@ module.exports = function(Post, User, Group) {
         if (relateObj.user)
           query.where('_id').in(relateObj.user.posts);
 
-        // posts of some group
-        if (relateObj.group)
-          query.where('_id').in(relateObj.group.posts);
+        // posts of some project
+        if (relateObj.project)
+          query.where('_id').in(relateObj.project.posts);
+
+        // posts of some company
+        if (relateObj.company)
+          query.where('_id').in(relateObj.company.posts);
 
         // posts of mine
         if (req.query.category == "mine")
           query.where('_id').in(req.user.posts);
-
-        // posts of my bookmark
-        if (req.query.category == "bookmark")
-          query.where('_id').in(req.user.bookmarks);
 
         // posts before some time point
         if (req.query.before)
@@ -57,10 +63,12 @@ module.exports = function(Post, User, Group) {
         if (req.query.after)
           query.where('createDate').gt(moment.unix(req.query.after).toDate());
 
-        query.select('owner group content images like bookmark comments location coordinate createDate')
+        query.select('-logicDelete')
           .populate('owner', 'nickName photo cover')
-          .populate('group', 'owner type name cover introduction coordinate address members posts')
-          .populate('comments.owner', 'nickName photo cover')
+          .populate('like', 'nickName photo')
+          .populate('project')
+          .populate('company')
+          .populate('comments.owner', 'nickName photo')
           .where('logicDelete').equals(false)
           .limit(req.query.size || 10)
           .sort('-createDate')

@@ -1,7 +1,7 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(Post, Group, Activity, Notification) {
+module.exports = function(Post, Project, Activity, Notification) {
 
   return function(req, res, next) {
 
@@ -21,10 +21,10 @@ module.exports = function(Post, Group, Activity, Notification) {
             req.user.save(callback);
           },
 
-          group: function(callback) {
+          project: function(callback) {
 
-            if (post.group)
-              Group.findByIdAndUpdate(post.group, {
+            if (post.project)
+              Project.findByIdAndUpdate(post.project, {
                 $addToSet: {posts: post.id}
               }, callback);
             else
@@ -40,10 +40,10 @@ module.exports = function(Post, Group, Activity, Notification) {
           },
 
           notification: function(callback) {
-            if (req.user.friends && req.user.friends.length)
+            if (req.user.followers && req.user.followers.length)
               Notification.create({
                 from: req.user.id,
-                to: req.user.friends,
+                to: req.user.followers,
                 type: 'post-new',
                 targetId: post.id
               }, callback);
@@ -53,11 +53,11 @@ module.exports = function(Post, Group, Activity, Notification) {
 
         }, function(err, results) {
           if (err) callback(err);
-          else callback(null, post, results.group, results.notification);
+          else callback(null, post, results.project, results.notification);
         });
       },
 
-      function sendNotification(post, group, notification, callback) {
+      function sendNotification(post, project, notification, callback) {
 
         if (notification) {
 
@@ -73,7 +73,7 @@ module.exports = function(Post, Group, Activity, Notification) {
             targetId: post._id
           };
 
-          Push(req.user.id, req.user.friends, payload, alertMessage);
+          Push(req.user.id, req.user.followers, payload, alertMessage);
         }
 
         callback(null, post);

@@ -8,6 +8,9 @@ module.exports = function(User) {
       req.body.device = {};
       delete req.body.removeDevice;
     }
+    
+    delete req.body.following;
+    delete req.body.experiences;
 
     User.findByIdAndUpdate(req.user.id, req.body, { new: true }, function(err, user) {
       if (err) next(err);

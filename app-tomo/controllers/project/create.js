@@ -11,7 +11,6 @@ module.exports = function(Project, Activity) {
     }
 
     req.body.creator = req.user.id;
-    // req.body.members = [req.user.id];
 
     async.waterfall([
       function createCompany(callback) {

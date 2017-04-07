@@ -2,7 +2,8 @@ var _ = require('underscore'),
     _s = require('underscore.string'),
     mongoose = require('mongoose'),
     validate = require('mongoose-validator').validatorjs,
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    Experience = require('./experience');
 
 var User = new Schema({
 
@@ -96,71 +97,7 @@ var User = new Schema({
         ref: 'User'
     }],
 
-    experience: [{
-        from: {
-            type: Date,
-            default: Date.now
-        },
-        to: {
-            type: Date,
-            default: Date.now
-        },
-        project: {
-          type: Schema.Types.ObjectId,
-          ref: 'Project'
-        },
-        description: {
-            type: String,
-            trim: true
-        },
-        position: {
-            type: String,
-            trim: true
-        },
-        work: {
-          RFP: {
-              type: Boolean,
-              default: true
-          },
-          SA: {
-              type: Boolean,
-              default: true
-          },
-          BD: {
-              type: Boolean,
-              default: true
-          },
-          DD: {
-              type: Boolean,
-              default: true
-          },
-          CD: {
-              type: Boolean,
-              default: true
-          },
-          UT: {
-              type: Boolean,
-              default: true
-          },
-          IT: {
-              type: Boolean,
-              default: true
-          },
-          ST: {
-              type: Boolean,
-              default: true
-          },
-          OM: {
-              type: Boolean,
-              default: true
-          },
-          SUP: {
-              type: Boolean,
-              default: true
-          },
-
-        }
-    }],
+    experiences: [Experience],
 
     blockUsers: [{
         type: Schema.Types.ObjectId,
@@ -271,6 +208,17 @@ User.virtual('cover_ref').get(function () {
     else
         return _s.join('/', config.s3.host, config.s3.bucket, 'asset/default_cover.jpg');
 });
+
+//
+// User.virtual('projects').get(function () {
+//     if (!this.experiences || this.experiences.length < 1)
+//         return [];
+//     var projects = [];
+//     this.experiences.forEach(function(experience) {
+//         projects.push(experience.project);
+//     });
+//     return projects;
+// });
 
 User.set('toJSON', { virtuals: true });
 User.set('toObject', { virtuals: true });
