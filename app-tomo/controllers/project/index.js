@@ -2,21 +2,17 @@ var _ = require('lodash'),
     async = require('async'),
     moment = require('moment');
 
-module.exports = function(Company) {
+module.exports = function(Project) {
 
   return function(req, res, next) {
 
     async.waterfall([
 
-      function findCompanies(callback) {
+      function findProjects(callback) {
 
         // create query
-        var query = Company.find()
+        var query = Project.find()
           .select('-logicDelete');
-
-        // Companies of some type
-        if (req.query.type)
-          query.where('type').equals(req.query.type);
 
         // Companies near some coordinate
         if (req.query.coordinate)
@@ -34,8 +30,8 @@ module.exports = function(Company) {
         if (req.query.name)
           query.where('name').regex('^.*'+req.query.name+'.*$');
 
-        if (req.query.hasProjects)
-          query.where('projects.0').exists(true);
+        if (req.query.hasMembers)
+          query.where('members.0').exists(true);
 
         if (req.query.hasPosts)
           query.where('posts.0').exists(true);
@@ -45,8 +41,9 @@ module.exports = function(Company) {
             .limit(req.query.size || 20);
 
         query.select()
-          .populate('owner', 'nickName photo cover')
-          .populate('projects')
+          .populate('creator', 'nickName photo cover')
+          .populate('endUser')
+          .populate('members')
           .populate('posts')
           .where('logicDelete').equals(false)
           // .sort('-createDate')
@@ -56,7 +53,7 @@ module.exports = function(Company) {
     ], function(err, groups) {
       if (err) next(err);
       else if (groups.length === 0) {
-        var err = new Error('All Company Loaded');
+        var err = new Error('All Projects Loaded');
         err.status = 404;
         next(err);
       } else {

@@ -10,7 +10,7 @@ var Company = new Schema({
         required: true
     },
 
-    owner: {
+    creator: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -34,9 +34,10 @@ var Company = new Schema({
         // required: true
     },
 
-    groups: [{
+    projects: [{
         type: Schema.Types.ObjectId,
-        ref: 'Group'
+        ref: 'Project',
+        required: true
     }],
 
     type: {
@@ -44,6 +45,12 @@ var Company = new Schema({
         trim: true,
         required: true
     },
+
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+
 
     logicDelete: {
         type: Boolean,

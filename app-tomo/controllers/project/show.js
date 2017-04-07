@@ -1,9 +1,10 @@
-module.exports = function(Company) {
+module.exports = function(Project) {
 
   return function(req, res, next) {
-    Company.findById(req.params.company)
-      .populate('owner', 'nickName photo cover')
-      .populate('projects')
+    Project.findById(req.params.project)
+      .populate('creator', 'nickName photo cover')
+      .populate('endUser')
+      .populate('members')
       .populate('posts')
       .where('logicDelete').equals(false)
       .exec(function(err, company) {

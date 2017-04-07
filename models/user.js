@@ -71,6 +71,11 @@ var User = new Schema({
         trim: true
     },
 
+    station: {
+        type: String, // TODO
+        trim: true
+    },
+
     bio: {
         type: String,
         trim: true
@@ -81,37 +86,79 @@ var User = new Schema({
         ref: 'Post'
     }],
 
-    bookmarks: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
-    }],
-
-    friends: [{
+    followers: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
 
-    invitations: [{
+    following: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
 
-    groups: [{
-        isPrimary: {
-            type: Boolean,
-            default: false
-        },
-        joinDate: {
+    experience: [{
+        from: {
             type: Date,
             default: Date.now
         },
-        leaveDate: {
+        to: {
             type: Date,
             default: Date.now
         },
-        group: {
+        project: {
           type: Schema.Types.ObjectId,
-          ref: 'Group'
+          ref: 'Project'
+        },
+        description: {
+            type: String,
+            trim: true
+        },
+        position: {
+            type: String,
+            trim: true
+        },
+        work: {
+          RFP: {
+              type: Boolean,
+              default: true
+          },
+          SA: {
+              type: Boolean,
+              default: true
+          },
+          BD: {
+              type: Boolean,
+              default: true
+          },
+          DD: {
+              type: Boolean,
+              default: true
+          },
+          CD: {
+              type: Boolean,
+              default: true
+          },
+          UT: {
+              type: Boolean,
+              default: true
+          },
+          IT: {
+              type: Boolean,
+              default: true
+          },
+          ST: {
+              type: Boolean,
+              default: true
+          },
+          OM: {
+              type: Boolean,
+              default: true
+          },
+          SUP: {
+              type: Boolean,
+              default: true
+          },
+
         }
     }],
 

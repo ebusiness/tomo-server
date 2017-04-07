@@ -5,7 +5,7 @@ module.exports = function(User) {
 
     if (!req.body.token) {
       var err = new Error('Invalid Parameter');
-      err.status = 400;
+      err.status = 412;
       next(err);
       return;
     }

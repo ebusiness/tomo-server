@@ -4,6 +4,7 @@ var fs = require('fs'),
   User = mongoose.model('User'),
   Post = mongoose.model('Post'),
   Company = mongoose.model('Company'),
+  Project = mongoose.model('Project'),
   Group = mongoose.model('Group'),
   Message = mongoose.model('Message'),
   Activity = mongoose.model('Activity'),
@@ -33,11 +34,8 @@ module.exports = function(app, config, sio) {
   app.post('/signup', controller.tempaccount.create(TempAccount, User, Mailer));
   // Account activate
   app.get('/activate/:id', controller.tempaccount.activate(TempAccount, User, Mailer));
-
-  // User Sign-up WeChat
-  app.post('/signup-wechat', controller.me.signupWeChat(User, Activity));
-  // User Sign-in WeChat
-  app.post('/signin-wechat', controller.me.signinWeChat(User, Invitation, Message, Notification));
+  // User Sign-in WeChat (auto sign-up)
+  app.post('/signin-wechat', controller.me.signinWeChat(User, Invitation, Message, Notification, Activity));
 
   // User Sign-out
   app.get('/signout', checkLoginStatus, controller.me.signout(User));
@@ -50,6 +48,28 @@ module.exports = function(app, config, sio) {
 
   // User Profile Update
   app.patch('/me', checkLoginStatus, controller.me.update(User));
+
+  //////////////////////////////////////////////////
+  /// Company Relate
+  //////////////////////////////////////////////////
+
+  // Company List
+  app.get('/companies', checkLoginStatus, controller.company.index(Company));
+  // Company Entity
+  app.get('/companies/:company', checkLoginStatus, controller.company.show(Company));
+  // Company Create
+  app.post('/companies', checkLoginStatus, controller.company.create(Company, Activity));
+
+  //////////////////////////////////////////////////
+  /// Project Relate
+  //////////////////////////////////////////////////
+
+  // Project List
+  app.get('/projects', checkLoginStatus, controller.project.index(Project));
+  // Project Entity
+  app.get('/projects/:project', checkLoginStatus, controller.project.show(Project));
+  // Project Create
+  app.post('/projects', checkLoginStatus, controller.project.create(Project, Activity));
 
   //////////////////////////////////////////////////
   /// Post Relate
@@ -94,18 +114,6 @@ module.exports = function(app, config, sio) {
   app.get('/users', checkLoginStatus, controller.connection.discover(User));
   // User Profile
   app.get('/users/:user', checkLoginStatus, controller.user.show(User));
-
-  //////////////////////////////////////////////////
-  /// Company Relate
-  //////////////////////////////////////////////////
-
-  // Company List
-  app.get('/companies', checkLoginStatus, controller.company.index(Company, Group));
-  // // Company Entity
-  app.get('/companies/:company', checkLoginStatus, controller.company.show(Company));
-  // // Company Create
-  // app.post('/companies', checkLoginStatus, controller.company.create(Company, Activity));
-  app.get('/createcompany', checkLoginStatus, controller.company.create(Company, Activity));
 
   //////////////////////////////////////////////////
   /// Group Relate
@@ -172,7 +180,9 @@ checkLoginStatus = function(req, res, next) {
     // find user by his id
     User.findById(req.session.userId)
       .select('-password -logicDelete')
-      .populate('groups.group')
+      .populate('followers', 'nickName photo')
+      .populate('following', 'nickName photo')
+      .populate('experience.project')
       .exec(function(err, user) {
 
       if (!err && user) {
