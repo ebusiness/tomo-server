@@ -4,6 +4,7 @@ module.exports = function(Project) {
     Project.findById(req.params.project)
       .populate('creator', 'nickName photo cover')
       .populate('endUser')
+      .populate('relCompanies')
       .populate('members')
       .populate('posts')
       .where('logicDelete').equals(false)

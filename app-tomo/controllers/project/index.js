@@ -43,6 +43,7 @@ module.exports = function(Project) {
         query.select()
           .populate('creator', 'nickName photo cover')
           .populate('endUser')
+          .populate('relCompanies')
           .populate('members')
           .populate('posts')
           .where('logicDelete').equals(false)

@@ -164,7 +164,7 @@ var owner = "55ee510b7e4cf649089bdc56";
 var createDate = "2017-04-01T10:26:36.034Z";
 
 data.forEach(function(obj) {
-  obj.owner = owner;
+  obj.creator = owner;
   obj.createDate = createDate;
   Company.create(obj, function(err) {
     console.log("over");
