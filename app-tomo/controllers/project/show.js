@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 module.exports = function(Project) {
 
   return function(req, res, next) {

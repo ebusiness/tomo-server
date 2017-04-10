@@ -1,6 +1,7 @@
 /*
     Activate temporary account
 */
+var mongoose = require('mongoose');
 
 module.exports = function(TempAccount, User, Mailer) {
 

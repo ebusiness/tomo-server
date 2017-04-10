@@ -1,5 +1,6 @@
 var async = require('async'),
-    moment = require('moment');
+    moment = require('moment'),
+    mongoose = require('mongoose');
 
 module.exports = function(Post, User, Project, Company) {
 

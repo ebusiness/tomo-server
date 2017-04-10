@@ -1,5 +1,6 @@
 var async = require('async'),
-    Push = require('../../utils/push');
+    Push = require('../../utils/push'),
+    mongoose = require('mongoose');
 
 module.exports = function(Post, Activity, Notification) {
 

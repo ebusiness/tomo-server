@@ -1,6 +1,7 @@
 var _ = require('lodash'),
     async = require('async'),
-    moment = require('moment');
+    moment = require('moment'),
+    mongoose = require('mongoose');
 
 module.exports = function(Project, Company, User) {
 
@@ -34,6 +35,7 @@ module.exports = function(Project, Company, User) {
             } else {
                 callback(null, null);
             }
+          }
 
         }, callback);
       },
