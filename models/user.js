@@ -87,6 +87,11 @@ var User = new Schema({
         ref: 'Post'
     }],
 
+    groups: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    }],
+
     followers: [{
         type: Schema.Types.ObjectId,
         ref: 'User'

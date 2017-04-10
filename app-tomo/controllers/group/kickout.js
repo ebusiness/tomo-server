@@ -4,11 +4,15 @@ var async = require('async'),
 module.exports = function(User, Group, Activity) {
 
   return function(req, res, next) {
-    if (!req.params.group) {
+    if (!req.params.group || !req.params.user) {
       res.status(412).end();
       return;
     }
     if (!mongoose.Types.ObjectId.isValid(req.params.group)) {
+      res.status(412).end();
+      return;
+    }
+    if (!mongoose.Types.ObjectId.isValid(req.params.user)) {
       res.status(412).end();
       return;
     }
@@ -20,7 +24,13 @@ module.exports = function(User, Group, Activity) {
       },
 
       function check(group, callback) {
-        if(group.owner == req.user.id && group.members.length > 1) {
+        if(group.owner != req.user.id) {
+          var err = new Error('Access Forbidden');
+          err.status = 403;
+          callback(err);
+          return;
+        }
+        if(group.owner == req.params.user && group.members.length > 1) {
           var err = new Error('Precondition Failed');
           err.status = 412;
           callback(err);
@@ -34,14 +44,14 @@ module.exports = function(User, Group, Activity) {
         async.parallel({
 
           user: function (callback) {
-            User.findByIdAndUpdate(req.user.id, {
+            User.findByIdAndUpdate(req.params.user, {
               $pull: {groups: req.params.group}
             }, callback);
           },
 
           group: function(callback) {
             group.members.pull(req.user.id);
-            if(group.owner == req.user.id) {
+            if(group.owner == req.params.user) {
               group.owner = null;
             }
             group.save(callback);
@@ -62,28 +72,6 @@ module.exports = function(User, Group, Activity) {
       },
 
       function sendNotification(group, relateInfo, callback) {
-
-        if (group.owner && group.owner != req.user.id) {
-          var alertMessage = req.user.nickName + "退出了" + group.name;
-          var payload = {
-            type: 'group-left',
-            from: {
-              id:       req.user.id,
-              nickName: req.user.nickName,
-              photo:    req.user.photo,
-              cover:    req.user.cover
-            },
-            targetId: group.id
-          }
-
-          Push(req.user.id, group.owner, payload, alertMessage, function(err, apnNotification){
-            console.log("======== apn callback ========");
-            console.log(arguments);
-            console.log("======== apn callback ========");
-            if (err) next(err);
-          });
-        }
-
         callback(null, group);
       }
 

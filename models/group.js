@@ -10,17 +10,10 @@ var Group = new Schema({
         ref: 'User'
     },
 
-    // possible value: 'station', 'site', 'normal'
-    type: {
-        type: String,
-        trim: true
-    },
-
-    // possible value: 'public', 'semi-private', 'private'
-    privacy: {
-        type: String,
-        trim: true
-    },
+    members: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 
     name: {
         type: String,
@@ -28,61 +21,9 @@ var Group = new Schema({
         required: true
     },
 
-    cover: {
-        type: String,
-        trim: true
-    },
-
     introduction: {
         type: String,
         trim: true,
-    },
-
-    coordinate:{
-        type: [Number],
-        index: '2d'
-    },
-
-    pref: {
-        type: String,
-        trim: true
-    },
-
-    address: {
-        type: String,
-        trim: true
-    },
-
-    watchers: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-
-    members: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-
-    invitations: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-
-    posts: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
-    }],
-
-
-    companies: {
-      si: [{
-          type: Schema.Types.ObjectId,
-          ref: 'Company'
-      }],
-      end: [{
-          type: Schema.Types.ObjectId,
-          ref: 'Company'
-      }],
     },
 
     logicDelete: {
@@ -94,14 +35,6 @@ var Group = new Schema({
         type: Date,
         default: Date.now
     }
-});
-
-// Create cover reference point to s3
-Group.virtual('cover_ref').get(function () {
-    if (this.cover)
-        return _s.join('/', config.s3.host, config.s3.bucket, 'groups', this._id, 'cover.png');
-    else
-        return _s.join('/', config.s3.host, config.s3.bucket, 'asset/default_cover.jpg');
 });
 
 // enable virtual output

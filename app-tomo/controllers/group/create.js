@@ -1,24 +1,12 @@
 var async = require('async'),
     Push = require('../../utils/push');
 
-module.exports = function(Group, Company, Activity) {
+module.exports = function(Group, Company, Project, Activity) {
 
   return function(req, res, next) {
     // req.body = req.query;
 
-    if ( !req.body.name || !req.body.coordinate){
-      res.status(412).end();
-      return;
-    }
-
-    var ids = []
-    if (req.body.companies.si) {
-      ids = ids.concat(req.body.companies.si);
-    }
-    if (req.body.companies.end) {
-      ids = ids.concat(req.body.companies.end);
-    }
-    if (ids.length == 0) {
+    if (!req.body.name) {
       res.status(412).end();
       return;
     }
@@ -31,21 +19,11 @@ module.exports = function(Group, Company, Activity) {
       },
 
       function createRelateInfo(group, callback) {
-        callback(null, group);
         async.parallel({
 
           user: function (callback) {
             req.user.groups.addToSet({group:group._id});
             req.user.save(callback);
-          },
-
-          cmpanies: function(callback) {
-            Company
-              .where({'_id': {'$in': ids}})
-              .setOptions({ multi: true })
-              .update({ '$addToSet': { 'groups': group._id } }, function(err, companies) {
-                console.log(companies);
-              });
           },
 
           activity: function (callback) {
@@ -56,6 +34,9 @@ module.exports = function(Group, Company, Activity) {
             }, callback);
           }
 
+        }, function(err, relateObj) {
+            if (err) next(err);
+            else callback(null, group);;
         });
       }
 

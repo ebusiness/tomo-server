@@ -40,6 +40,12 @@ var Company = new Schema({
         required: true
     }],
 
+    employees: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }],
+
     type: {
         type: String, // si ,enduser, bp...
         trim: true,
@@ -50,7 +56,6 @@ var Company = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     }],
-
 
     logicDelete: {
         type: Boolean,

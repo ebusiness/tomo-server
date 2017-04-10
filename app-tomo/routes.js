@@ -140,6 +140,44 @@ module.exports = function(app, config, sio) {
   app.get('/companies/:company/posts', checkLoginStatus, controller.post.index(Post, User, Project, Company));
 
   //////////////////////////////////////////////////
+  /// Group Relate
+  //////////////////////////////////////////////////
+
+  // Group List
+  app.get('/groups', checkLoginStatus, controller.group.index(Group));
+  // Group Entity
+  app.get('/groups/:group', checkLoginStatus, controller.group.show(Group));
+  // Group Create
+  app.post('/groups', checkLoginStatus, controller.group.create(Group, Company, Project, Activity));
+  // Group invitation
+  app.patch('/groups/:group/invitation', checkLoginStatus, controller.group.invitation(User, Group, Activity));
+  // Leave Group
+  app.patch('/groups/:group/leave', checkLoginStatus, controller.group.leave(User, Group, Activity));
+  // Leave Group
+  app.patch('/groups/:group/kickout/:user', checkLoginStatus, controller.group.kickout(User, Group, Activity));
+
+  //////////////////////////////////////////////////
+  /// Notification Relate
+  //////////////////////////////////////////////////
+
+  // Notification List
+  app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
+
+
+  //////////////////////////////////////////////////
+  /// Report Relate
+  //////////////////////////////////////////////////
+  // Toggle User Block
+  app.post('/blocks', checkLoginStatus, controller.connection.block(Activity));
+  // Report User
+  app.post('/reports/users/:user', checkLoginStatus, controller.userreport.create(UserReport));
+  // Report Post
+  app.post('/reports/posts/:post', checkLoginStatus, controller.postreport.create(PostReport));
+
+
+
+
+  //////////////////////////////////////////////////
   /// Connection Relate
   //////////////////////////////////////////////////
 
@@ -153,23 +191,6 @@ module.exports = function(app, config, sio) {
   app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));
   // Friend Break
   app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Message, Activity, Notification));
-  // Toggle User Block
-  app.post('/blocks', checkLoginStatus, controller.connection.block(Activity));
-
-  //////////////////////////////////////////////////
-  /// Group Relate
-  //////////////////////////////////////////////////
-
-  // Group List
-  app.get('/groups', checkLoginStatus, controller.group.index(Group, Post));
-  // Group Entity
-  app.get('/groups/:group', checkLoginStatus, controller.group.show(Group));
-  // Group Create
-  app.post('/groups', checkLoginStatus, controller.group.create(Group, Company, Activity));
-  // Join Group
-  app.patch('/groups/:group/join', checkLoginStatus, controller.group.join(User, Group, Activity));
-  // Leave Group
-  app.patch('/groups/:group/leave', checkLoginStatus, controller.group.leave(User, Group, Activity));
 
   //////////////////////////////////////////////////
   /// Message Relate
@@ -186,31 +207,6 @@ module.exports = function(app, config, sio) {
   app.get('/messages/:user', checkLoginStatus, controller.message.index(Message));
   // Chat Message Create
   app.post('/messages', checkLoginStatus, controller.message.create(User, Message, Activity, sio));
-
-  //////////////////////////////////////////////////
-  /// Notification Relate
-  //////////////////////////////////////////////////
-
-  // Notification List
-  app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
-
-  //////////////////////////////////////////////////
-  /// Map Relate
-  //////////////////////////////////////////////////
-
-  // User Search
-  app.get('/map/users', checkLoginStatus, controller.map.users(User));
-
-  // Group Search
-  app.get('/map/groups', checkLoginStatus, controller.map.groups(Group));
-
-  //////////////////////////////////////////////////
-  /// Report Relate
-  //////////////////////////////////////////////////
-  // Report User
-  app.post('/reports/users/:user', checkLoginStatus, controller.userreport.create(UserReport));
-  // Report Post
-  app.post('/reports/posts/:post', checkLoginStatus, controller.postreport.create(PostReport));
 };
 
 checkLoginStatus = function(req, res, next) {
