@@ -2,6 +2,13 @@ module.exports = function(Post) {
 
   return function(req, res, next) {
 
+    if (!req.params.post || !mongoose.Types.ObjectId.isValid(req.params.post)) {
+      var err = new Error('Invalid Parameter');
+      err.status = 412;
+      next(err);
+      return;
+    }
+
     Post.findById(req.params.post)
       .where('logicDelete').equals(false)
       .populate('owner', 'nickName photo cover')

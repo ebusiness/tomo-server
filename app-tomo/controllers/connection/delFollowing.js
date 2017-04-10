@@ -3,6 +3,10 @@ var async = require('async');
 module.exports = function(User) {
 
   return function(req, res, next) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.user)) {
+      res.status(412).end();
+      return;
+    }
     async.waterfall([
         function findUser(callback) {
             User.findById(req.params.user, callback);

@@ -106,9 +106,11 @@ module.exports = function(app, config, sio) {
   // User Search
   app.get('/users/discover', checkLoginStatus, controller.connection.discover(User));
   // User Search
-  app.get('/users', checkLoginStatus, controller.connection.index(User, Project));
+  app.get('/users', checkLoginStatus, controller.connection.index(User, Project, Company));
   // users of project
-  app.get('/projects/:project/users', checkLoginStatus, controller.connection.index(User, Project));
+  app.get('/projects/:project/users', checkLoginStatus, controller.connection.index(User, Project, Company));
+  // users of company
+  app.get('/companies/:company/employees', checkLoginStatus, controller.connection.index(User, Project, Company));
 
   // User Profile
   app.get('/users/:user', checkLoginStatus, controller.user.show(User, Project));

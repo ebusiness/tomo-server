@@ -1,6 +1,10 @@
 module.exports = function(Project) {
 
   return function(req, res, next) {
+    if (!req.params.project || !mongoose.Types.ObjectId.isValid(req.params.project)) {
+      res.status(412).end();
+      return;
+    }
     Project.findById(req.params.project)
       .populate('creator', 'nickName photo cover')
       .populate('endUser')

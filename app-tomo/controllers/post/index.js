@@ -12,24 +12,39 @@ module.exports = function(Post, User, Project, Company) {
         async.parallel({
 
           user: function(callback) {
-            if (req.params.user)
-              User.findById(req.params.user, 'posts', callback);
-            else
-              callback(null, null);
+            if (req.params.user) {
+                if (!mongoose.Types.ObjectId.isValid(req.params.user)) {
+                  res.status(412).end();
+                  return;
+                }
+                User.findById(req.params.user, 'posts', callback);
+            } else {
+                callback(null, null);
+            }
           },
 
           project: function(callback) {
-            if (req.params.project)
-              Project.findById(req.params.project, 'posts', callback);
-            else
-              callback(null, null);
+            if (req.params.project) {
+                if (!mongoose.Types.ObjectId.isValid(req.params.project)) {
+                  res.status(412).end();
+                  return;
+                }
+                Project.findById(req.params.project, 'posts', callback);
+            } else {
+                callback(null, null);
+            }
           },
 
           company: function(callback) {
-            if (req.params.company)
-              Company.findById(req.params.company, 'posts', callback);
-            else
-              callback(null, null);
+            if (req.params.company) {
+                if (!mongoose.Types.ObjectId.isValid(req.params.company)) {
+                  res.status(412).end();
+                  return;
+                }
+                Company.findById(req.params.company, 'posts', callback);
+            } else {
+                callback(null, null);
+            }
           }
 
         }, callback);

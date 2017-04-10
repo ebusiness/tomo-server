@@ -1,7 +1,7 @@
 var async = require('async'),
     moment = require('moment');
 
-module.exports = function(User, Project) {
+module.exports = function(User, Project, Company) {
 
   return function(req, res, next) {
 
@@ -12,10 +12,31 @@ module.exports = function(User, Project) {
         async.parallel({
 
           project: function(callback) {
-            if (req.params.project)
-              Project.findById(req.params.project, 'members', callback);
-            else
-              callback(null, null);
+            if (req.params.project) {
+                if (!mongoose.Types.ObjectId.isValid(req.params.project)) {
+                  var err = new Error('Invalid Parameter');
+                  err.status = 412;
+                  callback(err, null);
+                  return;
+                }
+                Project.findById(req.params.project, 'members', callback);
+            } else {
+                callback(null, null);
+            }
+          },
+
+          company: function(callback) {
+            if (req.params.company) {
+                if (!mongoose.Types.ObjectId.isValid(req.params.company)) {
+                  var err = new Error('Invalid Parameter');
+                  err.status = 412;
+                  callback(err, null);
+                  return;
+                }
+                Company.findById(req.params.company, 'employees', callback);
+            } else {
+                callback(null, null);
+            }
           },
 
         }, callback);
@@ -28,6 +49,10 @@ module.exports = function(User, Project) {
         // users of some project
         if (relateObj.project)
           query.where('_id').in(relateObj.project.members);
+
+        // users of some company
+        if (relateObj.company)
+          query.where('_id').in(relateObj.company.employees);
 
         query
           .select('-password -logicDelete -experiences -device')

@@ -5,10 +5,17 @@ module.exports = function(User) {
   return function(req, res, next) {
     async.waterfall([
         function findRelateObject(callback) {
-            if (req.params.user)
-              User.findById(req.params.user, 'followers', callback);
-            else
-              callback(null, null);
+            if (req.params.user) {
+                if (!mongoose.Types.ObjectId.isValid(req.params.user)) {
+                  var err = new Error('Invalid Parameter');
+                  err.status = 412;
+                  callback(err, null);
+                  return;
+                }
+                User.findById(req.params.user, 'followers', callback);
+            } else {
+                callback(null, null);
+            }
         },
         function findFollowers(user, callback) {
             var followers = req.user.followers;

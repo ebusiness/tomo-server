@@ -5,6 +5,10 @@
 module.exports = function(TempAccount, User, Mailer) {
 
   return function(req, res, next) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      res.status(412).end();
+      return;
+    }
 
     // find account by id in TempAccount collection
     TempAccount.findById(req.params.id, function(err, tempAccount) {
