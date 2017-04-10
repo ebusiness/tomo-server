@@ -72,12 +72,11 @@ module.exports = function(User, Project) {
           }, callback);
       },
 
-      function updateRelateInfo(relateInfo, callback) {
+      function updateProjects(relateInfo, callback) {
 
         async.parallel({
 
           remove: function (callback) {
-              console.log(relateInfo);
               Project.update({ '_id': {'$in': relateInfo.removed} }, { '$pull': {'members': req.user.id} }, { multi: true }, callback);
           },
 
@@ -92,6 +91,7 @@ module.exports = function(User, Project) {
       },
 
       function updateUserInfo(relateInfo, callback) {
+          console.log(relateInfo);
           // req.user.experiences = req.body;
           // req.user.save(callback);
           User.findByIdAndUpdate(req.user.id, {"experiences": req.body}, { new: true }, callback);

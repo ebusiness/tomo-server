@@ -108,7 +108,7 @@ module.exports = function(app, config, sio) {
   // User Search
   app.get('/users', checkLoginStatus, controller.connection.index(User, Project, Company));
   // users of project
-  app.get('/projects/:project/users', checkLoginStatus, controller.connection.index(User, Project, Company));
+  app.get('/projects/:project/members', checkLoginStatus, controller.connection.index(User, Project, Company));
   // users of company
   app.get('/companies/:company/employees', checkLoginStatus, controller.connection.index(User, Project, Company));
 
@@ -157,12 +157,22 @@ module.exports = function(app, config, sio) {
   app.patch('/groups/:group/kickout/:user', checkLoginStatus, controller.group.kickout(User, Group, Activity));
 
   //////////////////////////////////////////////////
-  /// Notification Relate
+  /// Message Relate
   //////////////////////////////////////////////////
 
-  // Notification List
-  app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
 
+  // Latest messages list
+  app.get('/messages', checkLoginStatus, controller.message.latest(User, Group, Message));
+
+  // Chat Message with some one
+  app.get('/users/:user/messages', checkLoginStatus, controller.message.index(Message));
+  // Chat Message Create
+  app.post('/users/:user/messages', checkLoginStatus, controller.message.create(User, Message, Activity, sio));
+
+  // Chat Message of group
+  app.get('/groups/:group/messages', checkLoginStatus, controller.group.messages(Message));
+  // Create Message for group
+  app.post('/groups/:group/messages', checkLoginStatus, controller.group.createMessage(User, Group, Message, Activity, sio));
 
   //////////////////////////////////////////////////
   /// Report Relate
@@ -178,35 +188,28 @@ module.exports = function(app, config, sio) {
 
 
   //////////////////////////////////////////////////
+  /// Notification Relate
+  //////////////////////////////////////////////////
+
+  // Notification List
+  app.get('/notifications', checkLoginStatus, controller.notification.index(Notification));
+
+
+  //////////////////////////////////////////////////
   /// Connection Relate
   //////////////////////////////////////////////////
 
-  // Invitation List
-  app.get('/invitations', checkLoginStatus, controller.invitation.index(User));
-  // Invitation Create
-  app.post('/invitations', checkLoginStatus, controller.invitation.create(Activity, Invitation));
-  // Invitation Update
-  app.patch('/invitations/:invitation', checkLoginStatus, controller.invitation.update(User, Activity, Invitation, Notification));
-  // Friends List
-  app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));
-  // Friend Break
-  app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Message, Activity, Notification));
+  // // Invitation List
+  // app.get('/invitations', checkLoginStatus, controller.invitation.index(User));
+  // // Invitation Create
+  // app.post('/invitations', checkLoginStatus, controller.invitation.create(Activity, Invitation));
+  // // Invitation Update
+  // app.patch('/invitations/:invitation', checkLoginStatus, controller.invitation.update(User, Activity, Invitation, Notification));
+  // // Friends List
+  // app.get('/friends', checkLoginStatus, controller.connection.friends(User, Message));
+  // // Friend Break
+  // app.delete('/friends/:friend', checkLoginStatus, controller.connection.remove(User, Message, Activity, Notification));
 
-  //////////////////////////////////////////////////
-  /// Message Relate
-  //////////////////////////////////////////////////
-
-  // Create Message for group
-  app.post('/groups/:group/messages', checkLoginStatus, controller.group.createMessage(User, Group, Message, Activity, sio));
-  // Chat Message of group
-  app.get('/groups/:group/messages', checkLoginStatus, controller.group.messages(Message));
-
-  // Latest messages list
-  app.get('/messages', checkLoginStatus, controller.message.latest(User, Group, Message))
-  // Chat Message with some one
-  app.get('/messages/:user', checkLoginStatus, controller.message.index(Message));
-  // Chat Message Create
-  app.post('/messages', checkLoginStatus, controller.message.create(User, Message, Activity, sio));
 };
 
 checkLoginStatus = function(req, res, next) {

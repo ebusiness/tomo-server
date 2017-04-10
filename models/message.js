@@ -15,15 +15,25 @@ var Message = new Schema({
         required: true
     },
 
+    group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
+
+    project: {
+        type: Schema.Types.ObjectId,
+        ref: 'Project'
+    },
+
+    company: {
+        type: Schema.Types.ObjectId,
+        ref: 'Company'
+    },
+
     type: {
         type: String,
         trim: true,
         required: true
-    },
-
-    group: {
-        type: Schema.Types.ObjectId,
-        ref: 'Group'
     },
 
     content: {
