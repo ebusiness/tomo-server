@@ -54,7 +54,7 @@ module.exports = function(app, config, sio) {
   //////////////////////////////////////////////////
 
   // 	Create/Update a Experience
-  app.put('/experiences', checkLoginStatus, controller.me.experiences(User));
+  app.put('/experiences', checkLoginStatus, controller.me.experiences(User, Project));
 
   //////////////////////////////////////////////////
   /// Following Relate
@@ -150,10 +150,10 @@ module.exports = function(app, config, sio) {
   // Group Create
   app.post('/groups', checkLoginStatus, controller.group.create(Group, Company, Project, Activity));
   // Group invitation
-  app.patch('/groups/:group/invitation', checkLoginStatus, controller.group.invitation(User, Group, Activity));
+  app.patch('/groups/:group/invite/:user', checkLoginStatus, controller.group.invite(User, Group, Activity));
   // Leave Group
   app.patch('/groups/:group/leave', checkLoginStatus, controller.group.leave(User, Group, Activity));
-  // Leave Group
+  // Kickout User
   app.patch('/groups/:group/kickout/:user', checkLoginStatus, controller.group.kickout(User, Group, Activity));
 
   //////////////////////////////////////////////////

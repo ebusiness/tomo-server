@@ -10,18 +10,28 @@ var Experience = new Schema({
         type: Date,
         default: Date.now
     },
+
+    company: {
+        type: Schema.Types.ObjectId,
+        ref: 'Company',
+        required: true
+    },
+
     project: {
       type: Schema.Types.ObjectId,
       ref: 'Project'
     },
+
     description: {
         type: String,
         trim: true
     },
+
     position: {
         type: String,
         trim: true
     },
+    
     work: {
       RFP: {
           type: Boolean,

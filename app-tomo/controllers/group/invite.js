@@ -5,11 +5,15 @@ var async = require('async'),
 module.exports = function(User, Group, Activity) {
 
   return function(req, res, next) {
-    if (!req.body.user || !req.params.group) {
+    if (!req.params.user || !req.params.group) {
       res.status(412).end();
       return;
     }
     if (!mongoose.Types.ObjectId.isValid(req.params.group)) {
+      res.status(412).end();
+      return;
+    }
+    if (!mongoose.Types.ObjectId.isValid(req.params.user)) {
       res.status(412).end();
       return;
     }
@@ -19,7 +23,7 @@ module.exports = function(User, Group, Activity) {
           async.parallel({
 
             user: function (callback) {
-              User.findById(req.body.user, callback);
+              User.findById(req.params.user, callback);
             },
 
             group: function(callback) {
@@ -52,7 +56,7 @@ module.exports = function(User, Group, Activity) {
           },
 
           group: function(callback) {
-            relateInfo.group.members.addToSet(req.body.user);
+            relateInfo.group.members.addToSet(req.params.user);
             relateInfo.group.save(callback);
           },
 
@@ -60,7 +64,7 @@ module.exports = function(User, Group, Activity) {
             Activity.create({
               owner: req.user.id,
               type: 'group-invitationed',
-              relateUser: req.body.user,
+              relateUser: req.params.user,
               relateGroup: req.params.group
             }, callback);
           }
@@ -84,7 +88,7 @@ module.exports = function(User, Group, Activity) {
           targetId: relateInfo.group.id
         }
 
-        Push(req.user.id, req.body.user, payload, alertMessage, function(err, apnNotification){
+        Push(req.user.id, req.params.user, payload, alertMessage, function(err, apnNotification){
           console.log("======== apn callback ========");
           console.log(arguments);
           console.log("======== apn callback ========");
