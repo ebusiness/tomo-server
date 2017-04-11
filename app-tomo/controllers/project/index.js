@@ -91,8 +91,8 @@ module.exports = function(Project, Company, User) {
           .populate('members', 'nickName photo cover')
           .populate('posts')
           .where('logicDelete').equals(false)
-          .skip(size * req.query.page || 0)
-          .limit(size || 20)
+          .skip(size * (req.query.page || 0))
+          .limit(size)
           // .sort('-createDate')
           .exec(callback);
       }

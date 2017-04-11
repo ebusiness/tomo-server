@@ -29,12 +29,14 @@ module.exports = function(Group, User) {
         if (relateObj.group)
           query.where('_id').in(relateObj.group.members);
 
+        var size = (req.query.size || 20) * 1;
+
         // paging
         if (req.query.page)
-          query.skip(20 * req.query.page);
+          query.skip(size * req.query.page);
 
         // run query
-        query.sort('-createDate').limit(20).exec(callback);
+        query.sort('-createDate').limit(size).exec(callback);
       }
 
     ], function(err, users) {

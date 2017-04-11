@@ -10,11 +10,13 @@ module.exports = function(User) {
 		if (req.query.nickName)
 			query.where('nickName').regex(new RegExp('^.*?'+req.query.nickName+'.*$', "i"));
 
+		var size = (req.query.size || 20) * 1;
+
 		query.select('-password -logicDelete -experiences -device')
 			.where('_id').nin(exclude)
 			.where('logicDelete').equals(false)
-			.skip(20 * req.query.page || 0)
-			.limit(req.query.size || 20)
+			.skip(size * (req.query.page || 0))
+			.limit(size)
 			.exec(function(err, users) {
 	    	if (err) next(err);
 				else if (users.length === 0) {

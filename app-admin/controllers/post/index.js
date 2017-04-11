@@ -40,13 +40,14 @@ module.exports = function(User, Group, Post) {
         if (relateObj.group)
           query.where('_id').in(relateObj.group.posts);
 
+        var size = (req.query.size || 20) * 1;
         // paging
         if (req.query.page)
-          query.skip(20 * req.query.page);
+          query.skip(size * req.query.page);
 
         // run query
         query.populate('owner', 'nickName photo cover')
-          .sort('-createDate').limit(20)
+          .sort('-createDate').limit(size)
           .exec(callback);
       }
 

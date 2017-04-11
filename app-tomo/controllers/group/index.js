@@ -21,11 +21,13 @@ module.exports = function(Group) {
         if (req.query.hasMembers)
           query.where('members.0').exists(true);
 
+        var size = (req.query.size || 20) * 1;
+
         query.select('-logicDelete')
           .populate('owner', 'nickName photo cover')
           .populate('members', 'nickName photo cover')
-          .skip(20 * req.query.page || 0)
-          .limit(req.query.size || 20)
+          .skip(size * (req.query.page || 0))
+          .limit(size)
           .where('logicDelete').equals(false)
           // .sort('-createDate')
           .exec(callback);

@@ -23,12 +23,14 @@ module.exports = function(User) {
             if(user) {
                 following = user.following;
             }
+            var size = (req.query.size || 20) * 1;
+
             User.find()
               .select('-password -logicDelete -experiences -device')
               .where('_id').in(following)
               .where('logicDelete').equals(false)
-              .skip(20 * req.query.page || 0)
-              .limit(req.query.size || 20)
+              .skip(size * (req.query.page || 0))
+              .limit(size)
               .sort('-createDate')
               .exec(callback);
         }
