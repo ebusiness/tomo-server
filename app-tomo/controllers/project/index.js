@@ -83,6 +83,7 @@ module.exports = function(Project, Company, User) {
         if (req.query.hasPosts)
           query.where('posts.0').exists(true);
 
+        var size = (req.query.size || 20) * 1;
         query.select()
           .populate('creator', 'nickName photo cover')
           .populate('endUser')
@@ -90,8 +91,8 @@ module.exports = function(Project, Company, User) {
           .populate('members', 'nickName photo cover')
           .populate('posts')
           .where('logicDelete').equals(false)
-          .skip(20 * req.query.page || 0)
-          .limit(req.query.size || 20)
+          .skip(size * req.query.page || 0)
+          .limit(size || 20)
           // .sort('-createDate')
           .exec(callback);
       }
