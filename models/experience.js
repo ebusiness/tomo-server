@@ -22,7 +22,7 @@ var Experience = new Schema({
       ref: 'Project'
     },
 
-    description: {
+    introduction: {
         type: String,
         trim: true
     },
@@ -31,7 +31,7 @@ var Experience = new Schema({
         type: String,
         trim: true
     },
-    
+
     work: {
       RFP: {
           type: Boolean,
