@@ -70,7 +70,7 @@ var Recruit = new Schema({
 });
 
 // enable virtual output
-Project.set('toJSON', { virtuals: true });
-Project.set('toObject', { virtuals: true });
+Recruit.set('toJSON', { virtuals: true });
+Recruit.set('toObject', { virtuals: true });
 
-mongoose.model('Project', Project);
+mongoose.model('Recruit', Recruit);
