@@ -58,7 +58,7 @@ module.exports = function(app, config, sio) {
   // 	Update an Experience
   app.put('/experiences/:experience', checkLoginStatus, controller.experiences.update(User, Project, Company));
   // 	Delete an Experience
-  app.get('/experiences/:experience', checkLoginStatus, controller.experiences.delete(User, Project, Company));
+  app.delete('/experiences/:experience', checkLoginStatus, controller.experiences.delete(User, Project, Company));
 
   //////////////////////////////////////////////////
   /// Following Relate
