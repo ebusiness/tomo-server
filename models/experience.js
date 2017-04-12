@@ -19,7 +19,8 @@ var Experience = new Schema({
 
     project: {
       type: Schema.Types.ObjectId,
-      ref: 'Project'
+      ref: 'Project',
+      required: true
     },
 
     introduction: {

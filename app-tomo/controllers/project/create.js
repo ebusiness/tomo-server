@@ -13,7 +13,7 @@ module.exports = function(Project, Activity) {
     req.body.creator = req.user.id;
 
     async.waterfall([
-      function createCompany(callback) {
+      function createProject(callback) {
         Project.create(req.body, callback);
       },
 
