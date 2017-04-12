@@ -43,6 +43,11 @@ var User = new Schema({
       required: true
     },
 
+    company: {
+        type: Schema.Types.ObjectId,
+        ref: 'Company'
+    },
+
     photo: {
         type: String,
         trim: true

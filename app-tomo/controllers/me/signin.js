@@ -17,6 +17,7 @@ module.exports = function(User, Invitation, Message, Notification) {
       function(callback) {
         User.findOne(req.body)
           .select('-password -logicDelete')
+          .populate('company')
           // .populate('followers', 'nickName photo')
           // .populate('following', 'nickName photo')
           .populate('experiences.project')

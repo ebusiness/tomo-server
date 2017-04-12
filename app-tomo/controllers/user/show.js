@@ -8,6 +8,7 @@ module.exports = function(User) {
     }
     User.findById(req.params.user)
       .select('-password -logicDelete -experiences -device')
+      .populate('company')
       .populate('experiences.project')
       .where('logicDelete').equals(false)
       .exec(function(err, user) {

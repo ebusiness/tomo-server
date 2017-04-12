@@ -224,6 +224,7 @@ checkLoginStatus = function(req, res, next) {
     // find user by his id
     User.findById(req.session.userId)
       .select('-password -logicDelete')
+      .populate('company')
       // .populate('followers', 'nickName photo')
       // .populate('following', 'nickName photo')
       .populate('experiences.project')
