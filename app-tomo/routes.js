@@ -5,6 +5,7 @@ var fs = require('fs'),
   Post = mongoose.model('Post'),
   Company = mongoose.model('Company'),
   Project = mongoose.model('Project'),
+  Recruit = mongoose.model('Recruit'),
   Group = mongoose.model('Group'),
   Message = mongoose.model('Message'),
   Activity = mongoose.model('Activity'),
@@ -103,6 +104,20 @@ module.exports = function(app, config, sio) {
   app.get('/companies/:company/projects', checkLoginStatus, controller.project.index(Project, Company, User));
   // Projects of some user
   app.get('/users/:user/projects', checkLoginStatus, controller.project.index(Project, Company, User));
+
+  //////////////////////////////////////////////////
+  /// Recruit Relate
+  //////////////////////////////////////////////////
+
+  // Project List
+  app.get('/recruits', checkLoginStatus, controller.recruit.index(Recruit, Company, User));
+  // Project Entity
+  app.get('/recruits/:recruit', checkLoginStatus, controller.recruit.show(Recruit));
+  // Project Create
+  app.post('/recruits', checkLoginStatus, controller.recruit.create(Recruit, Activity));
+
+  // Projects of some company
+  app.get('/companies/:company/recruits', checkLoginStatus, controller.recruit.index(Recruit, Company, User));
 
   //////////////////////////////////////////////////
   /// Connection Relate

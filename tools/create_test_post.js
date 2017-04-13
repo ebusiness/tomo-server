@@ -26,21 +26,13 @@ GLOBAL.config = config;
 
 var User = mongoose.model('User'),
   Post = mongoose.model('Post'),
-  Group = mongoose.model('Group'),
+  Project = mongoose.model('Project'),
   Message = mongoose.model('Message'),
   Activity = mongoose.model('Activity'),
   Invitation = mongoose.model('Invitation'),
   Notification = mongoose.model('Notification');
 
 function fetch(feed) {
-
-  var stas = [
-              '新宿','池袋','東京','横浜','渋谷','品川','新橋','大宮','秋葉原','川崎','北千住','高田馬場','上野','有楽町','立川',
-              '浜松町','大崎','田町','中野','蒲田','吉祥寺','恵比寿','船橋','五反田','西船橋','柏','武蔵小杉','町田','戸塚','国分寺',
-              '目黒','藤沢','日暮里','千葉','錦糸町','御茶ノ水','津田沼','大井町','松戸','西日暮里','神田','大船','大森','三鷹','四ツ谷',
-              '飯田橋','赤羽','荻窪','仙台','八王子'
-             ]
-
   // Define our streams
   var req = request(feed, {
     timeout: 10000,
@@ -106,8 +98,8 @@ function fetch(feed) {
                   User.count(callback);
                 },
 
-                group: function(callback) {
-                  Group.count(callback);
+                project: function(callback) {
+                  Project.count(callback);
                 }
 
               }, callback);
@@ -122,13 +114,9 @@ function fetch(feed) {
                   User.find().skip(random).limit(1).exec(callback)
                 },
 
-                group: function(callback) {
+                project: function(callback) {
                   var random = Math.floor((Math.random() * 50));
-                  Group.find()
-                    .where('name').in(stas)
-                    .where('coordinate').near({
-                      center: [139.753611, 35.693889]
-                    })
+                  Project.find()
                     .skip(random).limit(1).exec(callback)
                 }
 
@@ -139,7 +127,7 @@ function fetch(feed) {
 
               // console.log(arguments)
               newPost.owner = relate.user[0];
-              newPost.group = relate.group[0];
+              newPost.project = relate.project[0];
               Post.create(newPost, function(err, post) {
                 if (err) callback(err);
                 else callback(null, relate, post);
@@ -151,14 +139,13 @@ function fetch(feed) {
 
                 user: function(callback) {
                   relate.user[0].posts.push(post);
-                  relate.user[0].groups.push(relate.group[0]);
                   relate.user[0].save(callback);
                 },
 
                 group: function(callback) {
-                  relate.group[0].posts.push(post);
-                  relate.group[0].members.push(relate.user[0]);
-                  relate.group[0].save(callback);
+                  relate.project[0].posts.push(post);
+                  relate.project[0].members.push(relate.user[0]);
+                  relate.project[0].save(callback);
                 }
 
               }, callback);

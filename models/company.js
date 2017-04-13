@@ -40,6 +40,12 @@ var Company = new Schema({
         required: true
     }],
 
+    recruits: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Recruit',
+        required: true
+    }],
+
     employees: [{
         type: Schema.Types.ObjectId,
         ref: 'User',

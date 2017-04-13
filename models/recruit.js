@@ -48,7 +48,7 @@ var Recruit = new Schema({
         trim: true
     },
 
-    coordinate:{
+    coordinate: {
         type: [Number],
         index: '2d'
     },

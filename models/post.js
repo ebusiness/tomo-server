@@ -2,7 +2,8 @@ var _ = require('underscore'),
     _s = require('underscore.string'),
     mongoose = require('mongoose'),
     validate = require('mongoose-validator').validatorjs,
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    Comment = require('./comment');
 
 var Post = new Schema({
 
@@ -42,28 +43,7 @@ var Post = new Schema({
         ref: 'User'
     }],
 
-    comments: [{
-        owner: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-        },
-
-        content: {
-            type: String,
-            trim: true,
-        },
-
-        logicDelete: {
-            type: Boolean,
-            default: false
-        },
-
-        createDate: {
-            type: Date,
-            default: Date.now
-        }
-    }],
+    comments: [Comment],
 
     location: {
         type: String,

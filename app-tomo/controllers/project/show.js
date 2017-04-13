@@ -11,7 +11,7 @@ module.exports = function(Project) {
       .populate('endUser')
       .populate('relCompanies')
       .populate('members', 'nickName photo cover')
-      .populate('posts')
+      // .populate('posts')
       .where('logicDelete').equals(false)
       .exec(function(err, company) {
         if (err) next(err);
